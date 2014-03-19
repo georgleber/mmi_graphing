@@ -1,4 +1,5 @@
 The MIT License (MIT)
+
 Copyright © 2014 Georg Henkel, http://www.develman.de
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
