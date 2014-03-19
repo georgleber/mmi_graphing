@@ -29,7 +29,6 @@ public abstract class AbstractLoader implements GraphLoader
         Graph graph;
         try (BufferedReader lineReader = new BufferedReader(new FileReader(fileName)))
         {
-            // ignore first line (contains count of vertices)
             String firstLine = lineReader.readLine();
             int countVertices = Integer.parseInt(firstLine);
             graph = new UndirectedGraph(countVertices);

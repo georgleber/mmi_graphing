@@ -3,68 +3,91 @@ package de.develman.mmi.model.impl;
 import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Georg Henkel
  */
 public class UndirectedGraph implements Graph
 {
-    private Vertex[] vertices;
-    private List<Edge> edges;
+    private Map<Vertex, List<Edge>> vertexEdges;
 
     public UndirectedGraph(int countVertices)
     {
-        vertices = new Vertex[countVertices];
-        edges = new ArrayList<>();
+        vertexEdges = new HashMap<>();
     }
 
     @Override
     public int countVertices()
     {
-        return vertices.length;
+        return vertexEdges.keySet().size();
     }
 
     @Override
     public int countEdges()
     {
-        return edges.size();
+        int count = 0;
+        for (Vertex v : vertexEdges.keySet())
+        {
+            count += vertexEdges.get(v).size();
+        }
+
+        return count;
     }
 
     @Override
     public void addEdge(Vertex v, Vertex w)
     {
         Edge edge = new DefaultEdge(v, w);
-        edges.add(edge);
+        //edges.add(edge);
     }
 
     @Override
     public void addEdge(Vertex v, Vertex w, double weight)
     {
         Edge edge = new DefaultEdge(v, w, weight);
-        edges.add(edge);
+        // edges.add(edge);
     }
 
     @Override
     public void removeEdge(Edge e)
     {
-        edges.remove(e);
+        // edges.remove(e);
     }
 
     @Override
     public void addVertex(Vertex v)
     {
-        if (vertices[v.key()] == null)
+        if (!vertexEdges.containsKey(v))
         {
-            vertices[v.key()] = v;
+            vertexEdges.put(v, null);
         }
     }
 
     @Override
     public void removeVertex(Vertex v)
     {
-        vertices[v.key()] = null;
+        vertexEdges.remove(v);
+    }
+
+    @Override
+    public List<Vertex> getSuccessors(Vertex v)
+    {
+        return null;
+    }
+
+    @Override
+    public List<Vertex> getPredecessors(Vertex v)
+    {
+        return null;
+    }
+
+    @Override
+    public List<Vertex> getNeighbors(Vertex v)
+    {
+        return null;
     }
 
     @Override
@@ -74,7 +97,7 @@ public class UndirectedGraph implements Graph
         builder.append("Knoten: {");
 
         boolean minor = false;
-        for (Vertex vertex : vertices)
+        for (Vertex vertex : vertexEdges.keySet())
         {
             if (minor)
             {
@@ -96,18 +119,20 @@ public class UndirectedGraph implements Graph
         builder.append("Kanten: {\n");
 
         boolean minor = false;
-        for (Edge edge : edges)
-        {
-            if (minor)
-            {
-                builder.append(",\n");
-            }
+        /*
+         for (Edge edge : edges)
+         {
+         if (minor)
+         {
+         builder.append(",\n");
+         }
 
-            builder.append(edge.getVertexA());
-            builder.append(" -> ");
-            builder.append(edge.getVertexB());
-            minor = true;
-        }
+         builder.append(edge.getVertexA());
+         builder.append(" -> ");
+         builder.append(edge.getVertexB());
+         minor = true;
+         }
+         */
 
         builder.append("}");
         System.out.println(builder);

@@ -1,5 +1,7 @@
 package de.develman.mmi.model;
 
+import java.util.List;
+
 /**
  * @author Georg Henkel
  */
@@ -18,6 +20,12 @@ public interface Graph
     void addVertex(Vertex v);
 
     void removeVertex(Vertex v);
+
+    List<Vertex> getSuccessors(Vertex v);
+
+    List<Vertex> getPredecessors(Vertex v);
+
+    List<Vertex> getNeighbors(Vertex v);
 
     void printVertexList();
 
