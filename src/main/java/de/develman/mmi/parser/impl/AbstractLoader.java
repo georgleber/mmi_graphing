@@ -1,7 +1,7 @@
 package de.develman.mmi.parser.impl;
 
 import de.develman.mmi.model.Graph;
-import de.develman.mmi.model.impl.UndirectedGraph;
+import de.develman.mmi.model.Vertex;
 import de.develman.mmi.parser.GraphLoader;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,13 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Georg Henkel
+ * @author Georg Henkel <georg@develman.de>
  */
 public abstract class AbstractLoader implements GraphLoader
 {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractLoader.class);
 
-    private String fileName;
+    private final String fileName;
 
     public AbstractLoader(String fileName)
     {
@@ -24,15 +24,11 @@ public abstract class AbstractLoader implements GraphLoader
     }
 
     @Override
-    public Graph loadGraph(boolean directed)
+    public Graph<Integer, Vertex<Integer>> loadGraph(boolean directed)
     {
-        Graph graph;
+        Graph<Integer, Vertex<Integer>> graph = new Graph(directed);
         try (BufferedReader lineReader = new BufferedReader(new FileReader(fileName)))
         {
-            String firstLine = lineReader.readLine();
-            int countVertices = Integer.parseInt(firstLine);
-            graph = new UndirectedGraph(countVertices);
-
             readLines(graph, lineReader);
         }
         catch (IOException ex)
@@ -45,5 +41,4 @@ public abstract class AbstractLoader implements GraphLoader
     }
 
     protected abstract void readLines(Graph graph, BufferedReader lineReader) throws IOException;
-
 }

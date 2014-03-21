@@ -1,13 +1,38 @@
 package de.develman.mmi.model;
 
 /**
- * @author Georg Henkel
+ * @author Georg Henkel <georg@develman.de>
  */
-public interface Edge
+public class Edge<T>
 {
-    Vertex getVertexA();
+    protected final Vertex<T> source;
+    protected final Vertex<T> sink;
 
-    Vertex getVertexB();
+    public Edge(Vertex<T> source, Vertex<T> sink)
+    {
+        this.source = source;
+        this.sink = sink;
+    }
 
-    double getWeight();
+    public Vertex<T> getSource()
+    {
+        return source;
+    }
+
+    public Vertex<T> getSink()
+    {
+        return sink;
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(source);
+        builder.append(" --> ");
+        builder.append(sink);
+
+        return builder.toString();
+    }
 }

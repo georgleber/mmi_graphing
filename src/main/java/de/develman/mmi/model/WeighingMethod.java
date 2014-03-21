@@ -1,7 +1,7 @@
 package de.develman.mmi.model;
 
 /**
- * @author Georg Henkel
+ * @author Georg Henkel <georg@develman.de>
  */
 public interface WeighingMethod
 {

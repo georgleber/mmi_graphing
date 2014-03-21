@@ -11,20 +11,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Georg Henkel
+ * @author Georg Henkel <georg@develman.de>
  */
 public class FileParser
 {
     private static final Logger LOG = LoggerFactory.getLogger(FileParser.class);
 
-    private String fileName;
+    private final String fileName;
 
     public FileParser(String fileName)
     {
         this.fileName = fileName;
     }
 
-    public Graph loadGraph()
+    public Graph loadGraph(boolean directed)
     {
         GraphLoader loader;
         if (isAdjacent())
@@ -39,7 +39,7 @@ public class FileParser
         }
 
         // FIXME: check if directed
-        return loader.loadGraph(false);
+        return loader.loadGraph(directed);
     }
 
     private boolean isAdjacent()

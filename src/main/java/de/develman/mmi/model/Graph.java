@@ -1,33 +1,116 @@
 package de.develman.mmi.model;
 
-import java.util.List;
+import java.util.*;
 
 /**
- * @author Georg Henkel
+ * @author Georg Henkel <georg@develman.de>
  */
-public interface Graph
+public class Graph<T, V extends Vertex<T>>
 {
-    int countVertices();
+    private final boolean directed;
+    private Map<T, V> vertices = new HashMap<>();
+    private Set<Edge<T>> edges = new HashSet<>();
 
-    int countEdges();
+    public Graph(boolean directed)
+    {
+        this.directed = directed;
+    }
 
-    void addEdge(Vertex v, Vertex w);
+    public boolean isDirected()
+    {
+        return directed;
+    }
 
-    void addEdge(Vertex v, Vertex w, double weight);
+    public int countVertices()
+    {
+        return vertices.keySet().size();
+    }
 
-    void removeEdge(Edge e);
+    public int countEdges()
+    {
+        return edges.size();
+    }
 
-    void addVertex(Vertex v);
+    public Collection<V> getVertices()
+    {
+        return Collections.unmodifiableCollection(vertices.values());
+    }
 
-    void removeVertex(Vertex v);
+    public boolean containsVertex(V v)
+    {
+        return containsVertex(v.getKey());
+    }
 
-    List<Vertex> getSuccessors(Vertex v);
+    public boolean containsVertex(T key)
+    {
+        return vertices.containsKey(key);
+    }
 
-    List<Vertex> getPredecessors(Vertex v);
+    public void addVertex(V v)
+    {
+        T key = v.getKey();
+        if (vertices.containsKey(key))
+        {
+            // Todo: handle duplicates
+        }
 
-    List<Vertex> getNeighbors(Vertex v);
+        vertices.put(key, v);
+    }
 
-    void printVertexList();
+    public void removeVertex(T key)
+    {
+        V vertex = vertices.get(key);
+        if (vertex != null)
+        {
+            // TODO: remove edges
+            vertices.remove(key);
+        }
+    }
 
-    void printEdgeList();
+    public Collection<Edge<T>> getEdges()
+    {
+        return Collections.unmodifiableCollection(edges);
+    }
+
+    public String printVertexList()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Knoten: {");
+
+        vertices.values().stream().forEach((V x) ->
+        {
+            builder.append(x);
+            builder.append(",");
+        });
+
+        builder.deleteCharAt(builder.length() - 1);
+        builder.append("}");
+
+        return builder.toString();
+    }
+
+    public void printEdgeList()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Kanten: {\n");
+
+        boolean minor = false;
+        /*
+         for (Edge edge : edges)
+         {
+         if (minor)
+         {
+         builder.append(",\n");
+         }
+
+         builder.append(edge.getVertexA());
+         builder.append(" -> ");
+         builder.append(edge.getVertexB());
+         minor = true;
+         }
+         */
+
+        builder.append("}");
+        System.out.println(builder);
+    }
 }

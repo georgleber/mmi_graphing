@@ -3,7 +3,7 @@ package de.develman.mmi.algorithm;
 import de.develman.mmi.model.Graph;
 
 /**
- * @author Georg Henkel
+ * @author Georg Henkel <georg@develman.de>
  */
 public class BreadthFirstSearch
 {

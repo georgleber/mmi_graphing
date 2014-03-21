@@ -8,15 +8,19 @@ public class Test
     public static void main(String[] args)
     {
         FileParser parser1 = new FileParser("data/Graph1.txt");
-        Graph graph1 = parser1.loadGraph();
+        Graph graph1 = parser1.loadGraph(false);
 
-        graph1.printVertexList();
+        String vertexList1 = graph1.printVertexList();
+        System.out.println(vertexList1);
+
         graph1.printEdgeList();
 
         FileParser parser2 = new FileParser("data/Graph2.txt");
-        Graph graph2 = parser2.loadGraph();
+        Graph graph2 = parser2.loadGraph(true);
 
-        graph2.printVertexList();
+        String vertexList2 = graph2.printVertexList();
+        System.out.println(vertexList2);
+
         graph2.printEdgeList();
     }
 }
