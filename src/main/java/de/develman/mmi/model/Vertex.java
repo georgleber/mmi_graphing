@@ -58,7 +58,7 @@ public class Vertex<T>
     public List<Vertex<T>> getSuccessors()
     {
         List<Vertex<T>> successors = new ArrayList<>();
-        outgoingEdges.stream().forEach((edge) -> successors.add(edge.getSink()));
+        outgoingEdges.forEach(edge -> successors.add(edge.getSink()));
 
         return successors;
     }
@@ -66,7 +66,7 @@ public class Vertex<T>
     public List<Vertex<T>> getPredecessors()
     {
         List<Vertex<T>> predecessors = new ArrayList<>();
-        incomingEdges.stream().forEach((edge) -> predecessors.add(edge.getSource()));
+        incomingEdges.forEach(edge -> predecessors.add(edge.getSource()));
 
         return predecessors;
     }

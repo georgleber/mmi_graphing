@@ -1,5 +1,6 @@
 package de.develman.mmi.parser.impl;
 
+import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import java.io.BufferedReader;
@@ -26,7 +27,10 @@ public class AdjacentMatrixLoader extends AbstractLoader
         while ((strLine = lineReader.readLine()) != null)
         {
             Vertex<Integer> source = new Vertex<>(cnt);
-            graph.addVertex(source);
+            if (!graph.containsVertex(source))
+            {
+                graph.addVertex(source);
+            }
 
             loadEdges(graph, source, strLine);
 
@@ -42,10 +46,14 @@ public class AdjacentMatrixLoader extends AbstractLoader
             int value = Integer.parseInt(vEntries[i]);
             if (value > 0)
             {
-                Vertex<Integer> w = new Vertex(i);
-                graph.addVertex(w);
+                Vertex<Integer> sink = new Vertex(i);
+                if (!graph.containsVertex(sink))
+                {
+                    graph.addVertex(sink);
+                }
 
-                // graph.addEdge(v, w, value);
+                Edge<Integer> edge = new Edge<>(source, sink);
+                graph.addEdge(edge);
             }
         }
     }

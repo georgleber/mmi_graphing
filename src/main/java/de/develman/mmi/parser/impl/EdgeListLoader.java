@@ -1,5 +1,6 @@
 package de.develman.mmi.parser.impl;
 
+import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import java.io.BufferedReader;
@@ -32,15 +33,21 @@ public class EdgeListLoader extends AbstractLoader
     {
         String[] vEntries = strLine.split("\\s");
 
-        int keyV = Integer.parseInt(vEntries[0]);
-        Vertex<Integer> v = new Vertex(keyV);
-        graph.addVertex(v);
+        int keySource = Integer.parseInt(vEntries[0]);
+        Vertex<Integer> source = new Vertex(keySource);
+        if (!graph.containsVertex(source))
+        {
+            graph.addVertex(source);
+        }
 
-        int keyW = Integer.parseInt(vEntries[1]);
-        Vertex<Integer> w = new Vertex(keyW);
-        graph.addVertex(w);
+        int keySink = Integer.parseInt(vEntries[1]);
+        Vertex<Integer> sink = new Vertex(keySink);
+        if (!graph.containsVertex(sink))
+        {
+            graph.addVertex(sink);
+        }
 
-        // graph.addEdge(v, w, 1);
+        Edge<Integer> edge = new Edge<>(source, sink);
+        graph.addEdge(edge);
     }
-
 }

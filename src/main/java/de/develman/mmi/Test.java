@@ -12,15 +12,15 @@ public class Test
 
         String vertexList1 = graph1.printVertexList();
         System.out.println(vertexList1);
-
-        graph1.printEdgeList();
+        String edgeList1 = graph1.printEdgeList();
+        System.out.println(edgeList1);
 
         FileParser parser2 = new FileParser("data/Graph2.txt");
         Graph graph2 = parser2.loadGraph(true);
 
         String vertexList2 = graph2.printVertexList();
         System.out.println(vertexList2);
-
-        graph2.printEdgeList();
+        String edgeList2 = graph2.printEdgeList();
+        System.out.println(edgeList2);
     }
 }
