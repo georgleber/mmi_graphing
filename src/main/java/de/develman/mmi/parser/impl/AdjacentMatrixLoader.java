@@ -26,9 +26,10 @@ public class AdjacentMatrixLoader extends AbstractLoader
         String strLine;
         while ((strLine = lineReader.readLine()) != null)
         {
-            Vertex<Integer> source = new Vertex<>(cnt);
-            if (!graph.containsVertex(source))
+            Vertex<Integer> source = graph.getVertex(cnt);
+            if (source == null)
             {
+                source = new Vertex<>(cnt);
                 graph.addVertex(source);
             }
 
@@ -40,15 +41,16 @@ public class AdjacentMatrixLoader extends AbstractLoader
 
     private void loadEdges(Graph graph, Vertex source, String strLine)
     {
-        String[] vEntries = strLine.split("\\s");
+        String[] vEntries = strLine.split("\\s+");
         for (int i = 0; i < vEntries.length; i++)
         {
             int value = Integer.parseInt(vEntries[i]);
             if (value > 0)
             {
-                Vertex<Integer> sink = new Vertex(i);
-                if (!graph.containsVertex(sink))
+                Vertex<Integer> sink = graph.getVertex(i);
+                if (sink == null)
                 {
+                    sink = new Vertex<>(i);
                     graph.addVertex(sink);
                 }
 

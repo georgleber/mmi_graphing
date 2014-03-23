@@ -16,8 +16,8 @@ public class Vertex<T>
     {
         this.key = key;
 
-        this.incomingEdges = new ArrayList<>(0);
-        this.outgoingEdges = new ArrayList<>(0);
+        this.incomingEdges = new ArrayList<>();
+        this.outgoingEdges = new ArrayList<>();
     }
 
     public T getKey()

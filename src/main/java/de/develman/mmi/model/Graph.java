@@ -71,6 +71,11 @@ public class Graph<T, V extends Vertex<T>>
         }
     }
 
+    public V getVertex(T key)
+    {
+        return vertices.get(key);
+    }
+
     public Collection<Edge<T>> getEdges()
     {
         return Collections.unmodifiableCollection(edges);

@@ -31,19 +31,21 @@ public class EdgeListLoader extends AbstractLoader
 
     private void loadEdges(Graph graph, String strLine)
     {
-        String[] vEntries = strLine.split("\\s");
+        String[] vEntries = strLine.split("\\s+");
 
         int keySource = Integer.parseInt(vEntries[0]);
-        Vertex<Integer> source = new Vertex(keySource);
-        if (!graph.containsVertex(source))
+        Vertex<Integer> source = graph.getVertex(keySource);
+        if (source == null)
         {
+            source = new Vertex<>(keySource);
             graph.addVertex(source);
         }
 
         int keySink = Integer.parseInt(vEntries[1]);
-        Vertex<Integer> sink = new Vertex(keySink);
-        if (!graph.containsVertex(sink))
+        Vertex<Integer> sink = graph.getVertex(keySink);
+        if (sink == null)
         {
+            sink = new Vertex<>(keySink);
             graph.addVertex(sink);
         }
 

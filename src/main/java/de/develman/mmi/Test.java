@@ -1,26 +1,61 @@
 package de.develman.mmi;
 
+import de.develman.mmi.algorithm.BreadthFirstSearch;
+import de.develman.mmi.export.GraphMLExporter;
 import de.develman.mmi.model.Graph;
+import de.develman.mmi.model.Vertex;
 import de.develman.mmi.parser.FileParser;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Test
 {
     public static void main(String[] args)
     {
-        FileParser parser1 = new FileParser("data/Graph1.txt");
-        Graph graph1 = parser1.loadGraph(false);
+        FileParser parser = new FileParser("data/Graph2.txt");
+        Graph graph = parser.loadGraph(false);
 
-        String vertexList1 = graph1.printVertexList();
-        System.out.println(vertexList1);
-        String edgeList1 = graph1.printEdgeList();
-        System.out.println(edgeList1);
+        String vertexList = graph.printVertexList();
+        System.out.println(vertexList);
+        String edgeList = graph.printEdgeList();
+        System.out.println(edgeList);
 
-        FileParser parser2 = new FileParser("data/Graph2.txt");
-        Graph graph2 = parser2.loadGraph(true);
+        List<Vertex> vertices = new ArrayList<>(graph.getVertices());
+        BreadthFirstSearch bfs = new BreadthFirstSearch(graph);
 
-        String vertexList2 = graph2.printVertexList();
-        System.out.println(vertexList2);
-        String edgeList2 = graph2.printEdgeList();
-        System.out.println(edgeList2);
+        List<Vertex> startVertices = bfs.doSearch(vertices.get(0));
+        System.out.println("Anzahl der Zusammenhangskomponenten: " + startVertices.size());
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("Knoten: {");
+
+        for (Vertex vertex : startVertices)
+        {
+            builder.append(vertex);
+            builder.append(",");
+        }
+
+        builder.append("}");
+        System.out.println(builder.toString());
+
+        GraphMLExporter exporter = new GraphMLExporter(graph);
+        String xml = exporter.toGraphML();
+
+        try
+        {
+            File file = new File("data/graph_out.graphml");
+            Files.write(Paths.get(file.toURI()), xml.getBytes("utf-8"), StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
+
     }
 }
