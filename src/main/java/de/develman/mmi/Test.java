@@ -26,7 +26,7 @@ public class Test
         System.out.println(edgeList);
 
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
-        BreadthFirstSearch bfs = new BreadthFirstSearch(graph);
+        BreadthFirstSearch bfs = new BreadthFirstSearch();
 
         List<Vertex> startVertices = bfs.doSearch(vertices.get(0));
         System.out.println("Anzahl der Zusammenhangskomponenten: " + startVertices.size());

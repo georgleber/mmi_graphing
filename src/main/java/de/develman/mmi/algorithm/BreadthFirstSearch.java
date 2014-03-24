@@ -1,31 +1,58 @@
 package de.develman.mmi.algorithm;
 
-import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import java.util.*;
 
 /**
+ * Die Klasse BreadthFirstSearch implementiert die Breitensuche in einem Graphen.
+ *
+ * @param <T> Der Typ des Schlüssels eines Knoten
+ * @param <V> Der Typ des Knoten
+ *
  * @author Georg Henkel <georg@develman.de>
  */
 public class BreadthFirstSearch<T, V extends Vertex<T>>
 {
-    private final Graph<T, V> graph;
-    private final List<Vertex<T>> visitList;
-
-    public BreadthFirstSearch(Graph<T, V> graph)
+    /**
+     * Breitensuche vom Startknoten, die alle besuchten Knoten liefert
+     *
+     * @param startVertex Startknoten
+     * @return Liste der Knoten, die von dem Startknoten erreicht werden
+     */
+    public List<Vertex<T>> doSearch(V startVertex)
     {
-        this.graph = graph;
-        this.visitList = new ArrayList<>();
+        List<Vertex<T>> vertexList = (List<Vertex<T>>) internalDoSearch(startVertex, null, false);
+        return vertexList;
     }
 
-    public List<V> doSearch(V startVertex)
+    /**
+     * Breitensuche von Startknoten zu Endknoten
+     *
+     * @param startVertex Startknoten
+     * @param endVertex Endknoten
+     * @return {@code true}, wenn der Endknoten gefunden wurde, anonsten {@code false}
+     */
+    public boolean doSearch(V startVertex, V endVertex)
     {
+        boolean found = (boolean) internalDoSearch(startVertex, endVertex, true);
+        return found;
+    }
+
+    private Object internalDoSearch(V startVertex, V endVertex, boolean listResult)
+    {
+        List<Vertex<T>> visitList = new ArrayList<>();
+
         Queue<Vertex<T>> queue = new LinkedList<>();
         queue.add(startVertex);
 
         while (!queue.isEmpty())
         {
-            Vertex<T> nextVertex = queue.remove();
+            Vertex<T> nextVertex = queue.poll();
+            if (!listResult && nextVertex.equals(endVertex))
+            {
+                return true;
+            }
+
             if (visitList.contains(nextVertex))
             {
                 continue;
@@ -35,28 +62,13 @@ public class BreadthFirstSearch<T, V extends Vertex<T>>
             nextVertex.getSuccessors().forEach(vertex -> queue.add(vertex));
         }
 
-        List<V> startVertices = new ArrayList<>();
-        startVertices.add(startVertex);
-
-        V notVisited = findNotVisited();
-        if (notVisited != null)
+        if (listResult)
         {
-            startVertices.addAll(doSearch(notVisited));
+            return visitList;
         }
-
-        return startVertices;
-    }
-
-    private V findNotVisited()
-    {
-        for (V v : graph.getVertices())
+        else
         {
-            if (!visitList.contains(v))
-            {
-                return v;
-            }
+            return false;
         }
-
-        return null;
     }
 }
