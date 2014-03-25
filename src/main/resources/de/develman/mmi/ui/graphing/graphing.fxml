@@ -48,7 +48,7 @@
     </ScrollPane>
     <Label layoutX="15.0" layoutY="281.0" text="%titel.ausgabe" />
     <Label fx:id="statusLabel" layoutX="132.0" layoutY="17.0" text="%graph.lade.status" />
-    <Button layoutX="15.0" layoutY="46.0" mnemonicParsing="false" text="%graph.export.btn" />
+    <Button layoutX="15.0" layoutY="46.0" onAction="#exportGraphAction"  mnemonicParsing="false" text="%graph.export.btn" />
   </children>
   <stylesheets>
     <URL value="@graphing.css" />

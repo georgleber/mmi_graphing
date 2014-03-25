@@ -2,13 +2,18 @@ package de.develman.mmi.ui.graphing;
 
 import de.develman.mmi.App;
 import de.develman.mmi.algorithm.BreadthFirstSearch;
+import de.develman.mmi.export.GraphMLExporter;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import de.develman.mmi.parser.FileParser;
 import de.develman.mmi.service.LoggingService;
 import de.develman.mmi.service.model.LoggingBean;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -58,6 +63,24 @@ public class GraphingPresenter implements Initializable
 
             statusLabel.setText("Graph wurde erfolgreich geladen");
             loggingService.clearLogging();
+        }
+    }
+
+    @FXML
+    public void exportGraphAction(ActionEvent event)
+    {
+        GraphMLExporter exporter = new GraphMLExporter(graph);
+        String xml = exporter.toGraphML();
+
+        try
+        {
+            File file = new File("data/graph_out.graphml");
+            Files.write(Paths.get(file.toURI()), xml.getBytes("utf-8"), StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
         }
     }
 
