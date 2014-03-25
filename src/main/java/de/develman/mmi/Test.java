@@ -26,19 +26,17 @@ public class Test
         System.out.println(edgeList);
 
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
-        BreadthFirstSearch bfs = new BreadthFirstSearch();
-
-        List<Vertex> startVertices = bfs.doSearch(vertices.get(0));
+        List<Vertex> startVertices = BreadthFirstSearch.doSearch(vertices.get(0));
         System.out.println("Anzahl der Zusammenhangskomponenten: " + startVertices.size());
 
         StringBuilder builder = new StringBuilder();
         builder.append("Knoten: {");
 
-        for (Vertex vertex : startVertices)
+        startVertices.forEach(vertex ->
         {
             builder.append(vertex);
             builder.append(",");
-        }
+        });
 
         builder.append("}");
         System.out.println(builder.toString());
@@ -50,7 +48,7 @@ public class Test
         {
             File file = new File("data/graph_out.graphml");
             Files.write(Paths.get(file.toURI()), xml.getBytes("utf-8"), StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING);
+                StandardOpenOption.TRUNCATE_EXISTING);
         }
         catch (IOException ex)
         {

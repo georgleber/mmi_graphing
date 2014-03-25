@@ -8,11 +8,11 @@ import org.apache.commons.lang.StringUtils;
 /**
  * @author Georg Henkel <georg@develman.de>
  */
-public class GraphMLExporter<T, V extends Vertex<T>>
+public class GraphMLExporter
 {
-    private Graph<T, V> graph;
+    private final Graph graph;
 
-    public GraphMLExporter(Graph<T, V> graph)
+    public GraphMLExporter(Graph graph)
     {
         this.graph = graph;
     }
@@ -22,7 +22,7 @@ public class GraphMLExporter<T, V extends Vertex<T>>
         StringBuilder builder = new StringBuilder();
         builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
         builder.append(
-                "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:y=\"http://www.yworks.com/xml/graphml\" xmlns:yed=\"http://www.yworks.com/xml/yed/3\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd\">\n");
+            "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:y=\"http://www.yworks.com/xml/graphml\" xmlns:yed=\"http://www.yworks.com/xml/yed/3\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd\">\n");
         builder.append("\t<key for=\"node\" id=\"d6\" yfiles.type=\"nodegraphics\"/>\n");
         builder.append("\t<key for=\"edge\" id=\"d9\" yfiles.type=\"edgegraphics\"/>\n");
 
@@ -39,22 +39,20 @@ public class GraphMLExporter<T, V extends Vertex<T>>
 
         double y = 0;
         double x = 0;
-        for (V v : graph.getVertices())
+        for (Vertex v : graph.getVertices())
         {
             String nodeId = getVertexId(v);
             builder.append("\t\t<node id=\"");
             builder.append(nodeId);
             builder.append("\">\n");
 
-            String nodeLabel = getVertexLabel(v);
-            String label = nodeLabel.replaceAll("\\<", "&lt;").replaceAll("\\>", "&gt;");
             double width = 30.0;
             double height = 30.0;
             int fontSize = 12;
 
             String fontFamily = "Dialog"; // Segoe UI
             builder.append(
-                    "\t\t\t<data key=\"d6\">\n\t\t\t\t<y:ShapeNode>\n\t\t\t\t\t<y:Fill color=\"#FFCCEE\" transparent=\"false\"/>\n");
+                "\t\t\t<data key=\"d6\">\n\t\t\t\t<y:ShapeNode>\n\t\t\t\t\t<y:Fill color=\"#FFCCEE\" transparent=\"false\"/>\n");
             builder.append("\t\t\t\t\t<y:Geometry height=\"");
             builder.append(height);
             builder.append("\" width=\"");
@@ -73,7 +71,7 @@ public class GraphMLExporter<T, V extends Vertex<T>>
             builder.append(fontSize);
             builder.append("\"");
             builder.append(" fontStyle=\"plain\">");
-            builder.append(label);
+            builder.append(v);
             builder.append("</y:NodeLabel>\n");
             builder.append("\t\t\t\t\t<y:Shape type=\"ellipse\"/>\n\t\t\t\t</y:ShapeNode>\n");
             builder.append("\t\t\t</data>\n");
@@ -82,7 +80,7 @@ public class GraphMLExporter<T, V extends Vertex<T>>
             x += 40.0;
         }
 
-        for (Edge<?> e : graph.getEdges())
+        graph.getEdges().forEach(e ->
         {
             String edgeId = getEdgeId(e);
             String sourceNodeId = getVertexId(e.getSource());
@@ -96,7 +94,7 @@ public class GraphMLExporter<T, V extends Vertex<T>>
             builder.append(targetNodeId);
             builder.append("\">\n");
             builder.append("\t\t</edge>\n");
-        }
+        });
 
         builder.append("\t</graph>\n");
         builder.append("</graphml>");
@@ -117,20 +115,15 @@ public class GraphMLExporter<T, V extends Vertex<T>>
         return max;
     }
 
-    protected String getEdgeId(Edge<?> e)
+    private String getEdgeId(Edge e)
     {
         String edgeId = e.getSource().getKey() + "->" + e.getSink().getKey();
         return "e" + edgeId.hashCode();
     }
 
-    protected String getVertexId(Vertex<?> v)
+    private String getVertexId(Vertex v)
     {
         String nodeId = "" + v.getKey();
         return "n" + nodeId.hashCode();
-    }
-
-    protected String getVertexLabel(Vertex<?> v)
-    {
-        return "" + v.getKey();
     }
 }

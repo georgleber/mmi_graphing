@@ -3,14 +3,13 @@ package de.develman.mmi.model;
 /**
  * @author Georg Henkel <georg@develman.de>
  */
-public class WeightedEdge<T> extends Edge<T>
+public class WeightedEdge extends Edge
 {
     private final Number weight;
 
-    public WeightedEdge(Vertex<T> source, Vertex<T> sink, Number weight)
+    public WeightedEdge(Vertex source, Vertex sink, Number weight)
     {
         super(source, sink);
-
         this.weight = weight;
     }
 

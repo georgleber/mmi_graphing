@@ -7,11 +7,11 @@ import java.util.*;
 /**
  * @author Georg Henkel <georg@develman.de>
  */
-public class Graph<T, V extends Vertex<T>>
+public class Graph
 {
     private final boolean directed;
-    private Map<T, V> vertices = new HashMap<>();
-    private Set<Edge<T>> edges = new HashSet<>();
+    private final Map<String, Vertex> vertices = new HashMap<>();
+    private final Set<Edge> edges = new HashSet<>();
 
     public Graph(boolean directed)
     {
@@ -33,24 +33,24 @@ public class Graph<T, V extends Vertex<T>>
         return edges.size();
     }
 
-    public Collection<V> getVertices()
+    public Collection<Vertex> getVertices()
     {
         return Collections.unmodifiableCollection(vertices.values());
     }
 
-    public boolean containsVertex(V v)
+    public boolean containsVertex(Vertex v)
     {
         return containsVertex(v.getKey());
     }
 
-    public boolean containsVertex(T key)
+    public boolean containsVertex(String key)
     {
         return vertices.containsKey(key);
     }
 
-    public void addVertex(V v) throws DuplicateVertexException
+    public void addVertex(Vertex v) throws DuplicateVertexException
     {
-        T key = v.getKey();
+        String key = v.getKey();
         if (vertices.containsKey(key))
         {
             throw new DuplicateVertexException(key);
@@ -59,9 +59,9 @@ public class Graph<T, V extends Vertex<T>>
         vertices.put(key, v);
     }
 
-    public void removeVertex(T key)
+    public void removeVertex(String key)
     {
-        V vertex = vertices.get(key);
+        Vertex vertex = vertices.get(key);
         if (vertex != null)
         {
             vertex.getIncomingEdges().forEach(edge -> removeEdge(edge));
@@ -71,25 +71,25 @@ public class Graph<T, V extends Vertex<T>>
         }
     }
 
-    public V getVertex(T key)
+    public Vertex getVertex(String key)
     {
         return vertices.get(key);
     }
 
-    public Collection<Edge<T>> getEdges()
+    public Collection<Edge> getEdges()
     {
         return Collections.unmodifiableCollection(edges);
     }
 
-    public void addEdge(Edge<T> edge)
+    public void addEdge(Edge edge)
     {
-        Vertex<T> source = edge.getSource();
+        Vertex source = edge.getSource();
         if (!containsVertex(source.getKey()))
         {
             throw new MissingVertexException(source.getKey());
         }
 
-        Vertex<T> sink = edge.getSink();
+        Vertex sink = edge.getSink();
         if (!containsVertex(sink.getKey()))
         {
             throw new MissingVertexException(sink.getKey());
@@ -100,12 +100,12 @@ public class Graph<T, V extends Vertex<T>>
         edges.add(edge);
     }
 
-    public void removeEdge(Edge<T> edge)
+    public void removeEdge(Edge edge)
     {
-        Vertex<T> source = edge.getSource();
+        Vertex source = edge.getSource();
         source.removeOutgoingEdge(edge);
 
-        Vertex<T> sink = edge.getSink();
+        Vertex sink = edge.getSink();
         sink.removeIncomingEdge(edge);
 
         edges.remove(edge);

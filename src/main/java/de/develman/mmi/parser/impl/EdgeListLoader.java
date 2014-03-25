@@ -33,23 +33,23 @@ public class EdgeListLoader extends AbstractLoader
     {
         String[] vEntries = strLine.split("\\s+");
 
-        int keySource = Integer.parseInt(vEntries[0]);
-        Vertex<Integer> source = graph.getVertex(keySource);
+        String keySource = vEntries[0];
+        Vertex source = graph.getVertex(keySource);
         if (source == null)
         {
-            source = new Vertex<>(keySource);
+            source = new Vertex(keySource);
             graph.addVertex(source);
         }
 
-        int keySink = Integer.parseInt(vEntries[1]);
-        Vertex<Integer> sink = graph.getVertex(keySink);
+        String keySink = vEntries[1];
+        Vertex sink = graph.getVertex(keySink);
         if (sink == null)
         {
-            sink = new Vertex<>(keySink);
+            sink = new Vertex(keySink);
             graph.addVertex(sink);
         }
 
-        Edge<Integer> edge = new Edge<>(source, sink);
+        Edge edge = new Edge(source, sink);
         graph.addEdge(edge);
     }
 }

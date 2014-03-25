@@ -2,26 +2,27 @@ package de.develman.mmi.algorithm;
 
 import de.develman.mmi.model.Vertex;
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Die Klasse BreadthFirstSearch implementiert die Breitensuche in einem Graphen.
  *
- * @param <T> Der Typ des Schlüssels eines Knoten
- * @param <V> Der Typ des Knoten
- *
  * @author Georg Henkel <georg@develman.de>
  */
-public class BreadthFirstSearch<T, V extends Vertex<T>>
+public class BreadthFirstSearch
 {
+    private static final Logger LOG = LoggerFactory.getLogger(BreadthFirstSearch.class);
+
     /**
      * Breitensuche vom Startknoten, die alle besuchten Knoten liefert
      *
      * @param startVertex Startknoten
      * @return Liste der Knoten, die von dem Startknoten erreicht werden
      */
-    public List<Vertex<T>> doSearch(V startVertex)
+    public static List<Vertex> doSearch(Vertex startVertex)
     {
-        List<Vertex<T>> vertexList = (List<Vertex<T>>) internalDoSearch(startVertex, null, false);
+        List<Vertex> vertexList = doSearch(startVertex, null);
         return vertexList;
     }
 
@@ -32,43 +33,33 @@ public class BreadthFirstSearch<T, V extends Vertex<T>>
      * @param endVertex Endknoten
      * @return {@code true}, wenn der Endknoten gefunden wurde, anonsten {@code false}
      */
-    public boolean doSearch(V startVertex, V endVertex)
+    public static List<Vertex> doSearch(Vertex startVertex, Vertex endVertex)
     {
-        boolean found = (boolean) internalDoSearch(startVertex, endVertex, true);
-        return found;
-    }
+        LOG.debug("Running BFS with start vertex: " + startVertex + " and end vertex: " + endVertex);
 
-    private Object internalDoSearch(V startVertex, V endVertex, boolean listResult)
-    {
-        List<Vertex<T>> visitList = new ArrayList<>();
+        List<Vertex> visitList = new ArrayList<>();
 
-        Queue<Vertex<T>> queue = new LinkedList<>();
+        Queue<Vertex> queue = new LinkedList<>();
         queue.add(startVertex);
 
         while (!queue.isEmpty())
         {
-            Vertex<T> nextVertex = queue.poll();
-            if (!listResult && nextVertex.equals(endVertex))
-            {
-                return true;
-            }
-
-            if (visitList.contains(nextVertex))
+            Vertex nextVertex = queue.poll();
+            if (nextVertex == null || visitList.contains(nextVertex))
             {
                 continue;
             }
 
             visitList.add(nextVertex);
+            if (nextVertex.equals(endVertex))
+            {
+                LOG.info("end vertex found: " + nextVertex);
+                break;
+            }
+
             nextVertex.getSuccessors().forEach(vertex -> queue.add(vertex));
         }
 
-        if (listResult)
-        {
-            return visitList;
-        }
-        else
-        {
-            return false;
-        }
+        return visitList;
     }
 }

@@ -3,23 +3,23 @@ package de.develman.mmi.model;
 /**
  * @author Georg Henkel <georg@develman.de>
  */
-public class Edge<T>
+public class Edge
 {
-    protected final Vertex<T> source;
-    protected final Vertex<T> sink;
+    protected final Vertex source;
+    protected final Vertex sink;
 
-    public Edge(Vertex<T> source, Vertex<T> sink)
+    public Edge(Vertex source, Vertex sink)
     {
         this.source = source;
         this.sink = sink;
     }
 
-    public Vertex<T> getSource()
+    public Vertex getSource()
     {
         return source;
     }
 
-    public Vertex<T> getSink()
+    public Vertex getSink()
     {
         return sink;
     }
