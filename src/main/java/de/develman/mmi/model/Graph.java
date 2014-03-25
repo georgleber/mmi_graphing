@@ -5,6 +5,11 @@ import de.develman.mmi.exception.MissingVertexException;
 import java.util.*;
 
 /**
+ * Die Klasse Graph implementiert einen Graphen
+ *
+ * @param <T> Typ des Schlüssels eines Knoten
+ * @param <V> Typ des Knotens
+ *
  * @author Georg Henkel <georg@develman.de>
  */
 public class Graph<T, V extends Vertex<T>>

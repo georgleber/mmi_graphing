@@ -4,7 +4,7 @@ import de.develman.mmi.model.Vertex;
 import java.util.*;
 
 /**
- * Die Klasse BreadthFirstSearch implementiert die Breitensuche in einem Graphen.
+ * Die Klasse BreadthFirstSearch implementiert die Breitensuche in einem Graphen
  *
  * @param <T> Der Typ des Schlüssels eines Knoten
  * @param <V> Der Typ des Knoten

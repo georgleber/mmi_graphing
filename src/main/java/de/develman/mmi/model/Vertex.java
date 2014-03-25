@@ -4,20 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Die Klasse Vertex repräsentiert einen Knoten im Graphen
+ *
+ * @param <T> Typ des Schlüssels des Knoten
+ *
  * @author Georg Henkel <georg@develman.de>
  */
 public class Vertex<T>
 {
     private final T key;
-    private List<Edge<T>> incomingEdges;
-    private List<Edge<T>> outgoingEdges;
+    private final List<Edge<T>> incomingEdges = new ArrayList<>();
+    private final List<Edge<T>> outgoingEdges = new ArrayList<>();
 
     public Vertex(T key)
     {
         this.key = key;
-
-        this.incomingEdges = new ArrayList<>();
-        this.outgoingEdges = new ArrayList<>();
     }
 
     public T getKey()
