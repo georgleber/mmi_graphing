@@ -7,10 +7,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.develman.mmi.ui.graphing.GraphingPresenter">
+<AnchorPane id="AnchorPane" prefHeight="484.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.develman.mmi.ui.graphing.GraphingPresenter">
   <children>
     <Button layoutX="15.0" layoutY="14.0" mnemonicParsing="false" onAction="#loadGraphAction" text="%graph.laden.btn" />
-    <TabPane layoutX="14.0" layoutY="55.0" prefHeight="129.0" prefWidth="572.0" styleClass="borderedPane" tabClosingPolicy="UNAVAILABLE">
+    <TabPane layoutX="14.0" layoutY="74.0" prefHeight="187.0" prefWidth="572.0" styleClass="borderedPane" tabClosingPolicy="UNAVAILABLE">
       <stylesheets>
         <URL value="@graphing.css" />
       </stylesheets>
@@ -37,7 +37,7 @@
         </Tab>
       </tabs>
     </TabPane>
-    <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="220.0" prefHeight="166.0" prefWidth="572.0">
+    <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="304.0" prefHeight="166.0" prefWidth="572.0">
       <content>
         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="165.0" prefWidth="557.0">
           <children>
@@ -46,8 +46,9 @@
         </AnchorPane>
       </content>
     </ScrollPane>
-    <Label layoutX="15.0" layoutY="192.0" text="%titel.ausgabe" />
+    <Label layoutX="15.0" layoutY="281.0" text="%titel.ausgabe" />
     <Label fx:id="statusLabel" layoutX="132.0" layoutY="17.0" text="%graph.lade.status" />
+    <Button layoutX="15.0" layoutY="46.0" mnemonicParsing="false" text="%graph.export.btn" />
   </children>
   <stylesheets>
     <URL value="@graphing.css" />
