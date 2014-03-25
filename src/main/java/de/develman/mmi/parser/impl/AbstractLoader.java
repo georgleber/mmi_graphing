@@ -1,7 +1,6 @@
 package de.develman.mmi.parser.impl;
 
 import de.develman.mmi.model.Graph;
-import de.develman.mmi.model.Vertex;
 import de.develman.mmi.parser.GraphLoader;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -24,9 +23,9 @@ public abstract class AbstractLoader implements GraphLoader
     }
 
     @Override
-    public Graph<Integer, Vertex<Integer>> loadGraph(boolean directed)
+    public Graph loadGraph(boolean directed)
     {
-        Graph<Integer, Vertex<Integer>> graph = new Graph(directed);
+        Graph graph = new Graph(directed);
         try (BufferedReader lineReader = new BufferedReader(new FileReader(fileName)))
         {
             readLines(graph, lineReader);

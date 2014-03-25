@@ -6,67 +6,65 @@ import java.util.List;
 /**
  * Die Klasse Vertex repräsentiert einen Knoten im Graphen
  *
- * @param <T> Typ des Schlüssels des Knoten
- *
  * @author Georg Henkel <georg@develman.de>
  */
-public class Vertex<T>
+public class Vertex
 {
-    private final T key;
-    private final List<Edge<T>> incomingEdges = new ArrayList<>();
-    private final List<Edge<T>> outgoingEdges = new ArrayList<>();
+    private final String key;
+    private final List<Edge> incomingEdges = new ArrayList<>();
+    private final List<Edge> outgoingEdges = new ArrayList<>();
 
-    public Vertex(T key)
+    public Vertex(String key)
     {
         this.key = key;
     }
 
-    public T getKey()
+    public String getKey()
     {
         return key;
     }
 
-    public List<Edge<T>> getIncomingEdges()
+    public List<Edge> getIncomingEdges()
     {
         return new ArrayList<>(incomingEdges);
     }
 
-    public void addIncomingEdge(Edge<T> edge)
+    public void addIncomingEdge(Edge edge)
     {
         incomingEdges.add(edge);
     }
 
-    public void removeIncomingEdge(Edge<T> edge)
+    public void removeIncomingEdge(Edge edge)
     {
         incomingEdges.remove(edge);
     }
 
-    public List<Edge<T>> getOutgoingEdges()
+    public List<Edge> getOutgoingEdges()
     {
         return new ArrayList<>(outgoingEdges);
     }
 
-    public void addOutgoingEdge(Edge<T> edge)
+    public void addOutgoingEdge(Edge edge)
     {
         outgoingEdges.add(edge);
     }
 
-    public void removeOutgoingEdge(Edge<T> edge)
+    public void removeOutgoingEdge(Edge edge)
     {
         outgoingEdges.remove(edge);
     }
 
-    public List<Vertex<T>> getSuccessors()
+    public List<Vertex> getSuccessors()
     {
-        List<Vertex<T>> successors = new ArrayList<>();
+        List<Vertex> successors = new ArrayList<>();
         outgoingEdges.forEach(edge -> successors.add(edge.getSink()));
 
         return successors;
     }
 
-    public List<Vertex<T>> getPredecessors()
+    public List<Vertex> getPredecessors()
     {
-        List<Vertex<T>> predecessors = new ArrayList<>();
+        List<Vertex> predecessors = new ArrayList<>();
         incomingEdges.forEach(edge -> predecessors.add(edge.getSource()));
 
         return predecessors;
@@ -75,6 +73,6 @@ public class Vertex<T>
     @Override
     public String toString()
     {
-        return key.toString();
+        return key;
     }
 }

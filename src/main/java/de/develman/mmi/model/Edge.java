@@ -3,14 +3,12 @@ package de.develman.mmi.model;
 /**
  * Die Klasse Edge repräsentiert eine Kante in einem Graphen
  *
- * @param <T> Typ der Knoten die an einer Kante liegen
- *
  * @author Georg Henkel <georg@develman.de>
  */
-public class Edge<T>
+public class Edge
 {
-    protected final Vertex<T> source;
-    protected final Vertex<T> sink;
+    protected final Vertex source;
+    protected final Vertex sink;
 
     /**
      * Erstellt eine neue Kante mit Start- und Endknoten
@@ -18,7 +16,7 @@ public class Edge<T>
      * @param source Startknoten
      * @param sink Endknoten
      */
-    public Edge(Vertex<T> source, Vertex<T> sink)
+    public Edge(Vertex source, Vertex sink)
     {
         this.source = source;
         this.sink = sink;
@@ -27,7 +25,7 @@ public class Edge<T>
     /**
      * @return Startknoten der Kante
      */
-    public Vertex<T> getSource()
+    public Vertex getSource()
     {
         return source;
     }
@@ -35,7 +33,7 @@ public class Edge<T>
     /**
      * @return Endknoten der Kante
      */
-    public Vertex<T> getSink()
+    public Vertex getSink()
     {
         return sink;
     }
