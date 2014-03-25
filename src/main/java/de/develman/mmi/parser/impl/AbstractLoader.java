@@ -3,6 +3,7 @@ package de.develman.mmi.parser.impl;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.parser.GraphLoader;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import org.slf4j.Logger;
@@ -15,18 +16,18 @@ public abstract class AbstractLoader implements GraphLoader
 {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractLoader.class);
 
-    private final String fileName;
+    private final File file;
 
-    public AbstractLoader(String fileName)
+    public AbstractLoader(File file)
     {
-        this.fileName = fileName;
+        this.file = file;
     }
 
     @Override
     public Graph loadGraph(boolean directed)
     {
         Graph graph = new Graph(directed);
-        try (BufferedReader lineReader = new BufferedReader(new FileReader(fileName)))
+        try (BufferedReader lineReader = new BufferedReader(new FileReader(file)))
         {
             readLines(graph, lineReader);
         }

@@ -4,6 +4,7 @@ import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -11,9 +12,9 @@ import java.io.IOException;
  */
 public class EdgeListLoader extends AbstractLoader
 {
-    public EdgeListLoader(String fileName)
+    public EdgeListLoader(File file)
     {
-        super(fileName);
+        super(file);
     }
 
     @Override

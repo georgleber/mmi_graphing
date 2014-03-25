@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.develman.mmi.ui.graphing.GraphingPresenter">
+  <children>
+    <Button layoutX="15.0" layoutY="14.0" mnemonicParsing="false" onAction="#loadGraphAction" text="%graph.laden.btn" />
+    <TabPane layoutX="14.0" layoutY="55.0" prefHeight="129.0" prefWidth="572.0" styleClass="borderedPane" tabClosingPolicy="UNAVAILABLE">
+      <stylesheets>
+        <URL value="@graphing.css" />
+      </stylesheets>
+      <tabs>
+        <Tab closable="false" text="%tab.bfs">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="64.0" prefWidth="572.0">
+              <children>
+                <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#bfsTraverseAction" text="%bfs.traversierung.btn" />
+                <Button layoutX="14.0" layoutY="48.0" mnemonicParsing="false" text="%bfs.weg.btn" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab closable="false" text="%tab.dfs">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="%dfs.traversierung.btn" />
+                <Button layoutX="14.0" layoutY="47.0" mnemonicParsing="false" text="%dfs.zhgkomp.btn" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+    <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="220.0" prefHeight="166.0" prefWidth="572.0">
+      <content>
+        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="165.0" prefWidth="557.0">
+          <children>
+            <ListView fx:id="loggingView" layoutX="0.0" layoutY="0.0" prefHeight="165.0" prefWidth="557.0" />
+          </children>
+        </AnchorPane>
+      </content>
+    </ScrollPane>
+    <Label layoutX="15.0" layoutY="192.0" text="%titel.ausgabe" />
+    <Label fx:id="statusLabel" layoutX="132.0" layoutY="17.0" text="%graph.lade.status" />
+  </children>
+  <stylesheets>
+    <URL value="@graphing.css" />
+  </stylesheets>
+</AnchorPane>

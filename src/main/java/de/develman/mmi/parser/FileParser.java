@@ -4,6 +4,7 @@ import de.develman.mmi.model.Graph;
 import de.develman.mmi.parser.impl.AdjacentMatrixLoader;
 import de.develman.mmi.parser.impl.EdgeListLoader;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.StringTokenizer;
@@ -17,11 +18,11 @@ public class FileParser
 {
     private static final Logger LOG = LoggerFactory.getLogger(FileParser.class);
 
-    private final String fileName;
+    private final File file;
 
-    public FileParser(String fileName)
+    public FileParser(File file)
     {
-        this.fileName = fileName;
+        this.file = file;
     }
 
     public Graph loadGraph(boolean directed)
@@ -30,12 +31,12 @@ public class FileParser
         if (isAdjacent())
         {
             LOG.debug("Using AdjacentMatrixLoader for loading graph");
-            loader = new AdjacentMatrixLoader(fileName);
+            loader = new AdjacentMatrixLoader(file);
         }
         else
         {
             LOG.debug("Using EdgeListLoader for loading graph");
-            loader = new EdgeListLoader(fileName);
+            loader = new EdgeListLoader(file);
         }
 
         // FIXME: check if directed
@@ -45,7 +46,7 @@ public class FileParser
     private boolean isAdjacent()
     {
         boolean adjacent = false;
-        try (BufferedReader lineReader = new BufferedReader(new FileReader(fileName)))
+        try (BufferedReader lineReader = new BufferedReader(new FileReader(file)))
         {
             String firstLine = lineReader.readLine();
             int countVertices = Integer.parseInt(firstLine);

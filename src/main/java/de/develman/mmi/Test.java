@@ -17,7 +17,7 @@ public class Test
 {
     public static void main(String[] args)
     {
-        FileParser parser = new FileParser("data/Graph2.txt");
+        FileParser parser = new FileParser(new File("data/Graph2.txt"));
         Graph graph = parser.loadGraph(false);
 
         String vertexList = graph.printVertexList();
@@ -25,8 +25,9 @@ public class Test
         String edgeList = graph.printEdgeList();
         System.out.println(edgeList);
 
+        BreadthFirstSearch bfs = new BreadthFirstSearch();
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
-        List<Vertex> startVertices = BreadthFirstSearch.doSearch(vertices.get(0));
+        List<Vertex> startVertices = bfs.doSearch(vertices.get(0));
         System.out.println("Anzahl der Zusammenhangskomponenten: " + startVertices.size());
 
         StringBuilder builder = new StringBuilder();
@@ -48,7 +49,7 @@ public class Test
         {
             File file = new File("data/graph_out.graphml");
             Files.write(Paths.get(file.toURI()), xml.getBytes("utf-8"), StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING);
+                    StandardOpenOption.TRUNCATE_EXISTING);
         }
         catch (IOException ex)
         {
