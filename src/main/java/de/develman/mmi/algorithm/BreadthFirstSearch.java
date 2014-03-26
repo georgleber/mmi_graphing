@@ -1,10 +1,7 @@
 package de.develman.mmi.algorithm;
 
-import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
-import de.develman.mmi.service.LoggingService;
 import java.util.*;
-import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,16 +14,13 @@ public class BreadthFirstSearch
 {
     private static final Logger LOG = LoggerFactory.getLogger(BreadthFirstSearch.class);
 
-    @Inject
-    LoggingService loggingService;
-
     /**
      * Breitensuche vom Startknoten, die alle besuchten Knoten liefert
      *
      * @param startVertex Startknoten
      * @return Liste der Knoten, die von dem Startknoten erreicht werden
      */
-    public List<Vertex> doSearch(Vertex startVertex)
+    public static List<Vertex> doSearch(Vertex startVertex)
     {
         List<Vertex> vertexList = doSearch(startVertex, null);
         return vertexList;
@@ -37,12 +31,10 @@ public class BreadthFirstSearch
      *
      * @param startVertex Startknoten
      * @param endVertex Endknoten
-     * @return {@code true}, wenn der Endknoten gefunden wurde, anonsten {@code false}
+     * @return Liste der besuchten Knoten, von Startknoten bis Endknoten
      */
-    public List<Vertex> doSearch(Vertex startVertex, Vertex endVertex)
+    public static List<Vertex> doSearch(Vertex startVertex, Vertex endVertex)
     {
-        long startTime = System.currentTimeMillis();
-
         startVertex.setVisited(true);
         Queue<Vertex> queue = new LinkedList<>();
         queue.add(startVertex);
@@ -52,6 +44,7 @@ public class BreadthFirstSearch
         {
             Vertex nextVertex = queue.poll();
             visitList.add(nextVertex);
+            
             if (nextVertex.equals(endVertex))
             {
                 LOG.info("end vertex found: " + nextVertex);
@@ -68,9 +61,6 @@ public class BreadthFirstSearch
             });
         }
 
-        long endTime = System.currentTimeMillis();
-        loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
-        
         return visitList;
     }
 }

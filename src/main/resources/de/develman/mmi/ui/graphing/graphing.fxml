@@ -7,7 +7,12 @@
 
 <AnchorPane id="AnchorPane" prefHeight="484.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.develman.mmi.ui.graphing.GraphingPresenter">
     <children>
-        <Button layoutX="15.0" layoutY="14.0" mnemonicParsing="false" onAction="#loadGraphAction" text="%graph.laden.btn" />
+        <HBox alignment="CENTER" layoutX="15.0" layoutY="14.0" spacing="10.0">
+            <children>
+                <Button layoutX="15.0" layoutY="14.0" mnemonicParsing="false" onAction="#loadGraphAction" text="%graph.laden.btn" />
+                <CheckBox fx:id="directedCbx" alignment="CENTER" layoutX="141.7890625" layoutY="18.0" mnemonicParsing="false" text="%graph.directed" />
+            </children>
+        </HBox>
         <TabPane layoutX="14.0" layoutY="74.0" prefHeight="187.0" prefWidth="572.0" styleClass="borderedPane" tabClosingPolicy="UNAVAILABLE">
             <stylesheets>
                 <URL value="@graphing.css" />
@@ -38,7 +43,7 @@
                                         <ComboBox fx:id="dfsVertexCBX" prefWidth="150.0" promptText="%startknoten" />
                                     </children>
                                 </HBox>
-                                <Button layoutX="14.0" layoutY="47.0" mnemonicParsing="false" onAction="#findCompsites" text="%dfs.zhgkomp.btn" />
+                                <Button layoutX="14.0" layoutY="47.0" mnemonicParsing="false" onAction="#findComponents" text="%dfs.zhgkomp.btn" />
                             </children>
                         </AnchorPane>
                     </content>

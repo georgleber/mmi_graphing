@@ -39,7 +39,6 @@ public class FileParser
             loader = new EdgeListLoader(file);
         }
 
-        // FIXME: check if directed
         return loader.loadGraph(directed);
     }
 

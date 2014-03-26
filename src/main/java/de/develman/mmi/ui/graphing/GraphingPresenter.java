@@ -16,16 +16,17 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
 import javax.inject.Inject;
@@ -43,22 +44,24 @@ public class GraphingPresenter implements Initializable
     ComboBox<Integer> bfsEndVertexCBX;
     @FXML
     ComboBox<Integer> dfsVertexCBX;
+    @FXML
+    CheckBox directedCbx;
 
     @Inject
     LoggingService loggingService;
-    @Inject
-    BreadthFirstSearch bfs;
-    @Inject
-    DepthFirstSearch dfs;
 
     private ObservableList<Integer> vertexList;
     private Graph graph;
+    private BooleanProperty directed;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         LoggingBean loggingBean = loggingService.getLoggingBean();
         loggingView.setItems(loggingBean.getEntries());
+
+        directed = new SimpleBooleanProperty(false);
+        directedCbx.selectedProperty().bindBidirectional(directed);
 
         vertexList = FXCollections.observableArrayList();
         bfsStartVertexCBX.setItems(vertexList);
@@ -71,12 +74,16 @@ public class GraphingPresenter implements Initializable
     {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Graph laden");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Graph", "*.txt"));
 
         File file = fileChooser.showOpenDialog(App.primaryStage);
         if (file != null)
         {
+            vertexList.clear();
+
             FileParser parser = new FileParser(file);
-            graph = parser.loadGraph(true);
+            graph = parser.loadGraph(directed.get());
             graph.getVertices().forEach(vertex -> vertexList.add(vertex.getKey()));
 
             loggingService.clearLogging();
@@ -107,6 +114,8 @@ public class GraphingPresenter implements Initializable
     @FXML
     public void bfsTraverseAction(ActionEvent event)
     {
+        long startTime = System.currentTimeMillis();
+
         graph.unvisitAllVertices();
 
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
@@ -115,7 +124,9 @@ public class GraphingPresenter implements Initializable
         Vertex startVertex = loadVertex(bfsStartVertexCBX, defaultVertex);
         Vertex endVertex = loadVertex(bfsEndVertexCBX, null);
 
-        List<Vertex> foundVertices = bfs.doSearch(startVertex, endVertex);
+        loggingService.log("Running BFS with Startknoten " + startVertex + " und Endknoten " + endVertex);
+
+        List<Vertex> foundVertices = BreadthFirstSearch.doSearch(startVertex, endVertex);
         if (endVertex != null && !foundVertices.contains(endVertex))
         {
             loggingService.log("Es konnte kein Weg zwischen " + startVertex + " und " + endVertex + " gefunden werden.");
@@ -131,20 +142,19 @@ public class GraphingPresenter implements Initializable
             {
                 builder.append("Gefundene Knoten {");
             }
-
-            foundVertices.forEach(vertex ->
-            {
-                builder.append(vertex);
-                builder.append(",");
-            });
+            
+            builder.append(loadVertexList(foundVertices));
             builder.append("}");
-
             loggingService.log(builder.toString());
         }
+
+        long endTime = System.currentTimeMillis();
+        loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
     }
 
     public void dfsTraverseAction(ActionEvent event)
     {
+        long startTime = System.currentTimeMillis();
         graph.unvisitAllVertices();
 
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
@@ -153,32 +163,32 @@ public class GraphingPresenter implements Initializable
 
         loggingService.log("Running DFS with Startknoten " + startVertex);
 
-        List<Vertex> foundVertices = dfs.doSearch(startVertex);
-
+        List<Vertex> foundVertices = DepthFirstSearch.doSearch(startVertex);
         StringBuilder builder = new StringBuilder();
         builder.append("Gefundene Knoten {");
-        foundVertices.forEach(vertex ->
-        {
-            builder.append(vertex);
-            builder.append(",");
-        });
+        builder.append(loadVertexList(foundVertices));
         builder.append("}");
-
         loggingService.log(builder.toString());
+
+        long endTime = System.currentTimeMillis();
+        loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
     }
 
-    public void findCompsites(ActionEvent event)
+    public void findComponents(ActionEvent event)
     {
+        long startTime = System.currentTimeMillis();
         graph.unvisitAllVertices();
 
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
-        Vertex defaultVertex = vertices.get(0);
-        Vertex startVertex = loadVertex(dfsVertexCBX, defaultVertex);
+        Vertex startVertex = vertices.get(0);
 
         loggingService.log("Running DFS with Startknoten " + startVertex);
 
-        List<List<Vertex>> components = dfs.loadComponents(graph, startVertex);
-        loggingService.log("Es wurden " + components.size() + " Zusammenhangskomponenten gefunden.");
+        int count = DepthFirstSearch.countComponents(graph, startVertex);
+        loggingService.log("Es wurden " + count + " Zusammenhangskomponenten gefunden.");
+
+        long endTime = System.currentTimeMillis();
+        loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
     }
 
     private Vertex loadVertex(ComboBox<Integer> vertexCbx, Vertex defaultValue)
@@ -192,5 +202,19 @@ public class GraphingPresenter implements Initializable
         }
 
         return vertex;
+    }
+
+    private String loadVertexList(List<Vertex> vertices)
+    {
+        StringBuilder builder = new StringBuilder();
+
+        vertices.forEach(vertex ->
+        {
+            builder.append(vertex);
+            builder.append(",");
+        });
+        builder.deleteCharAt(builder.length() - 1);
+
+        return builder.toString();
     }
 }

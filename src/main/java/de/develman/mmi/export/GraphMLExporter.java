@@ -93,6 +93,25 @@ public class GraphMLExporter
             builder.append("\" target=\"");
             builder.append(targetNodeId);
             builder.append("\">\n");
+
+            builder.append("\t\t\t<data key=\"d9\">\n");
+            builder.append("\t\t\t\t<y:PolyLineEdge>\n");
+            builder.append("\t\t\t\t\t<y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n");
+            builder.append("\t\t\t\t\t<y:LineStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n");
+
+            if (!graph.isDirected())
+            {
+                builder.append("\t\t\t\t\t<y:Arrows source=\"none\" target=\"none\"/>\n");
+            }
+            else
+            {
+                builder.append("\t\t\t\t\t<y:Arrows source=\"none\" target=\"standard\"/>\n");
+            }
+
+            builder.append("\t\t\t\t\t<y:BendStyle smoothed=\"false\"/>\n");
+            builder.append("\t\t\t\t</y:PolyLineEdge>\n");
+            builder.append("\t\t\t</data>\n");
+
             builder.append("\t\t</edge>\n");
         });
 

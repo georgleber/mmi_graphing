@@ -20,52 +20,90 @@ public class Graph
         this.directed = directed;
     }
     
+    /**
+     * @return {@code true}, wenn der Graph gerichtet ist, sonst {@code false}
+     */
     public boolean isDirected()
     {
         return directed;
     }
     
+    /**
+     * @return Anzahl der Knoten
+     */
     public int countVertices()
     {
         return vertices.keySet().size();
     }
     
+    /**
+     * @return Anzahl der Kanten
+     */
     public int countEdges()
     {
         return edges.size();
     }
     
+    /**
+     * Markiert alle Knoten als nicht besucht
+     */
     public void unvisitAllVertices()
     {
         vertices.values().forEach(vertex -> vertex.setVisited(false));
     }
     
+    /**
+     * @return Unmodifizierbare Collection aller Knoten
+     */
     public Collection<Vertex> getVertices()
     {
         return Collections.unmodifiableCollection(vertices.values());
     }
     
-    public boolean containsVertex(Vertex v)
+    /**
+     * Prüft ob der Knoten im Graph vorhanden ist
+     * 
+     * @param vertex Knoten
+     * @return {@code true}, wenn der Knoten vorhanden ist, sonst {@code false}
+     */
+    public boolean containsVertex(Vertex vertex)
     {
-        return containsVertex(v.getKey());
+        return containsVertex(vertex.getKey());
     }
     
+    /**
+     * Prüft ob der Knoten im Graph vorhanden ist (wird durch den Schlüssel identifiziert)
+     * 
+     * @param key Schlüssel des Knoten
+     * @return {@code true}, wenn der Knoten vorhanden ist, sonst {@code false}
+     */
     public boolean containsVertex(Integer key)
     {
         return vertices.containsKey(key);
     }
     
-    public void addVertex(Vertex v) throws DuplicateVertexException
+    /**
+     * Hinzufügen eines Knotens zum Graphen
+     * 
+     * @param vertex Knoten
+     * @throws DuplicateVertexException 
+     */
+    public void addVertex(Vertex vertex) throws DuplicateVertexException
     {
-        Integer key = v.getKey();
+        Integer key = vertex.getKey();
         if (vertices.containsKey(key))
         {
             throw new DuplicateVertexException(key);
         }
         
-        vertices.put(key, v);
+        vertices.put(key, vertex);
     }
     
+    /**
+     * Löschen eines Knoten aus dem Graphen
+     * 
+     * @param key Schlüssel des Knoten
+     */
     public void removeVertex(Integer key)
     {
         Vertex vertex = vertices.get(key);
@@ -78,16 +116,30 @@ public class Graph
         }
     }
     
+    /**
+     * Liefert den Knoten anhand des Schlüssels
+     * 
+     * @param key Schlüssel des Knoten
+     * @return Der Knoten mit dem Schlüssel, oder {@code null} wenn nicht vorhanden
+     */
     public Vertex getVertex(Integer key)
     {
         return vertices.get(key);
     }
     
+    /**
+     * @return Liefert eine unmodifizierbare Collection der Kanten
+     */
     public Collection<Edge> getEdges()
     {
         return Collections.unmodifiableCollection(edges);
     }
     
+    /**
+     * Hinzufügen einer Kante zum Graphen
+     * 
+     * @param edge Kante
+     */
     public void addEdge(Edge edge)
     {
         Vertex source = edge.getSource();
@@ -107,6 +159,11 @@ public class Graph
         edges.add(edge);
     }
     
+    /**
+     * Löschen einer Kante aus dem Graphen
+     * 
+     * @param edge Kante
+     */
     public void removeEdge(Edge edge)
     {
         Vertex source = edge.getSource();
@@ -116,41 +173,5 @@ public class Graph
         sink.removeIncomingEdge(edge);
         
         edges.remove(edge);
-    }
-    
-    public String printVertexList()
-    {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Knoten: {");
-        
-        vertices.values().forEach(vertex ->
-        {
-            builder.append(vertex);
-            builder.append(",");
-        });
-        
-        builder.deleteCharAt(builder.length() - 1);
-        builder.append("}");
-        
-        return builder.toString();
-    }
-    
-    public String printEdgeList()
-    {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Kanten: {\n");
-        
-        edges.forEach(edge ->
-        {
-            builder.append(edge.getSource());
-            builder.append(" -> ");
-            builder.append(edge.getSink());
-            builder.append(",\n");
-        });
-        
-        builder.deleteCharAt(builder.length() - 1);
-        builder.append("}");
-        
-        return builder.toString();
     }
 }

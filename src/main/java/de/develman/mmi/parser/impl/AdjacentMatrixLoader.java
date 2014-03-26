@@ -18,22 +18,13 @@ public class AdjacentMatrixLoader extends AbstractLoader
     }
 
     @Override
-    protected void readLines(Graph graph, BufferedReader lineReader) throws IOException
+    protected void loadEdges(Graph graph, BufferedReader lineReader) throws IOException
     {
-        // dismiss first line
-        lineReader.readLine();
-
         int cnt = 0;
         String strLine;
         while ((strLine = lineReader.readLine()) != null)
         {
             Vertex source = graph.getVertex(cnt);
-            if (source == null)
-            {
-                source = new Vertex(cnt);
-                graph.addVertex(source);
-            }
-
             loadEdges(graph, source, strLine);
 
             cnt++;
@@ -49,11 +40,6 @@ public class AdjacentMatrixLoader extends AbstractLoader
             if (value > 0)
             {
                 Vertex sink = graph.getVertex(i);
-                if (sink == null)
-                {
-                    sink = new Vertex(i);
-                    graph.addVertex(sink);
-                }
 
                 Edge edge = new Edge(source, sink);
                 graph.addEdge(edge);

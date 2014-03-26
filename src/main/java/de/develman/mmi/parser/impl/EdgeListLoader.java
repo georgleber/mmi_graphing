@@ -18,11 +18,8 @@ public class EdgeListLoader extends AbstractLoader
     }
 
     @Override
-    protected void readLines(Graph graph, BufferedReader lineReader) throws IOException
+    protected void loadEdges(Graph graph, BufferedReader lineReader) throws IOException
     {
-        // dismiss first line
-        lineReader.readLine();
-
         String strLine;
         while ((strLine = lineReader.readLine()) != null)
         {
@@ -36,21 +33,17 @@ public class EdgeListLoader extends AbstractLoader
 
         int keySource = Integer.parseInt(vEntries[0]);
         Vertex source = graph.getVertex(keySource);
-        if (source == null)
-        {
-            source = new Vertex(keySource);
-            graph.addVertex(source);
-        }
 
         int keySink = Integer.parseInt(vEntries[1]);
         Vertex sink = graph.getVertex(keySink);
-        if (sink == null)
-        {
-            sink = new Vertex(keySink);
-            graph.addVertex(sink);
-        }
 
         Edge edge = new Edge(source, sink);
         graph.addEdge(edge);
+
+        if (!graph.isDirected())
+        {
+            edge = new Edge(sink, source);
+            graph.addEdge(edge);
+        }
     }
 }

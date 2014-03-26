@@ -2,12 +2,8 @@ package de.develman.mmi.algorithm;
 
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
-import de.develman.mmi.service.LoggingService;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 
 /**
  * Die Klasse DepthFirstSearch implementiert die Tiefensuche in einem Graphen.
@@ -16,101 +12,76 @@ import javax.inject.Inject;
  */
 public class DepthFirstSearch
 {
-    @Inject
-    LoggingService loggingService;
-
-    /**
-     * Tiefensuche vom Startknoten, die alle besuchten Knoten liefert
-     *
-     * @return Liste der Knoten, die vom Startknoten erreicht werden
-     */
-    public List<Vertex> doSearch(Vertex startVertex)
-    {
-        List<Vertex> visitList = new ArrayList<>();
-        doSearchInternal(visitList, startVertex, true);
-
-        return visitList;
-    }
-
     /**
      * Tiefensuche vom Startknoten, die alle besuchten Knoten liefert
      *
      * @param startVertex Startknoten
      * @return Liste der Knoten, die vom Startknoten erreicht werden
      */
-    public List<Vertex> doSearch(Vertex startVertex, boolean maximal)
+    public static List<Vertex> doSearch(Vertex startVertex)
     {
         List<Vertex> visitList = new ArrayList<>();
-        doSearchInternal(visitList, startVertex, maximal);
+        doSearchInternal(visitList, startVertex);
 
         return visitList;
     }
+    
+    /**
+     * Liefert die Anzahl an Zusammenhangskomponenten
+     * 
+     * @param graph Graph
+     * @param startVertex Startknoten
+     * @return Liste der Knoten, die vom Startknoten erreicht werden
+     */
+    public static int countComponents(Graph graph, Vertex startVertex)
+    {
+        int countComponents = 0;
+        List<Vertex> vertices = new ArrayList<>(graph.getVertices());
 
-    private void doSearchInternal(List<Vertex> visitList, Vertex startVertex, boolean maximal)
+        boolean allFound = false;
+        do
+        {
+            countComponents++;
+            
+            startVertex = findComponent(vertices, startVertex);
+            if (startVertex == null)
+            {
+                allFound = true;
+            }
+        }
+        while (!allFound);
+
+        return countComponents;
+    }
+
+    private static void doSearchInternal(List<Vertex> visitList, Vertex startVertex)
     {
         visitList.add(startVertex);
         startVertex.setVisited(true);
 
         List<Vertex> neighbors = startVertex.getSuccessors();
-        if (!maximal)
-        {
-            neighbors.addAll(startVertex.getPredecessors());
-        }
-
         neighbors.forEach(vertex ->
         {
             if (!vertex.isVisited())
             {
-                doSearchInternal(visitList, vertex, maximal);
+                doSearchInternal(visitList, vertex);
             }
         });
     }
 
-    public List<List<Vertex>> loadComponents(Graph graph, Vertex startVertex)
+    private static Vertex findComponent(List<Vertex> vertices, Vertex startVertex)
     {
-        List<List<Vertex>> components = new ArrayList<>();
-        Collection<Vertex> vertices = graph.getVertices();
+        Vertex nextStartVertex = null;
 
-        boolean allFound = false;
-
-        do
-        {
-            List<Vertex> foundVertices = new ArrayList<>();
-            doSearchInternal(foundVertices, startVertex, false);
-            components.add(foundVertices);
-
-            List<Vertex> restVertices = findUnvisitedVertices(vertices, components);
-            if (restVertices.isEmpty())
-            {
-                allFound = true;
-            }
-            else
-            {
-                startVertex = restVertices.get(0);
-            }
-        }
-        while (!allFound);
-
-        return components;
-    }
-
-    private List<Vertex> findUnvisitedVertices(Collection<Vertex> vertices, List<List<Vertex>> components)
-    {
         List<Vertex> foundVertices = new ArrayList<>();
-        components.forEach(list ->
+        doSearchInternal(foundVertices, startVertex);
+
+        vertices.removeAll(foundVertices);
+        if (!vertices.isEmpty())
         {
-            list.forEach(vertex ->
-            {
-                if (!foundVertices.contains(vertex))
-                {
-                    foundVertices.add(vertex);
-                }
-            });
-        });
+            nextStartVertex = vertices.get(0);
+        }
 
-        List<Vertex> restVertices = new ArrayList<>(vertices);
-        restVertices.removeAll(foundVertices);
-
-        return restVertices;
+        return nextStartVertex;
     }
 }
