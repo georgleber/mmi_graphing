@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -34,8 +35,6 @@ import javax.inject.Inject;
  */
 public class GraphingPresenter implements Initializable
 {
-    @FXML
-    Label statusLabel;
     @FXML
     ListView<String> loggingView;
     @FXML
@@ -80,8 +79,10 @@ public class GraphingPresenter implements Initializable
             graph = parser.loadGraph(true);
             graph.getVertices().forEach(vertex -> vertexList.add(vertex.getKey()));
 
-            statusLabel.setText("Graph wurde erfolgreich geladen");
             loggingService.clearLogging();
+            loggingService.
+                log("Graph wurde erfolgreich geladen, Anzahl Knoten: " + graph.countVertices() + ", Kanten: " + graph.
+                    countEdges());
         }
     }
 
@@ -106,6 +107,8 @@ public class GraphingPresenter implements Initializable
     @FXML
     public void bfsTraverseAction(ActionEvent event)
     {
+        graph.unvisitAllVertices();
+
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
         Vertex defaultVertex = vertices.get(0);
 
@@ -142,10 +145,14 @@ public class GraphingPresenter implements Initializable
 
     public void dfsTraverseAction(ActionEvent event)
     {
+        graph.unvisitAllVertices();
+
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
         Vertex defaultVertex = vertices.get(0);
-
         Vertex startVertex = loadVertex(dfsVertexCBX, defaultVertex);
+
+        loggingService.log("Running DFS with Startknoten " + startVertex);
+
         List<Vertex> foundVertices = dfs.doSearch(startVertex);
 
         StringBuilder builder = new StringBuilder();
@@ -158,6 +165,20 @@ public class GraphingPresenter implements Initializable
         builder.append("}");
 
         loggingService.log(builder.toString());
+    }
+
+    public void findCompsites(ActionEvent event)
+    {
+        graph.unvisitAllVertices();
+
+        List<Vertex> vertices = new ArrayList<>(graph.getVertices());
+        Vertex defaultVertex = vertices.get(0);
+        Vertex startVertex = loadVertex(dfsVertexCBX, defaultVertex);
+
+        loggingService.log("Running DFS with Startknoten " + startVertex);
+
+        List<List<Vertex>> components = dfs.loadComponents(graph, startVertex);
+        loggingService.log("Es wurden " + components.size() + " Zusammenhangskomponenten gefunden.");
     }
 
     private Vertex loadVertex(ComboBox<Integer> vertexCbx, Vertex defaultValue)

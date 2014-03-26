@@ -11,6 +11,7 @@ import java.util.List;
 public class Vertex
 {
     private final Integer key;
+    private boolean visited = false;
     private final List<Edge> incomingEdges = new ArrayList<>();
     private final List<Edge> outgoingEdges = new ArrayList<>();
 
@@ -22,6 +23,16 @@ public class Vertex
     public Integer getKey()
     {
         return key;
+    }
+
+    public boolean isVisited()
+    {
+        return visited;
+    }
+
+    public void setVisited(boolean visited)
+    {
+        this.visited = visited;
     }
 
     public List<Edge> getIncomingEdges()

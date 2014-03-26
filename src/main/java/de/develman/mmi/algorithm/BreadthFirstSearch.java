@@ -1,5 +1,6 @@
 package de.develman.mmi.algorithm;
 
+import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import de.develman.mmi.service.LoggingService;
 import java.util.*;
@@ -40,23 +41,16 @@ public class BreadthFirstSearch
      */
     public List<Vertex> doSearch(Vertex startVertex, Vertex endVertex)
     {
-        String message = "Running BFS with start vertex: " + startVertex + " and end vertex: " + endVertex;
-        LOG.debug(message);
-        loggingService.log(message);
+        long startTime = System.currentTimeMillis();
 
-        List<Vertex> visitList = new ArrayList<>();
-
+        startVertex.setVisited(true);
         Queue<Vertex> queue = new LinkedList<>();
         queue.add(startVertex);
 
+        List<Vertex> visitList = new ArrayList<>();
         while (!queue.isEmpty())
         {
             Vertex nextVertex = queue.poll();
-            if (nextVertex == null || visitList.contains(nextVertex))
-            {
-                continue;
-            }
-
             visitList.add(nextVertex);
             if (nextVertex.equals(endVertex))
             {
@@ -64,9 +58,19 @@ public class BreadthFirstSearch
                 break;
             }
 
-            nextVertex.getSuccessors().forEach(vertex -> queue.add(vertex));
+            nextVertex.getSuccessors().forEach(vertex ->
+            {
+                if (!vertex.isVisited())
+                {
+                    vertex.setVisited(true);
+                    queue.add(vertex);
+                }
+            });
         }
 
+        long endTime = System.currentTimeMillis();
+        loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
+        
         return visitList;
     }
 }

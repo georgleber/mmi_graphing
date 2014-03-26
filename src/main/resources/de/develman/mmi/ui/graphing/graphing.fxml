@@ -34,11 +34,11 @@
                             <children>
                                 <HBox layoutX="14.0" layoutY="14.0" spacing="10.0">
                                     <children>
-                                        <Button layoutX="14.0" layoutY="14.0" onAction="#dfsTraverseAction"  mnemonicParsing="false" text="%dfs.traversierung.btn" />
+                                        <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#dfsTraverseAction" text="%dfs.traversierung.btn" />
                                         <ComboBox fx:id="dfsVertexCBX" prefWidth="150.0" promptText="%startknoten" />
                                     </children>
                                 </HBox>
-                                <Button layoutX="14.0" layoutY="47.0" mnemonicParsing="false" text="%dfs.zhgkomp.btn" />
+                                <Button layoutX="14.0" layoutY="47.0" mnemonicParsing="false" onAction="#findCompsites" text="%dfs.zhgkomp.btn" />
                             </children>
                         </AnchorPane>
                     </content>
@@ -46,7 +46,6 @@
             </tabs>
         </TabPane>
         <Label layoutX="15.0" layoutY="281.0" text="%titel.ausgabe" />
-        <Label fx:id="statusLabel" layoutX="132.0" layoutY="17.0" text="%graph.lade.status" />
         <Button layoutX="15.0" layoutY="46.0" mnemonicParsing="false" onAction="#exportGraphAction" text="%graph.export.btn" />
         <ListView fx:id="loggingView" layoutX="14.0" layoutY="305.0" prefHeight="165.0" prefWidth="572.0" />
     </children>
