@@ -7,15 +7,12 @@ import java.util.*;
 /**
  * Die Klasse Graph implementiert einen Graphen
  *
- * @param <T> Typ des Schlüssels eines Knoten
- * @param <V> Typ des Knotens
- *
  * @author Georg Henkel <georg@develman.de>
  */
 public class Graph
 {
     private final boolean directed;
-    private final Map<String, Vertex> vertices = new HashMap<>();
+    private final Map<Integer, Vertex> vertices = new HashMap<>();
     private final Set<Edge> edges = new HashSet<>();
 
     public Graph(boolean directed)
@@ -48,14 +45,14 @@ public class Graph
         return containsVertex(v.getKey());
     }
 
-    public boolean containsVertex(String key)
+    public boolean containsVertex(Integer key)
     {
         return vertices.containsKey(key);
     }
 
     public void addVertex(Vertex v) throws DuplicateVertexException
     {
-        String key = v.getKey();
+        Integer key = v.getKey();
         if (vertices.containsKey(key))
         {
             throw new DuplicateVertexException(key);
@@ -64,7 +61,7 @@ public class Graph
         vertices.put(key, v);
     }
 
-    public void removeVertex(String key)
+    public void removeVertex(Integer key)
     {
         Vertex vertex = vertices.get(key);
         if (vertex != null)
@@ -76,7 +73,7 @@ public class Graph
         }
     }
 
-    public Vertex getVertex(String key)
+    public Vertex getVertex(Integer key)
     {
         return vertices.get(key);
     }

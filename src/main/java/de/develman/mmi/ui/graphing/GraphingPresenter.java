@@ -2,6 +2,7 @@ package de.develman.mmi.ui.graphing;
 
 import de.develman.mmi.App;
 import de.develman.mmi.algorithm.BreadthFirstSearch;
+import de.develman.mmi.algorithm.DepthFirstSearch;
 import de.develman.mmi.export.GraphMLExporter;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
@@ -17,9 +18,12 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
@@ -34,12 +38,21 @@ public class GraphingPresenter implements Initializable
     Label statusLabel;
     @FXML
     ListView<String> loggingView;
+    @FXML
+    ComboBox<Integer> bfsStartVertexCBX;
+    @FXML
+    ComboBox<Integer> bfsEndVertexCBX;
+    @FXML
+    ComboBox<Integer> dfsVertexCBX;
 
     @Inject
     LoggingService loggingService;
     @Inject
     BreadthFirstSearch bfs;
+    @Inject
+    DepthFirstSearch dfs;
 
+    private ObservableList<Integer> vertexList;
     private Graph graph;
 
     @Override
@@ -47,6 +60,11 @@ public class GraphingPresenter implements Initializable
     {
         LoggingBean loggingBean = loggingService.getLoggingBean();
         loggingView.setItems(loggingBean.getEntries());
+
+        vertexList = FXCollections.observableArrayList();
+        bfsStartVertexCBX.setItems(vertexList);
+        bfsEndVertexCBX.setItems(vertexList);
+        dfsVertexCBX.setItems(vertexList);
     }
 
     @FXML
@@ -60,6 +78,7 @@ public class GraphingPresenter implements Initializable
         {
             FileParser parser = new FileParser(file);
             graph = parser.loadGraph(true);
+            graph.getVertices().forEach(vertex -> vertexList.add(vertex.getKey()));
 
             statusLabel.setText("Graph wurde erfolgreich geladen");
             loggingService.clearLogging();
@@ -76,7 +95,7 @@ public class GraphingPresenter implements Initializable
         {
             File file = new File("data/graph_out.graphml");
             Files.write(Paths.get(file.toURI()), xml.getBytes("utf-8"), StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING);
+                StandardOpenOption.TRUNCATE_EXISTING);
         }
         catch (IOException ex)
         {
@@ -88,7 +107,46 @@ public class GraphingPresenter implements Initializable
     public void bfsTraverseAction(ActionEvent event)
     {
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
-        List<Vertex> foundVertices = bfs.doSearch(vertices.get(0));
+        Vertex defaultVertex = vertices.get(0);
+
+        Vertex startVertex = loadVertex(bfsStartVertexCBX, defaultVertex);
+        Vertex endVertex = loadVertex(bfsEndVertexCBX, null);
+
+        List<Vertex> foundVertices = bfs.doSearch(startVertex, endVertex);
+        if (endVertex != null && !foundVertices.contains(endVertex))
+        {
+            loggingService.log("Es konnte kein Weg zwischen " + startVertex + " und " + endVertex + " gefunden werden.");
+        }
+        else
+        {
+            StringBuilder builder = new StringBuilder();
+            if (endVertex != null)
+            {
+                builder.append("Folgender Weg wurde gefunden {");
+            }
+            else
+            {
+                builder.append("Gefundene Knoten {");
+            }
+
+            foundVertices.forEach(vertex ->
+            {
+                builder.append(vertex);
+                builder.append(",");
+            });
+            builder.append("}");
+
+            loggingService.log(builder.toString());
+        }
+    }
+
+    public void dfsTraverseAction(ActionEvent event)
+    {
+        List<Vertex> vertices = new ArrayList<>(graph.getVertices());
+        Vertex defaultVertex = vertices.get(0);
+
+        Vertex startVertex = loadVertex(dfsVertexCBX, defaultVertex);
+        List<Vertex> foundVertices = dfs.doSearch(startVertex);
 
         StringBuilder builder = new StringBuilder();
         builder.append("Gefundene Knoten {");
@@ -100,5 +158,18 @@ public class GraphingPresenter implements Initializable
         builder.append("}");
 
         loggingService.log(builder.toString());
+    }
+
+    private Vertex loadVertex(ComboBox<Integer> vertexCbx, Vertex defaultValue)
+    {
+        Vertex vertex = defaultValue;
+
+        Integer selectedKey = vertexCbx.getSelectionModel().selectedItemProperty().get();
+        if (selectedKey != null)
+        {
+            vertex = graph.getVertex(selectedKey);
+        }
+
+        return vertex;
     }
 }

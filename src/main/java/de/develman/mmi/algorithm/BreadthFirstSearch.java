@@ -60,10 +60,7 @@ public class BreadthFirstSearch
             visitList.add(nextVertex);
             if (nextVertex.equals(endVertex))
             {
-                message = "end vertex found: " + nextVertex;
-                LOG.info(message);
-                loggingService.log(message);
-
+                LOG.info("end vertex found: " + nextVertex);
                 break;
             }
 

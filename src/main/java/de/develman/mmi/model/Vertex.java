@@ -10,16 +10,16 @@ import java.util.List;
  */
 public class Vertex
 {
-    private final String key;
+    private final Integer key;
     private final List<Edge> incomingEdges = new ArrayList<>();
     private final List<Edge> outgoingEdges = new ArrayList<>();
 
-    public Vertex(String key)
+    public Vertex(Integer key)
     {
         this.key = key;
     }
 
-    public String getKey()
+    public Integer getKey()
     {
         return key;
     }
@@ -73,6 +73,6 @@ public class Vertex
     @Override
     public String toString()
     {
-        return key;
+        return key.toString();
     }
 }

@@ -34,7 +34,7 @@ public class EdgeListLoader extends AbstractLoader
     {
         String[] vEntries = strLine.split("\\s+");
 
-        String keySource = vEntries[0];
+        int keySource = Integer.parseInt(vEntries[0]);
         Vertex source = graph.getVertex(keySource);
         if (source == null)
         {
@@ -42,7 +42,7 @@ public class EdgeListLoader extends AbstractLoader
             graph.addVertex(source);
         }
 
-        String keySink = vEntries[1];
+        int keySink = Integer.parseInt(vEntries[1]);
         Vertex sink = graph.getVertex(keySink);
         if (sink == null)
         {

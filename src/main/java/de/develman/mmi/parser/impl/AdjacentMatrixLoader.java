@@ -27,11 +27,10 @@ public class AdjacentMatrixLoader extends AbstractLoader
         String strLine;
         while ((strLine = lineReader.readLine()) != null)
         {
-            String label = Integer.toString(cnt);
-            Vertex source = graph.getVertex(label);
+            Vertex source = graph.getVertex(cnt);
             if (source == null)
             {
-                source = new Vertex(label);
+                source = new Vertex(cnt);
                 graph.addVertex(source);
             }
 
@@ -49,11 +48,10 @@ public class AdjacentMatrixLoader extends AbstractLoader
             int value = Integer.parseInt(vEntries[i]);
             if (value > 0)
             {
-                String label = Integer.toString(i);
-                Vertex sink = graph.getVertex(label);
+                Vertex sink = graph.getVertex(i);
                 if (sink == null)
                 {
-                    sink = new Vertex(label);
+                    sink = new Vertex(i);
                     graph.addVertex(sink);
                 }
 
