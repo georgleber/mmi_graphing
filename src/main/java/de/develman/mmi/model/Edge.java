@@ -7,8 +7,9 @@ package de.develman.mmi.model;
  */
 public class Edge
 {
-    protected final Vertex source;
-    protected final Vertex sink;
+    private double weight;
+    private final Vertex source;
+    private final Vertex sink;
 
     /**
      * Erstellt eine neue Kante mit Start- und Endknoten
@@ -20,6 +21,21 @@ public class Edge
     {
         this.source = source;
         this.sink = sink;
+        this.weight = 0.0;
+    }
+
+    /**
+     * Erstellt eine neue Kante mit Start-, Endknoten und Gewicht
+     *
+     * @param source Startknoten
+     * @param sink Endknoten
+     * @param weight Gewicht
+     */
+    public Edge(Vertex source, Vertex sink, double weight)
+    {
+        this.source = source;
+        this.sink = sink;
+        this.weight = weight;
     }
 
     /**
@@ -36,6 +52,22 @@ public class Edge
     public Vertex getSink()
     {
         return sink;
+    }
+
+    /**
+     * @return Gewicht der Kante
+     */
+    public double getWeight()
+    {
+        return weight;
+    }
+
+    /**
+     * @return Liefert die gegenläufige Kante
+     */
+    public Edge revert()
+    {
+        return new Edge(sink, source, weight);
     }
 
     @Override

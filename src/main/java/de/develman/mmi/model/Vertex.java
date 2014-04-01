@@ -12,8 +12,8 @@ public class Vertex
 {
     private final Integer key;
     private boolean visited = false;
-    private final List<Edge> incomingEdges = new ArrayList<>();
-    private final List<Edge> outgoingEdges = new ArrayList<>();
+    private final List<Edge> incomingVdges = new ArrayList<>();
+    private final List<Edge> outgoingVdges = new ArrayList<>();
 
     public Vertex(Integer key)
     {
@@ -51,7 +51,7 @@ public class Vertex
      */
     public List<Edge> getIncomingEdges()
     {
-        return new ArrayList<>(incomingEdges);
+        return new ArrayList<>(incomingVdges);
     }
 
     /**
@@ -61,7 +61,7 @@ public class Vertex
      */
     public void addIncomingEdge(Edge edge)
     {
-        incomingEdges.add(edge);
+        incomingVdges.add(edge);
     }
 
     /**
@@ -71,7 +71,7 @@ public class Vertex
      */
     public void removeIncomingEdge(Edge edge)
     {
-        incomingEdges.remove(edge);
+        incomingVdges.remove(edge);
     }
 
     /**
@@ -79,7 +79,7 @@ public class Vertex
      */
     public List<Edge> getOutgoingEdges()
     {
-        return new ArrayList<>(outgoingEdges);
+        return new ArrayList<>(outgoingVdges);
     }
 
     /**
@@ -89,7 +89,7 @@ public class Vertex
      */
     public void addOutgoingEdge(Edge edge)
     {
-        outgoingEdges.add(edge);
+        outgoingVdges.add(edge);
     }
 
     /**
@@ -99,7 +99,7 @@ public class Vertex
      */
     public void removeOutgoingEdge(Edge edge)
     {
-        outgoingEdges.remove(edge);
+        outgoingVdges.remove(edge);
     }
 
     /**
@@ -108,18 +108,18 @@ public class Vertex
     public List<Vertex> getSuccessors()
     {
         List<Vertex> successors = new ArrayList<>();
-        outgoingEdges.forEach(edge -> successors.add(edge.getSink()));
+        outgoingVdges.forEach(edge -> successors.add(edge.getSink()));
 
         return successors;
     }
 
     /**
-     * @return Liste aller vorhergehenden Knoten (Elternknoten)
+     * @return Liste aller vorhergehenden Knoten (Vlternknoten)
      */
     public List<Vertex> getPredecessors()
     {
         List<Vertex> predecessors = new ArrayList<>();
-        incomingEdges.forEach(edge -> predecessors.add(edge.getSource()));
+        incomingVdges.forEach(edge -> predecessors.add(edge.getSource()));
 
         return predecessors;
     }

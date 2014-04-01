@@ -14,12 +14,12 @@ public class Graph
     private final boolean directed;
     private final Map<Integer, Vertex> vertices = new HashMap<>();
     private final Set<Edge> edges = new HashSet<>();
-    
+
     public Graph(boolean directed)
     {
         this.directed = directed;
     }
-    
+
     /**
      * @return {@code true}, wenn der Graph gerichtet ist, sonst {@code false}
      */
@@ -27,7 +27,7 @@ public class Graph
     {
         return directed;
     }
-    
+
     /**
      * @return Anzahl der Knoten
      */
@@ -35,7 +35,7 @@ public class Graph
     {
         return vertices.keySet().size();
     }
-    
+
     /**
      * @return Anzahl der Kanten
      */
@@ -43,7 +43,7 @@ public class Graph
     {
         return edges.size();
     }
-    
+
     /**
      * Markiert alle Knoten als nicht besucht
      */
@@ -51,7 +51,7 @@ public class Graph
     {
         vertices.values().forEach(vertex -> vertex.setVisited(false));
     }
-    
+
     /**
      * @return Unmodifizierbare Collection aller Knoten
      */
@@ -59,10 +59,10 @@ public class Graph
     {
         return Collections.unmodifiableCollection(vertices.values());
     }
-    
+
     /**
      * Prüft ob der Knoten im Graph vorhanden ist
-     * 
+     *
      * @param vertex Knoten
      * @return {@code true}, wenn der Knoten vorhanden ist, sonst {@code false}
      */
@@ -70,10 +70,10 @@ public class Graph
     {
         return containsVertex(vertex.getKey());
     }
-    
+
     /**
      * Prüft ob der Knoten im Graph vorhanden ist (wird durch den Schlüssel identifiziert)
-     * 
+     *
      * @param key Schlüssel des Knoten
      * @return {@code true}, wenn der Knoten vorhanden ist, sonst {@code false}
      */
@@ -81,12 +81,12 @@ public class Graph
     {
         return vertices.containsKey(key);
     }
-    
+
     /**
      * Hinzufügen eines Knotens zum Graphen
-     * 
+     *
      * @param vertex Knoten
-     * @throws DuplicateVertexException 
+     * @throws DuplicateVertexException
      */
     public void addVertex(Vertex vertex) throws DuplicateVertexException
     {
@@ -95,13 +95,13 @@ public class Graph
         {
             throw new DuplicateVertexException(key);
         }
-        
+
         vertices.put(key, vertex);
     }
-    
+
     /**
      * Löschen eines Knoten aus dem Graphen
-     * 
+     *
      * @param key Schlüssel des Knoten
      */
     public void removeVertex(Integer key)
@@ -109,16 +109,16 @@ public class Graph
         Vertex vertex = vertices.get(key);
         if (vertex != null)
         {
-            vertex.getIncomingEdges().forEach(edge -> removeEdge(edge));
+            vertex.getIncomingEdges().forEach(e -> removeEdge(e));
             vertex.getOutgoingEdges().forEach(edge -> removeEdge(edge));
-            
+
             vertices.remove(key);
         }
     }
-    
+
     /**
      * Liefert den Knoten anhand des Schlüssels
-     * 
+     *
      * @param key Schlüssel des Knoten
      * @return Der Knoten mit dem Schlüssel, oder {@code null} wenn nicht vorhanden
      */
@@ -126,7 +126,7 @@ public class Graph
     {
         return vertices.get(key);
     }
-    
+
     /**
      * @return Liefert eine unmodifizierbare Collection der Kanten
      */
@@ -134,10 +134,10 @@ public class Graph
     {
         return Collections.unmodifiableCollection(edges);
     }
-    
+
     /**
      * Hinzufügen einer Kante zum Graphen
-     * 
+     *
      * @param edge Kante
      */
     public void addEdge(Edge edge)
@@ -147,31 +147,31 @@ public class Graph
         {
             throw new MissingVertexException(source.getKey());
         }
-        
+
         Vertex sink = edge.getSink();
         if (!containsVertex(sink.getKey()))
         {
             throw new MissingVertexException(sink.getKey());
         }
-        
+
         source.addOutgoingEdge(edge);
         sink.addIncomingEdge(edge);
         edges.add(edge);
     }
-    
+
     /**
      * Löschen einer Kante aus dem Graphen
-     * 
+     *
      * @param edge Kante
      */
     public void removeEdge(Edge edge)
     {
         Vertex source = edge.getSource();
         source.removeOutgoingEdge(edge);
-        
+
         Vertex sink = edge.getSink();
         sink.removeIncomingEdge(edge);
-        
+
         edges.remove(edge);
     }
 }

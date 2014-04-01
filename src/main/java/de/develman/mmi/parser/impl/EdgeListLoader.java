@@ -37,13 +37,18 @@ public class EdgeListLoader extends AbstractLoader
         int keySink = Integer.parseInt(vEntries[1]);
         Vertex sink = graph.getVertex(keySink);
 
-        Edge edge = new Edge(source, sink);
+        double weight = 0.0;
+        if (vEntries.length == 3)
+        {
+            weight = Double.parseDouble(vEntries[2]);
+        }
+
+        Edge edge = new Edge(source, sink, weight);
         graph.addEdge(edge);
 
         if (!graph.isDirected())
         {
-            edge = new Edge(sink, source);
-            graph.addEdge(edge);
+            graph.addEdge(edge.revert());
         }
     }
 }
