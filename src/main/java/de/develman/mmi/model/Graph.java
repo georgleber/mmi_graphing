@@ -15,6 +15,11 @@ public class Graph
     private final Map<Integer, Vertex> vertices = new HashMap<>();
     private final Set<Edge> edges = new HashSet<>();
 
+    /**
+     * Erstellt ein neues Graph-Objekt
+     *
+     * @param directed Gibt an, ob der Graph gerichtet ist oder nicht
+     */
     public Graph(boolean directed)
     {
         this.directed = directed;
@@ -49,7 +54,7 @@ public class Graph
      */
     public void unvisitAllVertices()
     {
-        vertices.values().forEach(vertex -> vertex.setVisited(false));
+        vertices.values().forEach(vertex -> vertex.setVisitingState(VisitingState.NOT_VISITED));
     }
 
     /**

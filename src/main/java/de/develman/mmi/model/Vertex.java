@@ -11,10 +11,16 @@ import java.util.List;
 public class Vertex
 {
     private final Integer key;
-    private boolean visited = false;
     private final List<Edge> incomingVdges = new ArrayList<>();
     private final List<Edge> outgoingVdges = new ArrayList<>();
 
+    private VisitingState visitingState = VisitingState.NOT_VISITED;
+
+    /**
+     * Erstellt einen neuen Knoten
+     *
+     * @param key Schlüssel des Knotens
+     */
     public Vertex(Integer key)
     {
         this.key = key;
@@ -31,19 +37,19 @@ public class Vertex
     /**
      * @return {@code true}, wenn der Knoten besucht wurde, sonst {@code false}
      */
-    public boolean isVisited()
+    public VisitingState getVisitingState()
     {
-        return visited;
+        return visitingState;
     }
 
     /**
      * Setzt den Status, ob der Knoten besucht wurde oder nicht
      *
-     * @param visited Status, ob der Knoten besucht wurde oder nicht
+     * @param state Aktueller Besuchsstatus des Knoten
      */
-    public void setVisited(boolean visited)
+    public void setVisitingState(VisitingState state)
     {
-        this.visited = visited;
+        this.visitingState = state;
     }
 
     /**

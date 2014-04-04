@@ -5,5 +5,5 @@ package de.develman.mmi.model;
  */
 public enum VisitingState
 {
-    NOT_VISITED, VISITED;
+    NOT_VISITED, VISITING, VISITED;
 }

@@ -2,6 +2,7 @@ package de.develman.mmi.algorithm;
 
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
+import de.develman.mmi.model.VisitingState;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,17 +19,54 @@ public class DepthFirstSearch
      * @param startVertex Startknoten
      * @return Liste der Knoten, die vom Startknoten erreicht werden
      */
-    public static List<Vertex> doSearch(Vertex startVertex)
+    public static List<Vertex> getAccessibleVertices(Vertex startVertex)
     {
         List<Vertex> visitList = new ArrayList<>();
-        doSearchInternal(visitList, startVertex);
+        doSearchInternal(visitList, startVertex, null);
 
         return visitList;
     }
-    
+
+    /**
+     * Prüft, ob es einen Weg zwischen Start- und Endknoten gibt
+     *
+     * @param startVertex Startknoten
+     * @param endVertex Endknoten
+     * @return {@code true}, wenn ein Weg gefunden wurde
+     */
+    public static boolean hasPath(Vertex startVertex, Vertex endVertex)
+    {
+        boolean pathFound = false;
+
+        List<Vertex> visitList = new ArrayList<>();
+        doSearchInternal(visitList, startVertex, endVertex);
+
+        if (visitList.contains(startVertex) && visitList.contains(endVertex))
+        {
+            pathFound = true;
+        }
+
+        return pathFound;
+    }
+
+    /**
+     * Breitensuche von Startknoten zu Endknoten
+     *
+     * @param startVertex Startknoten
+     * @param endVertex Endknoten
+     * @return Liste der besuchten Knoten, von Startknoten bis Endknoten
+     */
+    public static List<Vertex> getVerticesOnPath(Vertex startVertex, Vertex endVertex)
+    {
+        List<Vertex> visitList = new ArrayList<>();
+        doSearchInternal(visitList, startVertex, endVertex);
+
+        return visitList;
+    }
+
     /**
      * Liefert die Anzahl an Zusammenhangskomponenten
-     * 
+     *
      * @param graph Graph
      * @param startVertex Startknoten
      * @return Liste der Knoten, die vom Startknoten erreicht werden
@@ -42,7 +80,7 @@ public class DepthFirstSearch
         do
         {
             countComponents++;
-            
+
             startVertex = findComponent(vertices, startVertex);
             if (startVertex == null)
             {
@@ -54,17 +92,22 @@ public class DepthFirstSearch
         return countComponents;
     }
 
-    private static void doSearchInternal(List<Vertex> visitList, Vertex startVertex)
+    private static void doSearchInternal(List<Vertex> visitList, Vertex startVertex, Vertex endVertex)
     {
         visitList.add(startVertex);
-        startVertex.setVisited(true);
-
-        List<Vertex> neighbors = startVertex.getSuccessors();
-        neighbors.forEach(vertex ->
+        if (startVertex.equals(endVertex))
         {
-            if (!vertex.isVisited())
+            return;
+        }
+
+        startVertex.setVisitingState(VisitingState.VISITED);
+
+        List<Vertex> successors = startVertex.getSuccessors();
+        successors.forEach(vertex ->
+        {
+            if (vertex.getVisitingState() == VisitingState.NOT_VISITED)
             {
-                doSearchInternal(visitList, vertex);
+                doSearchInternal(visitList, vertex, endVertex);
             }
         });
     }
@@ -74,7 +117,7 @@ public class DepthFirstSearch
         Vertex nextStartVertex = null;
 
         List<Vertex> foundVertices = new ArrayList<>();
-        doSearchInternal(foundVertices, startVertex);
+        doSearchInternal(foundVertices, startVertex, null);
 
         vertices.removeAll(foundVertices);
         if (!vertices.isEmpty())

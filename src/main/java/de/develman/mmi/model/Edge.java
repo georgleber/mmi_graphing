@@ -7,7 +7,7 @@ package de.develman.mmi.model;
  */
 public class Edge
 {
-    private double weight;
+    private final double weight;
     private final Vertex source;
     private final Vertex sink;
 

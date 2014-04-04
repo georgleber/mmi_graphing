@@ -13,10 +13,10 @@ import org.junit.Test;
 /**
  * @author Georg Henkel <georg@develman.de>
  */
-public class BreadthFirstSearchTest
+public class DepthFirstSearchTest
 {
-    List<Vertex> vertices;
-    List<Edge> edges;
+    private List<Vertex> vertices;
+    private List<Edge> edges;
 
     @Before
     public void init()
@@ -30,7 +30,7 @@ public class BreadthFirstSearchTest
         Graph graph = initGraph(false);
         Vertex v1 = graph.getVertex(1);
 
-        List<Vertex> accessibleVertices = BreadthFirstSearch.getAccessibleVertices(v1);
+        List<Vertex> accessibleVertices = DepthFirstSearch.getAccessibleVertices(v1);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -39,7 +39,7 @@ public class BreadthFirstSearchTest
 
         int[] expected =
         {
-            1, 2, 3, 4, 5, 6, 7
+            1, 2, 3, 5, 6, 4, 7
         };
 
         Assert.assertTrue(Arrays.equals(expected, keys));
@@ -51,7 +51,7 @@ public class BreadthFirstSearchTest
         Graph graph = initGraph(true);
         Vertex v1 = graph.getVertex(1);
 
-        List<Vertex> accessibleVertices = BreadthFirstSearch.getAccessibleVertices(v1);
+        List<Vertex> accessibleVertices = DepthFirstSearch.getAccessibleVertices(v1);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -60,7 +60,7 @@ public class BreadthFirstSearchTest
 
         int[] expected =
         {
-            1, 2, 3, 4, 5, 6, 7
+            1, 2, 3, 5, 6, 4, 7
         };
 
         Assert.assertTrue(Arrays.equals(expected, keys));
@@ -73,7 +73,7 @@ public class BreadthFirstSearchTest
         Vertex v1 = graph.getVertex(1);
         Vertex v5 = graph.getVertex(5);
 
-        List<Vertex> accessibleVertices = BreadthFirstSearch.getVerticesOnPath(v1, v5);
+        List<Vertex> accessibleVertices = DepthFirstSearch.getVerticesOnPath(v1, v5);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -82,7 +82,7 @@ public class BreadthFirstSearchTest
 
         int[] expected =
         {
-            1, 2, 3, 4, 5
+            1, 2, 3, 5
         };
 
         Assert.assertTrue(Arrays.equals(expected, keys));
@@ -95,7 +95,7 @@ public class BreadthFirstSearchTest
         Vertex v1 = graph.getVertex(1);
         Vertex v5 = graph.getVertex(5);
 
-        List<Vertex> accessibleVertices = BreadthFirstSearch.getVerticesOnPath(v1, v5);
+        List<Vertex> accessibleVertices = DepthFirstSearch.getVerticesOnPath(v1, v5);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -104,7 +104,7 @@ public class BreadthFirstSearchTest
 
         int[] expected =
         {
-            1, 2, 3, 4, 5
+            1, 2, 3, 5
         };
 
         Assert.assertTrue(Arrays.equals(expected, keys));
@@ -117,7 +117,7 @@ public class BreadthFirstSearchTest
         Vertex v2 = graph.getVertex(2);
         Vertex v7 = graph.getVertex(7);
 
-        List<Vertex> accessibleVertices = BreadthFirstSearch.getVerticesOnPath(v2, v7);
+        List<Vertex> accessibleVertices = DepthFirstSearch.getVerticesOnPath(v2, v7);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -139,7 +139,7 @@ public class BreadthFirstSearchTest
         Vertex v1 = graph.getVertex(1);
         Vertex v5 = graph.getVertex(5);
 
-        boolean hasPath = BreadthFirstSearch.hasPath(v1, v5);
+        boolean hasPath = DepthFirstSearch.hasPath(v1, v5);
         Assert.assertTrue(hasPath);
     }
 
@@ -150,7 +150,7 @@ public class BreadthFirstSearchTest
         Vertex v1 = graph.getVertex(1);
         Vertex v5 = graph.getVertex(5);
 
-        boolean hasPath = BreadthFirstSearch.hasPath(v1, v5);
+        boolean hasPath = DepthFirstSearch.hasPath(v1, v5);
         Assert.assertTrue(hasPath);
     }
 
@@ -161,7 +161,7 @@ public class BreadthFirstSearchTest
         Vertex v2 = graph.getVertex(2);
         Vertex v7 = graph.getVertex(7);
 
-        boolean hasPath = BreadthFirstSearch.hasPath(v2, v7);
+        boolean hasPath = DepthFirstSearch.hasPath(v2, v7);
         Assert.assertFalse(hasPath);
     }
 

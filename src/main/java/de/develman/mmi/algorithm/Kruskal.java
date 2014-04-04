@@ -2,7 +2,6 @@ package de.develman.mmi.algorithm;
 
 import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,31 +11,30 @@ import java.util.stream.Collectors;
  */
 public class Kruskal
 {
-    public static List<Edge> search(Graph graph)
+    /**
+     *
+     * @param graph
+     * @return
+     */
+    public static Graph getMinimalSpanningTree(Graph graph)
     {
         List<Edge> edges = graph.getEdges().parallelStream().sorted(Comparator.comparing(
                 e -> e.getWeight())).collect(Collectors.toList());
 
-        List<Edge> minSpanTree = new ArrayList<>();
+        Graph minSpanTree = new Graph(true);
         for (Edge edge : edges)
         {
-            if (minSpanTree.size() != graph.getVertices().size() - 1)
+            if (minSpanTree.getVertices().size() != graph.getVertices().size() - 1)
             {
                 break;
             }
 
-            if (!detectCycle(minSpanTree, edge))
+            if (!DepthFirstSearch.hasPath(edge.getSource(), edge.getSink()))
             {
-                minSpanTree.add(edge);
+                minSpanTree.addEdge(edge);
             }
         }
 
         return minSpanTree;
-    }
-
-    private static boolean detectCycle(List<Edge> edgeList, Edge edge)
-    {
-
-        return true;
     }
 }

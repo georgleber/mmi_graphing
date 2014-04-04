@@ -1,6 +1,7 @@
 package de.develman.mmi.algorithm;
 
 import de.develman.mmi.model.Vertex;
+import de.develman.mmi.model.VisitingState;
 import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +21,30 @@ public class BreadthFirstSearch
      * @param startVertex Startknoten
      * @return Liste der Knoten, die von dem Startknoten erreicht werden
      */
-    public static List<Vertex> doSearch(Vertex startVertex)
+    public static List<Vertex> getAccessibleVertices(Vertex startVertex)
     {
-        List<Vertex> vertexList = doSearch(startVertex, null);
+        List<Vertex> vertexList = getVerticesOnPath(startVertex, null);
         return vertexList;
+    }
+
+    /**
+     * Prüft, ob es einen Weg zwischen Start- und Endknoten gibt
+     *
+     * @param startVertex Startknoten
+     * @param endVertex Endknoten
+     * @return {@code true}, wenn ein Weg gefunden wurde
+     */
+    public static boolean hasPath(Vertex startVertex, Vertex endVertex)
+    {
+        boolean pathFound = false;
+
+        List<Vertex> foundVertices = getVerticesOnPath(startVertex, endVertex);
+        if (foundVertices.contains(startVertex) && foundVertices.contains(endVertex))
+        {
+            pathFound = true;
+        }
+
+        return pathFound;
     }
 
     /**
@@ -33,9 +54,9 @@ public class BreadthFirstSearch
      * @param endVertex Endknoten
      * @return Liste der besuchten Knoten, von Startknoten bis Endknoten
      */
-    public static List<Vertex> doSearch(Vertex startVertex, Vertex endVertex)
+    public static List<Vertex> getVerticesOnPath(Vertex startVertex, Vertex endVertex)
     {
-        startVertex.setVisited(true);
+        startVertex.setVisitingState(VisitingState.VISITED);
         Queue<Vertex> queue = new LinkedList<>();
         queue.add(startVertex);
 
@@ -44,7 +65,7 @@ public class BreadthFirstSearch
         {
             Vertex nextVertex = queue.poll();
             visitList.add(nextVertex);
-            
+
             if (nextVertex.equals(endVertex))
             {
                 LOG.info("end vertex found: " + nextVertex);
@@ -53,9 +74,9 @@ public class BreadthFirstSearch
 
             nextVertex.getSuccessors().forEach(vertex ->
             {
-                if (!vertex.isVisited())
+                if (vertex.getVisitingState() == VisitingState.NOT_VISITED)
                 {
-                    vertex.setVisited(true);
+                    vertex.setVisitingState(VisitingState.VISITED);
                     queue.add(vertex);
                 }
             });

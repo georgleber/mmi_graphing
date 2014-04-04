@@ -88,8 +88,8 @@ public class GraphingPresenter implements Initializable
 
             loggingService.clearLogging();
             loggingService.
-                log("Graph wurde erfolgreich geladen, Anzahl Knoten: " + graph.countVertices() + ", Kanten: " + graph.
-                    countEdges());
+                    log("Graph wurde erfolgreich geladen, Anzahl Knoten: " + graph.countVertices() + ", Kanten: " + graph.
+                            countEdges());
         }
     }
 
@@ -103,7 +103,7 @@ public class GraphingPresenter implements Initializable
         {
             File file = new File("data/graph_out.graphml");
             Files.write(Paths.get(file.toURI()), xml.getBytes("utf-8"), StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING);
+                    StandardOpenOption.TRUNCATE_EXISTING);
         }
         catch (IOException ex)
         {
@@ -126,7 +126,7 @@ public class GraphingPresenter implements Initializable
 
         loggingService.log("Running BFS with Startknoten " + startVertex + " und Endknoten " + endVertex);
 
-        List<Vertex> foundVertices = BreadthFirstSearch.doSearch(startVertex, endVertex);
+        List<Vertex> foundVertices = BreadthFirstSearch.getVerticesOnPath(startVertex, endVertex);
         if (endVertex != null && !foundVertices.contains(endVertex))
         {
             loggingService.log("Es konnte kein Weg zwischen " + startVertex + " und " + endVertex + " gefunden werden.");
@@ -142,7 +142,7 @@ public class GraphingPresenter implements Initializable
             {
                 builder.append("Gefundene Knoten {");
             }
-            
+
             builder.append(loadVertexList(foundVertices));
             builder.append("}");
             loggingService.log(builder.toString());
@@ -163,7 +163,7 @@ public class GraphingPresenter implements Initializable
 
         loggingService.log("Running DFS with Startknoten " + startVertex);
 
-        List<Vertex> foundVertices = DepthFirstSearch.doSearch(startVertex);
+        List<Vertex> foundVertices = DepthFirstSearch.getAccessibleVertices(startVertex);
         StringBuilder builder = new StringBuilder();
         builder.append("Gefundene Knoten {");
         builder.append(loadVertexList(foundVertices));
