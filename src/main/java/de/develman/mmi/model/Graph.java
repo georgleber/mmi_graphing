@@ -162,6 +162,13 @@ public class Graph
         source.addOutgoingEdge(edge);
         sink.addIncomingEdge(edge);
         edges.add(edge);
+
+        if (!isDirected())
+        {
+            Edge reverseEdge = edge.revert();
+            source.addIncomingEdge(reverseEdge);
+            sink.addOutgoingEdge(reverseEdge);
+        }
     }
 
     /**

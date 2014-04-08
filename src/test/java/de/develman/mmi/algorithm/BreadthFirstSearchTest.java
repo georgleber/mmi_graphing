@@ -19,7 +19,7 @@ public class BreadthFirstSearchTest
     List<Edge> edges;
 
     @Before
-    public void init()
+    public void setUp()
     {
         initModel();
     }

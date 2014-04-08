@@ -19,7 +19,7 @@ public class DepthFirstSearchTest
     private List<Edge> edges;
 
     @Before
-    public void init()
+    public void setUp()
     {
         initModel();
     }

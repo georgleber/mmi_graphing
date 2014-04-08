@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class DepthFirstSearch
 {
+    private static boolean vertexFound = false;
+
     /**
      * Tiefensuche vom Startknoten, die alle besuchten Knoten liefert
      *
@@ -21,6 +23,8 @@ public class DepthFirstSearch
      */
     public static List<Vertex> getAccessibleVertices(Vertex startVertex)
     {
+        vertexFound = false;
+
         List<Vertex> visitList = new ArrayList<>();
         doSearchInternal(visitList, startVertex, null);
 
@@ -36,17 +40,10 @@ public class DepthFirstSearch
      */
     public static boolean hasPath(Vertex startVertex, Vertex endVertex)
     {
-        boolean pathFound = false;
+        vertexFound = false;
+        doSearchInternal(new ArrayList<>(), startVertex, endVertex);
 
-        List<Vertex> visitList = new ArrayList<>();
-        doSearchInternal(visitList, startVertex, endVertex);
-
-        if (visitList.contains(startVertex) && visitList.contains(endVertex))
-        {
-            pathFound = true;
-        }
-
-        return pathFound;
+        return vertexFound;
     }
 
     /**
@@ -58,6 +55,7 @@ public class DepthFirstSearch
      */
     public static List<Vertex> getVerticesOnPath(Vertex startVertex, Vertex endVertex)
     {
+        vertexFound = false;
         List<Vertex> visitList = new ArrayList<>();
         doSearchInternal(visitList, startVertex, endVertex);
 
@@ -94,22 +92,21 @@ public class DepthFirstSearch
 
     private static void doSearchInternal(List<Vertex> visitList, Vertex startVertex, Vertex endVertex)
     {
-        visitList.add(startVertex);
-        if (startVertex.equals(endVertex))
+        if (vertexFound)
         {
             return;
         }
 
-        startVertex.setVisitingState(VisitingState.VISITED);
-
-        List<Vertex> successors = startVertex.getSuccessors();
-        successors.forEach(vertex ->
+        visitList.add(startVertex);
+        if (startVertex.equals(endVertex))
         {
-            if (vertex.getVisitingState() == VisitingState.NOT_VISITED)
-            {
-                doSearchInternal(visitList, vertex, endVertex);
-            }
-        });
+            vertexFound = true;
+            return;
+        }
+
+        startVertex.setVisitingState(VisitingState.VISITED);
+        startVertex.getSuccessors().stream().filter(vertex -> vertex.getVisitingState() == VisitingState.NOT_VISITED).forEach(
+                vertex -> doSearchInternal(visitList, vertex, endVertex));
     }
 
     private static Vertex findComponent(List<Vertex> vertices, Vertex startVertex)

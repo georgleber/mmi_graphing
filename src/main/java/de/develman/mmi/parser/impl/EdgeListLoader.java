@@ -45,10 +45,5 @@ public class EdgeListLoader extends AbstractLoader
 
         Edge edge = new Edge(source, sink, weight);
         graph.addEdge(edge);
-
-        if (!graph.isDirected())
-        {
-            graph.addEdge(edge.revert());
-        }
     }
 }

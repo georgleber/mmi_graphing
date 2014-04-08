@@ -2,39 +2,72 @@ package de.develman.mmi.algorithm;
 
 import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
-import java.util.Comparator;
-import java.util.List;
+import de.develman.mmi.model.Vertex;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * Die Klasse Kruskal implementiert den Algorithmus von Kruskal zur Berechnung eines minimal spannenden Baumes
+ *
  * @author Georg Henkel <georg@develman.de>
  */
 public class Kruskal
 {
     /**
+     * Berechung des Minimal-Spannenden Baums nach Kruskal
      *
-     * @param graph
-     * @return
+     * @param graph Graph für den der Baum berechnet werden soll
+     * @return Minimal-Spannender Baum
      */
-    public static Graph getMinimalSpanningTree(Graph graph)
+    public static List<Edge> getMinimalSpanningTree(Graph graph)
     {
-        List<Edge> edges = graph.getEdges().parallelStream().sorted(Comparator.comparing(
-                e -> e.getWeight())).collect(Collectors.toList());
+        List<Edge> minSpanTree = new ArrayList<>();
 
-        Graph minSpanTree = new Graph(true);
-        for (Edge edge : edges)
+        Iterator<Edge> edges = sortEdges(graph).iterator();
+        Map<Vertex, Set<Vertex>> forest = createForest(graph.getVertices());
+
+        while (edges.hasNext())
         {
-            if (minSpanTree.getVertices().size() != graph.getVertices().size() - 1)
+            Edge nextEdge = edges.next();
+            edges.remove();
+
+            Set<Vertex> visitedSource = forest.get(nextEdge.getSource());
+            Set<Vertex> visitedSink = forest.get(nextEdge.getSink());
+            if (visitedSource.equals(visitedSink))
             {
-                break;
+                continue;
             }
 
-            if (!DepthFirstSearch.hasPath(edge.getSource(), edge.getSink()))
+            minSpanTree.add(nextEdge);
+            visitedSource.addAll(visitedSink);
+            visitedSource.stream().forEach(v -> forest.put(v, visitedSource));
+
+            if (visitedSource.size() == graph.getVertices().size())
             {
-                minSpanTree.addEdge(edge);
+                break;
             }
         }
 
         return minSpanTree;
+    }
+
+    private static Map<Vertex, Set<Vertex>> createForest(Collection<Vertex> vertices)
+    {
+        Map<Vertex, Set<Vertex>> forest = new HashMap<>();
+        vertices.stream().forEach((vertex) ->
+        {
+            Set<Vertex> vs = new HashSet<>();
+            vs.add(vertex);
+
+            forest.put(vertex, vs);
+        });
+
+        return forest;
+    }
+
+    private static List<Edge> sortEdges(Graph graph)
+    {
+        return graph.getEdges().parallelStream().sorted(Comparator.comparing(
+                e -> e.getWeight())).collect(Collectors.toList());
     }
 }

@@ -11,8 +11,8 @@ import java.util.List;
 public class Vertex
 {
     private final Integer key;
-    private final List<Edge> incomingVdges = new ArrayList<>();
-    private final List<Edge> outgoingVdges = new ArrayList<>();
+    private final List<Edge> incomingEdges = new ArrayList<>();
+    private final List<Edge> outgoingEdges = new ArrayList<>();
 
     private VisitingState visitingState = VisitingState.NOT_VISITED;
 
@@ -57,7 +57,7 @@ public class Vertex
      */
     public List<Edge> getIncomingEdges()
     {
-        return new ArrayList<>(incomingVdges);
+        return new ArrayList<>(incomingEdges);
     }
 
     /**
@@ -67,7 +67,7 @@ public class Vertex
      */
     public void addIncomingEdge(Edge edge)
     {
-        incomingVdges.add(edge);
+        incomingEdges.add(edge);
     }
 
     /**
@@ -77,7 +77,7 @@ public class Vertex
      */
     public void removeIncomingEdge(Edge edge)
     {
-        incomingVdges.remove(edge);
+        incomingEdges.remove(edge);
     }
 
     /**
@@ -85,7 +85,7 @@ public class Vertex
      */
     public List<Edge> getOutgoingEdges()
     {
-        return new ArrayList<>(outgoingVdges);
+        return new ArrayList<>(outgoingEdges);
     }
 
     /**
@@ -95,7 +95,7 @@ public class Vertex
      */
     public void addOutgoingEdge(Edge edge)
     {
-        outgoingVdges.add(edge);
+        outgoingEdges.add(edge);
     }
 
     /**
@@ -105,7 +105,7 @@ public class Vertex
      */
     public void removeOutgoingEdge(Edge edge)
     {
-        outgoingVdges.remove(edge);
+        outgoingEdges.remove(edge);
     }
 
     /**
@@ -114,7 +114,7 @@ public class Vertex
     public List<Vertex> getSuccessors()
     {
         List<Vertex> successors = new ArrayList<>();
-        outgoingVdges.forEach(edge -> successors.add(edge.getSink()));
+        outgoingEdges.forEach(edge -> successors.add(edge.getSink()));
 
         return successors;
     }
@@ -125,7 +125,7 @@ public class Vertex
     public List<Vertex> getPredecessors()
     {
         List<Vertex> predecessors = new ArrayList<>();
-        incomingVdges.forEach(edge -> predecessors.add(edge.getSource()));
+        incomingEdges.forEach(edge -> predecessors.add(edge.getSource()));
 
         return predecessors;
     }
