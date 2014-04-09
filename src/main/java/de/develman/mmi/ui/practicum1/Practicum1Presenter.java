@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.develman.mmi.ui.practicum1;
 
 import de.develman.mmi.algorithm.BreadthFirstSearch;
@@ -11,6 +6,7 @@ import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import de.develman.mmi.service.LoggingService;
 import de.develman.mmi.ui.listener.GraphChangedListener;
+import de.develman.mmi.ui.util.UIHelper;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,10 +61,10 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
         Vertex defaultVertex = vertices.get(0);
 
-        Vertex startVertex = loadVertex(startVertexCBX, defaultVertex);
-        Vertex endVertex = loadVertex(endVertexCBX, null);
+        Vertex startVertex = UIHelper.loadVertex(graph, startVertexCBX, defaultVertex);
+        Vertex endVertex = UIHelper.loadVertex(graph, endVertexCBX, null);
 
-        loggingService.log("Running BFS with Startknoten " + startVertex + " und Endknoten " + endVertex);
+        loggingService.log("BFS mit Startknoten " + startVertex + " und Endknoten " + endVertex);
 
         long startTime = System.currentTimeMillis();
         List<Vertex> foundVertices = BreadthFirstSearch.getVerticesOnPath(startVertex, endVertex);
@@ -86,7 +82,7 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
         Vertex startVertex = vertices.get(0);
 
-        loggingService.log("Running BFS with Startknoten " + startVertex);
+        loggingService.log("BFS mit Startknoten " + startVertex);
 
         long startTime = System.currentTimeMillis();
         int count = DepthFirstSearch.countComponents(graph, startVertex);
@@ -104,10 +100,10 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
         Vertex defaultVertex = vertices.get(0);
 
-        Vertex startVertex = loadVertex(startVertexCBX, defaultVertex);
-        Vertex endVertex = loadVertex(endVertexCBX, null);
+        Vertex startVertex = UIHelper.loadVertex(graph, startVertexCBX, defaultVertex);
+        Vertex endVertex = UIHelper.loadVertex(graph, endVertexCBX, null);
 
-        loggingService.log("Running DFS with Startknoten " + startVertex + " und Endknoten " + endVertex);
+        loggingService.log("DFS mit Startknoten " + startVertex + " und Endknoten " + endVertex);
 
         long startTime = System.currentTimeMillis();
         List<Vertex> foundVertices = DepthFirstSearch.getVerticesOnPath(startVertex, endVertex);
@@ -125,7 +121,7 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
         Vertex startVertex = vertices.get(0);
 
-        loggingService.log("Running DFS with Startknoten " + startVertex);
+        loggingService.log("DFS mit Startknoten " + startVertex);
 
         long startTime = System.currentTimeMillis();
         int count = DepthFirstSearch.countComponents(graph, startVertex);
@@ -133,19 +129,6 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
 
         loggingService.log("Es wurden " + count + " Zusammenhangskomponenten gefunden.");
         loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
-    }
-
-    private Vertex loadVertex(ComboBox<Integer> vertexCbx, Vertex defaultValue)
-    {
-        Vertex vertex = defaultValue;
-
-        Integer selectedKey = vertexCbx.getSelectionModel().selectedItemProperty().get();
-        if (selectedKey != null)
-        {
-            vertex = graph.getVertex(selectedKey);
-        }
-
-        return vertex;
     }
 
     private String loadVertexList(List<Vertex> vertices)

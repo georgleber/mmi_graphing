@@ -1,7 +1,6 @@
 package de.develman.mmi.algorithm;
 
 import de.develman.mmi.model.Vertex;
-import de.develman.mmi.model.VisitingState;
 import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +55,7 @@ public class BreadthFirstSearch
      */
     public static List<Vertex> getVerticesOnPath(Vertex startVertex, Vertex endVertex)
     {
-        startVertex.setVisitingState(VisitingState.VISITED);
+        startVertex.setVisited(true);
         Queue<Vertex> queue = new LinkedList<>();
         queue.add(startVertex);
 
@@ -72,13 +71,10 @@ public class BreadthFirstSearch
                 break;
             }
 
-            nextVertex.getSuccessors().forEach(vertex ->
+            nextVertex.getSuccessors().stream().filter(v -> !v.isVisited()).forEach(vertex ->
             {
-                if (vertex.getVisitingState() == VisitingState.NOT_VISITED)
-                {
-                    vertex.setVisitingState(VisitingState.VISITED);
-                    queue.add(vertex);
-                }
+                vertex.setVisited(true);
+                queue.add(vertex);
             });
         }
 

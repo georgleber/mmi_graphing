@@ -4,7 +4,10 @@ import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +34,31 @@ public class KruskalTest
 
         double cost = minSpanTree.stream().mapToDouble(Edge::getWeight).sum();
         Assert.assertEquals(9.0, cost);
+    }
+
+    public static void main(String[] args)
+    {
+        Random random = new Random();
+        List<Elem> elemList = new ArrayList<>();
+        for (int i = 0; i < 100000; i++)
+        {
+            int randomInt = random.nextInt();
+            elemList.add(new Elem(randomInt));
+        }
+
+        System.out.println("ElemList generated");
+
+        long start1 = System.currentTimeMillis();
+        elemList.parallelStream().sorted(Comparator.comparing(
+                e -> e.getWeight())).collect(Collectors.toList());
+        long end1 = System.currentTimeMillis();
+        System.out.println("Laufzeit (parallel): " + (end1 - start1) + "ms");
+
+        long start2 = System.currentTimeMillis();
+        elemList.stream().sorted(Comparator.comparing(
+                e -> e.getWeight())).collect(Collectors.toList());
+        long end2 = System.currentTimeMillis();
+        System.out.println("Laufzeit (unparallel): " + (end2 - start2) + "ms");
     }
 
     private void initModel()
@@ -80,5 +108,20 @@ public class KruskalTest
         edges.add(e8);
         Edge e9 = new Edge(v5, v7, 1.0);
         edges.add(e9);
+    }
+
+    static class Elem
+    {
+        int weight;
+
+        public Elem(int weight)
+        {
+            this.weight = weight;
+        }
+
+        public int getWeight()
+        {
+            return weight;
+        }
     }
 }

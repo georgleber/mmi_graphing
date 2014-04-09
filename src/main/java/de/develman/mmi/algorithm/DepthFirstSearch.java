@@ -2,7 +2,6 @@ package de.develman.mmi.algorithm;
 
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
-import de.develman.mmi.model.VisitingState;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,8 +103,8 @@ public class DepthFirstSearch
             return;
         }
 
-        startVertex.setVisitingState(VisitingState.VISITED);
-        startVertex.getSuccessors().stream().filter(vertex -> vertex.getVisitingState() == VisitingState.NOT_VISITED).forEach(
+        startVertex.setVisited(true);
+        startVertex.getSuccessors().stream().filter(vertex -> !vertex.isVisited()).forEach(
                 vertex -> doSearchInternal(visitList, vertex, endVertex));
     }
 

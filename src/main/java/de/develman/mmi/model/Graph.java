@@ -54,7 +54,7 @@ public class Graph
      */
     public void unvisitAllVertices()
     {
-        vertices.values().forEach(vertex -> vertex.setVisitingState(VisitingState.NOT_VISITED));
+        vertices.values().forEach(vertex -> vertex.setVisited(false));
     }
 
     /**

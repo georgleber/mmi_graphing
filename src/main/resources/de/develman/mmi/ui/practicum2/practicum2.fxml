@@ -3,21 +3,23 @@
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="484.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.develman.mmi.ui.practicum2.Practicum2Presenter">
-    <children>
-        <HBox layoutX="14.0" layoutY="14.0" spacing="10.0">
-            <children>
-                <Button mnemonicParsing="false" onAction="#kruskalAction" text="%kruskal.btn" />
-            </children>
-        </HBox>
-        <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="57.0" spacing="10.0">
-            <children>
-                <Button mnemonicParsing="false" onAction="#primAction" text="%prim.btn" />
-            </children>
-        </HBox>
-    </children>
+  <children>
+    <HBox layoutX="14.0" layoutY="14.0" spacing="10.0">
+      <children>
+        <Button mnemonicParsing="false" onAction="#kruskalAction" text="%kruskal.btn" />
+      </children>
+    </HBox>
+    <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="57.0" spacing="10.0">
+      <children>
+        <Button mnemonicParsing="false" onAction="#primAction" text="%prim.btn" />
+        <ComboBox fx:id="startVertexCBX" prefWidth="150.0" promptText="%startknoten" />
+      </children>
+    </HBox>
+  </children>
 </AnchorPane>

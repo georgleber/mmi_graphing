@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 public class Kruskal
 {
     /**
-     * Berechung des Minimal-Spannenden Baums nach Kruskal
+     * Berechung des minimal spannenden Baums nach Kruskal
      *
      * @param graph Graph für den der Baum berechnet werden soll
-     * @return Minimal-Spannender Baum
+     * @return Liste der Kanten des minimal spannenden Baums
      */
     public static List<Edge> getMinimalSpanningTree(Graph graph)
     {
@@ -54,7 +54,7 @@ public class Kruskal
     private static Map<Vertex, Set<Vertex>> createForest(Collection<Vertex> vertices)
     {
         Map<Vertex, Set<Vertex>> forest = new HashMap<>();
-        vertices.stream().forEach((vertex) ->
+        vertices.forEach((vertex) ->
         {
             Set<Vertex> vs = new HashSet<>();
             vs.add(vertex);
@@ -67,7 +67,7 @@ public class Kruskal
 
     private static List<Edge> sortEdges(Graph graph)
     {
-        return graph.getEdges().parallelStream().sorted(Comparator.comparing(
+        return graph.getEdges().stream().sorted(Comparator.comparing(
                 e -> e.getWeight())).collect(Collectors.toList());
     }
 }

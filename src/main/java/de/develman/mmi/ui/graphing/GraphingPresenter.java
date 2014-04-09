@@ -86,13 +86,13 @@ public class GraphingPresenter implements Initializable
             FileParser parser = new FileParser(file);
             graph = parser.loadGraph(directed.get());
 
-            fireGraphChanged();
-
             loggingService.clearLogging();
             loggingService.
                     log("Graph wurde erfolgreich geladen, Anzahl Knoten: " + graph.countVertices() + ", Kanten: " + graph.
                             countEdges());
         }
+
+        fireGraphChanged();
     }
 
     @FXML
@@ -115,6 +115,6 @@ public class GraphingPresenter implements Initializable
 
     private void fireGraphChanged()
     {
-        changeListener.parallelStream().forEach(l -> l.graphChanged(graph));
+        changeListener.forEach(l -> l.graphChanged(graph));
     }
 }

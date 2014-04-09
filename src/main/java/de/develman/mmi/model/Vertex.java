@@ -14,7 +14,7 @@ public class Vertex
     private final List<Edge> incomingEdges = new ArrayList<>();
     private final List<Edge> outgoingEdges = new ArrayList<>();
 
-    private VisitingState visitingState = VisitingState.NOT_VISITED;
+    private boolean visited = false;
 
     /**
      * Erstellt einen neuen Knoten
@@ -37,19 +37,19 @@ public class Vertex
     /**
      * @return {@code true}, wenn der Knoten besucht wurde, sonst {@code false}
      */
-    public VisitingState getVisitingState()
+    public boolean isVisited()
     {
-        return visitingState;
+        return visited;
     }
 
     /**
      * Setzt den Status, ob der Knoten besucht wurde oder nicht
      *
-     * @param state Aktueller Besuchsstatus des Knoten
+     * @param visited Aktueller Besuchsstatus des Knoten
      */
-    public void setVisitingState(VisitingState state)
+    public void setVisited(boolean visited)
     {
-        this.visitingState = state;
+        this.visited = visited;
     }
 
     /**
