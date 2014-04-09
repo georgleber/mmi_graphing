@@ -26,25 +26,30 @@ public class Kruskal
         Iterator<Edge> edges = sortEdges(graph).iterator();
         Map<Vertex, Set<Vertex>> forest = createForest(graph.getVertices());
 
-        while (edges.hasNext())
+        while (minSpanTree.size() < graph.getVertices().size() - 1)
         {
-            Edge nextEdge = edges.next();
-            edges.remove();
+            Edge edge = edges.next();
 
-            Set<Vertex> visitedSource = forest.get(nextEdge.getSource());
-            Set<Vertex> visitedSink = forest.get(nextEdge.getSink());
-            if (visitedSource.equals(visitedSink))
+            Set<Vertex> visitedSource = forest.get(edge.getSource());
+            Set<Vertex> visitedSink = forest.get(edge.getSink());
+
+            if (visitedSource == visitedSink)
             {
                 continue;
             }
 
-            minSpanTree.add(nextEdge);
-            visitedSource.addAll(visitedSink);
-            visitedSource.stream().forEach(v -> forest.put(v, visitedSource));
+            minSpanTree.add(edge);
 
-            if (visitedSource.size() == graph.getVertices().size())
+            if (visitedSource.size() < visitedSink.size())
             {
-                break;
+                visitedSink.addAll(visitedSource);
+                visitedSource.forEach(v -> forest.put(v, visitedSink));
+
+            }
+            else
+            {
+                visitedSource.addAll(visitedSink);
+                visitedSink.forEach(v -> forest.put(v, visitedSource));
             }
         }
 

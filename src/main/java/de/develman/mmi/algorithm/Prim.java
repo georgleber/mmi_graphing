@@ -26,26 +26,21 @@ public class Prim
      */
     public static List<Edge> getMinimalSpanningTree(Graph graph, Vertex startVertex)
     {
-        List<Edge> minSpanTree = new ArrayList<>();
+        Vertex vertex = startVertex;
 
-        int vertexCount = graph.getVertices().size();
-        doPrimInternal(vertexCount, startVertex, minSpanTree);
+        List<Edge> minSpanTree = new ArrayList<>();
+        while (minSpanTree.size() < graph.getVertices().size() - 1)
+        {
+            vertex.setVisited(true);
+            updateAvailableEdgeList(vertex);
+
+            Edge edge = availableEdges.remove(0);
+            minSpanTree.add(edge);
+
+            vertex = edge.getSink();
+        }
 
         return minSpanTree;
-    }
-
-    private static void doPrimInternal(int vertexCount, Vertex vertex, List<Edge> minSpanTree)
-    {
-        vertex.setVisited(true);
-        updateAvailableEdgeList(vertex);
-
-        Edge edge = availableEdges.remove(0);
-        minSpanTree.add(edge);
-
-        if (minSpanTree.size() < vertexCount - 1)
-        {
-            doPrimInternal(vertexCount, edge.getSink(), minSpanTree);
-        }
     }
 
     private static void updateAvailableEdgeList(Vertex vertex)
@@ -55,6 +50,7 @@ public class Prim
             availableEdges.add(e);
         });
 
+        // FIXME: minimum aus liste
         availableEdges = availableEdges.stream().filter(e -> !e.getSink().isVisited()).sorted(Comparator.comparing(
                 e -> e.getWeight())).collect(Collectors.toList());
     }
