@@ -141,6 +141,18 @@ public class Graph
     }
 
     /**
+     * Liefert die Kante zwischen den beiden Knoten
+     *
+     * @param source Startknoten
+     * @param sink Endknoten
+     * @return Kante ziwschen den beiden Knoten
+     */
+    public Edge getEdge(Vertex source, Vertex sink)
+    {
+        return source.getEdgeTo(sink.getKey());
+    }
+
+    /**
      * Hinzufügen einer Kante zum Graphen
      *
      * @param edge Kante

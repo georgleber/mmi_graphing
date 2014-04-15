@@ -11,6 +11,8 @@ import de.develman.mmi.ui.practicum1.Practicum1Presenter;
 import de.develman.mmi.ui.practicum1.Practicum1View;
 import de.develman.mmi.ui.practicum2.Practicum2Presenter;
 import de.develman.mmi.ui.practicum2.Practicum2View;
+import de.develman.mmi.ui.practicum3.Practicum3Presenter;
+import de.develman.mmi.ui.practicum3.Practicum3View;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -43,6 +45,8 @@ public class GraphingPresenter implements Initializable
     @FXML
     AnchorPane practicum2Tab;
     @FXML
+    AnchorPane practicum3Tab;
+    @FXML
     CheckBox directedCbx;
 
     @Inject
@@ -65,11 +69,15 @@ public class GraphingPresenter implements Initializable
         practicum1Tab.getChildren().add(practicum1View.getView());
         Practicum2View practicum2View = new Practicum2View();
         practicum2Tab.getChildren().add(practicum2View.getView());
+        Practicum3View practicum3View = new Practicum3View();
+        practicum3Tab.getChildren().add(practicum3View.getView());
 
         Practicum1Presenter practicum1Presenter = (Practicum1Presenter) practicum1View.getPresenter();
         changeListener.add(practicum1Presenter);
         Practicum2Presenter practicum2Presenter = (Practicum2Presenter) practicum2View.getPresenter();
         changeListener.add(practicum2Presenter);
+        Practicum3Presenter practicum3Presenter = (Practicum3Presenter) practicum3View.getPresenter();
+        changeListener.add(practicum3Presenter);
     }
 
     @FXML

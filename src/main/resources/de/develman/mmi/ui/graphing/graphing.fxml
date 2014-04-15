@@ -28,6 +28,11 @@
              <AnchorPane fx:id="practicum2Tab" />
           </content>
         </Tab>
+        <Tab closable="false" text="%tab.practicum3">
+          <content>
+             <AnchorPane fx:id="practicum3Tab" />
+          </content>
+        </Tab>
       </tabs>
     </TabPane>
     <Label layoutX="15.0" layoutY="281.0" text="%titel.ausgabe" />

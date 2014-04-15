@@ -50,8 +50,7 @@ public class Prim
             availableEdges.add(e);
         });
 
-        // FIXME: minimum aus liste
         availableEdges = availableEdges.stream().filter(e -> !e.getSink().isVisited()).sorted(Comparator.comparing(
-                e -> e.getWeight())).collect(Collectors.toList());
+                Edge::getWeight)).collect(Collectors.toList());
     }
 }

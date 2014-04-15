@@ -1,7 +1,7 @@
-package de.develman.mmi.ui.practicum2;
+package de.develman.mmi.ui.practicum3;
 
-import de.develman.mmi.algorithm.Kruskal;
-import de.develman.mmi.algorithm.Prim;
+import de.develman.mmi.algorithm.DoubleTree;
+import de.develman.mmi.algorithm.NearestNeighbour;
 import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
@@ -23,7 +23,7 @@ import javax.inject.Inject;
 /**
  * @author Georg Henkel <georg@develman.de>
  */
-public class Practicum2Presenter implements Initializable, GraphChangedListener
+public class Practicum3Presenter implements Initializable, GraphChangedListener
 {
     @FXML
     ComboBox<Integer> startVertexCBX;
@@ -51,39 +51,38 @@ public class Practicum2Presenter implements Initializable, GraphChangedListener
     }
 
     @FXML
-    public void kruskalAction(ActionEvent event)
-    {
-        graph.unvisitAllVertices();
-        loggingService.log("Kruskal");
-
-        long startTime = System.currentTimeMillis();
-        List<Edge> minSpanTree = Kruskal.getMinimalSpanningTree(graph);
-        long endTime = System.currentTimeMillis();
-
-        double cost = minSpanTree.stream().mapToDouble(Edge::getWeight).sum();
-        loggingService.log("Kosten des Minimal spannenden Baumes: " + cost);
-
-        loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
-    }
-
-    @FXML
-    public void primAction(ActionEvent event)
+    public void nearestNeighbourAction(ActionEvent event)
     {
         graph.unvisitAllVertices();
 
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
         Vertex defaultVertex = vertices.get(0);
-
         Vertex startVertex = UIHelper.loadVertex(graph, startVertexCBX, defaultVertex);
 
-        loggingService.log("Prim mit Startknoten: " + startVertex);
+        loggingService.log("Nearest-Neighbour mit Startknoten: " + startVertex);
 
         long startTime = System.currentTimeMillis();
-        List<Edge> minSpanTree = Prim.getMinimalSpanningTree(graph, startVertex);
+        List<Edge> hamilton = NearestNeighbour.getHamilton(graph, startVertex);
         long endTime = System.currentTimeMillis();
 
-        double cost = minSpanTree.stream().mapToDouble(Edge::getWeight).sum();
-        loggingService.log("Kosten des Minimal spannenden Baumes: " + cost);
+        double length = hamilton.stream().mapToDouble(Edge::getWeight).sum();
+        loggingService.log("Länge der Tour: " + length);
+
+        loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
+    }
+
+    @FXML
+    public void doubleTreeAction(ActionEvent event)
+    {
+        graph.unvisitAllVertices();
+        loggingService.log("Doppelter Baum");
+
+        long startTime = System.currentTimeMillis();
+        List<Edge> hamilton = DoubleTree.getHamilton(graph);
+        long endTime = System.currentTimeMillis();
+
+        double length = hamilton.stream().mapToDouble(Edge::getWeight).sum();
+        loggingService.log("Länge der Tour: " + length);
 
         loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
     }

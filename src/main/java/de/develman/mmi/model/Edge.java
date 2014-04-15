@@ -7,7 +7,7 @@ package de.develman.mmi.model;
  */
 public class Edge
 {
-    private final double weight;
+    private final Double weight;
     private final Vertex source;
     private final Vertex sink;
 
@@ -21,7 +21,7 @@ public class Edge
     {
         this.source = source;
         this.sink = sink;
-        this.weight = 0.0;
+        this.weight = Double.NaN;
     }
 
     /**
@@ -31,7 +31,7 @@ public class Edge
      * @param sink Endknoten
      * @param weight Gewicht
      */
-    public Edge(Vertex source, Vertex sink, double weight)
+    public Edge(Vertex source, Vertex sink, Double weight)
     {
         this.source = source;
         this.sink = sink;
@@ -76,7 +76,16 @@ public class Edge
         StringBuilder builder = new StringBuilder();
 
         builder.append(source);
-        builder.append(" --> ");
+        builder.append(" -");
+
+        if (!weight.isNaN())
+        {
+            builder.append("[");
+            builder.append(weight);
+            builder.append("]");
+        }
+
+        builder.append("-> ");
         builder.append(sink);
 
         return builder.toString();

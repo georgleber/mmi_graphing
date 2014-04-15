@@ -130,6 +130,44 @@ public class Vertex
         return predecessors;
     }
 
+    /**
+     * Sucht von einem Startknoten die Kante zu einem Endknoten
+     *
+     * @param sinkKey Schlüssel des Endknoten
+     * @return Kante zwischen Start- und Endknoten
+     */
+    public Edge getEdgeTo(Integer sinkKey)
+    {
+        for (Edge edge : outgoingEdges)
+        {
+            if (edge.getSink().getKey().equals(sinkKey))
+            {
+                return edge;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Sucht von einem Endknoten die Kante zu einem Startknoten
+     *
+     * @param sourceKey Schlüssel des Startknoten
+     * @return Kante zwischen Start- und Endknoten
+     */
+    public Edge getEdgeFrom(Integer sourceKey)
+    {
+        for (Edge edge : outgoingEdges)
+        {
+            if (edge.getSource().getKey().equals(sourceKey))
+            {
+                return edge;
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public String toString()
     {

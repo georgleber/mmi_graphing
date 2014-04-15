@@ -72,7 +72,6 @@ public class Kruskal
 
     private static List<Edge> sortEdges(Graph graph)
     {
-        return graph.getEdges().stream().sorted(Comparator.comparing(
-                e -> e.getWeight())).collect(Collectors.toList());
+        return graph.getEdges().stream().sorted(Comparator.comparing(Edge::getWeight)).collect(Collectors.toList());
     }
 }
