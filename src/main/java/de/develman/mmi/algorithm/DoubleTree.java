@@ -2,6 +2,8 @@ package de.develman.mmi.algorithm;
 
 import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
+import de.develman.mmi.model.Vertex;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +22,31 @@ public class DoubleTree
      */
     public static List<Edge> getHamilton(Graph graph)
     {
-        List<Edge> edges = Kruskal.getMinimalSpanningTree(graph);
-        return null;
+        Graph minSpanTree = Kruskal.getMinimalSpanningTree(graph);
+
+        Vertex startVertex = minSpanTree.getFirstVertex();
+        List<Vertex> orderVertices = DepthFirstSearch.getAccessibleVertices(startVertex);
+
+        Vertex lastVertex = null;
+        List<Edge> usedEdges = new ArrayList<>();
+        for (int i = 0; i < orderVertices.size() - 1; i++)
+        {
+            int sourceKey = orderVertices.get(i).getKey();
+            int sinkKey = orderVertices.get(i + 1).getKey();
+
+            Vertex firstVertex = graph.getVertex(sourceKey);
+            Edge edge = firstVertex.getEdgeTo(sinkKey);
+            usedEdges.add(edge);
+
+            lastVertex = edge.getSink();
+        }
+
+        if (lastVertex != null)
+        {
+            Edge edge = lastVertex.getEdgeTo(startVertex.getKey());
+            usedEdges.add(edge);
+        }
+
+        return usedEdges;
     }
 }

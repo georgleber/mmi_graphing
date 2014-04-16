@@ -8,7 +8,6 @@ import de.develman.mmi.service.LoggingService;
 import de.develman.mmi.ui.listener.GraphChangedListener;
 import de.develman.mmi.ui.util.UIHelper;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -58,9 +57,7 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
     {
         graph.unvisitAllVertices();
 
-        List<Vertex> vertices = new ArrayList<>(graph.getVertices());
-        Vertex defaultVertex = vertices.get(0);
-
+        Vertex defaultVertex = graph.getFirstVertex();
         Vertex startVertex = UIHelper.loadVertex(graph, startVertexCBX, defaultVertex);
         Vertex endVertex = UIHelper.loadVertex(graph, endVertexCBX, null);
 
@@ -79,8 +76,7 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
     {
         graph.unvisitAllVertices();
 
-        List<Vertex> vertices = new ArrayList<>(graph.getVertices());
-        Vertex startVertex = vertices.get(0);
+        Vertex startVertex = graph.getFirstVertex();
 
         loggingService.log("BFS mit Startknoten " + startVertex);
 
@@ -97,9 +93,7 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
     {
         graph.unvisitAllVertices();
 
-        List<Vertex> vertices = new ArrayList<>(graph.getVertices());
-        Vertex defaultVertex = vertices.get(0);
-
+        Vertex defaultVertex = graph.getFirstVertex();
         Vertex startVertex = UIHelper.loadVertex(graph, startVertexCBX, defaultVertex);
         Vertex endVertex = UIHelper.loadVertex(graph, endVertexCBX, null);
 
@@ -118,8 +112,7 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
     {
         graph.unvisitAllVertices();
 
-        List<Vertex> vertices = new ArrayList<>(graph.getVertices());
-        Vertex startVertex = vertices.get(0);
+        Vertex startVertex = graph.getFirstVertex();
 
         loggingService.log("DFS mit Startknoten " + startVertex);
 

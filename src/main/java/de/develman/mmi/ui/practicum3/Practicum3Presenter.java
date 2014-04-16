@@ -9,7 +9,6 @@ import de.develman.mmi.service.LoggingService;
 import de.develman.mmi.ui.listener.GraphChangedListener;
 import de.develman.mmi.ui.util.UIHelper;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -55,8 +54,7 @@ public class Practicum3Presenter implements Initializable, GraphChangedListener
     {
         graph.unvisitAllVertices();
 
-        List<Vertex> vertices = new ArrayList<>(graph.getVertices());
-        Vertex defaultVertex = vertices.get(0);
+        Vertex defaultVertex = graph.getFirstVertex();
         Vertex startVertex = UIHelper.loadVertex(graph, startVertexCBX, defaultVertex);
 
         loggingService.log("Nearest-Neighbour mit Startknoten: " + startVertex);

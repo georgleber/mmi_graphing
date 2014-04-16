@@ -27,9 +27,9 @@ public class KruskalTest
     @Test
     public void testKruskal()
     {
-        List<Edge> minSpanTree = Kruskal.getMinimalSpanningTree(graph);
+        Graph minSpanTree = Kruskal.getMinimalSpanningTree(graph);
 
-        double cost = minSpanTree.stream().mapToDouble(Edge::getWeight).sum();
+        double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getWeight).sum();
         Assert.assertEquals(9.0, cost);
     }
 

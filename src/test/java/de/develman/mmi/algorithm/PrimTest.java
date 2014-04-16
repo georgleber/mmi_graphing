@@ -27,9 +27,9 @@ public class PrimTest
     @Test
     public void testPrim()
     {
-        List<Edge> minSpanTree = Prim.getMinimalSpanningTree(graph, graph.getVertex(1));
+        Graph minSpanTree = Prim.getMinimalSpanningTree(graph, graph.getVertex(1));
 
-        double cost = minSpanTree.stream().mapToDouble(Edge::getWeight).sum();
+        double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getWeight).sum();
         Assert.assertEquals(15.0, cost);
     }
 

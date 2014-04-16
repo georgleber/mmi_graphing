@@ -24,18 +24,18 @@ public class Prim
      * @param startVertex Startknoten
      * @return Liste der Kanten des minimal spannenden Baums
      */
-    public static List<Edge> getMinimalSpanningTree(Graph graph, Vertex startVertex)
+    public static Graph getMinimalSpanningTree(Graph graph, Vertex startVertex)
     {
         Vertex vertex = startVertex;
 
-        List<Edge> minSpanTree = new ArrayList<>();
-        while (minSpanTree.size() < graph.getVertices().size() - 1)
+        Graph minSpanTree = new Graph(graph.isDirected());
+        while (minSpanTree.getEdges().size() < graph.getVertices().size() - 1)
         {
             vertex.setVisited(true);
             updateAvailableEdgeList(vertex);
 
             Edge edge = availableEdges.remove(0);
-            minSpanTree.add(edge);
+            addEdgeToTree(minSpanTree, edge);
 
             vertex = edge.getSink();
         }
@@ -52,5 +52,25 @@ public class Prim
 
         availableEdges = availableEdges.stream().filter(e -> !e.getSink().isVisited()).sorted(Comparator.comparing(
                 Edge::getWeight)).collect(Collectors.toList());
+    }
+
+    private static void addEdgeToTree(Graph minSpanTree, Edge edge)
+    {
+        Vertex source = minSpanTree.getVertex(edge.getSource().getKey());
+        if (source == null)
+        {
+            source = new Vertex(edge.getSource().getKey());
+            minSpanTree.addVertex(source);
+        }
+
+        Vertex sink = minSpanTree.getVertex(edge.getSink().getKey());
+        if (sink == null)
+        {
+            sink = new Vertex(edge.getSink().getKey());
+            minSpanTree.addVertex(sink);
+        }
+
+        Edge newEdge = new Edge(source, sink, edge.getWeight());
+        minSpanTree.addEdge(newEdge);
     }
 }

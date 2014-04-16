@@ -30,10 +30,19 @@ public class DoubleTreeTest
         List<Edge> hamilton = DoubleTree.getHamilton(graph);
 
         double length = hamilton.stream().mapToDouble(Edge::getWeight).sum();
-        Assert.assertTrue(length == 12.0);
+        Assert.assertTrue(length == 11.0);
     }
 
     private void initModel()
+    {
+        initData();
+
+        graph = new Graph(false);
+        vertices.forEach(v -> graph.addVertex(v));
+        edges.forEach(e -> graph.addEdge(e));
+    }
+
+    private void initData()
     {
         vertices = new ArrayList<>();
 

@@ -9,8 +9,6 @@ import de.develman.mmi.service.LoggingService;
 import de.develman.mmi.ui.listener.GraphChangedListener;
 import de.develman.mmi.ui.util.UIHelper;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -57,10 +55,10 @@ public class Practicum2Presenter implements Initializable, GraphChangedListener
         loggingService.log("Kruskal");
 
         long startTime = System.currentTimeMillis();
-        List<Edge> minSpanTree = Kruskal.getMinimalSpanningTree(graph);
+        Graph minSpanTree = Kruskal.getMinimalSpanningTree(graph);
         long endTime = System.currentTimeMillis();
 
-        double cost = minSpanTree.stream().mapToDouble(Edge::getWeight).sum();
+        double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getWeight).sum();
         loggingService.log("Kosten des Minimal spannenden Baumes: " + cost);
 
         loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
@@ -71,18 +69,16 @@ public class Practicum2Presenter implements Initializable, GraphChangedListener
     {
         graph.unvisitAllVertices();
 
-        List<Vertex> vertices = new ArrayList<>(graph.getVertices());
-        Vertex defaultVertex = vertices.get(0);
-
+        Vertex defaultVertex = graph.getFirstVertex();
         Vertex startVertex = UIHelper.loadVertex(graph, startVertexCBX, defaultVertex);
 
         loggingService.log("Prim mit Startknoten: " + startVertex);
 
         long startTime = System.currentTimeMillis();
-        List<Edge> minSpanTree = Prim.getMinimalSpanningTree(graph, startVertex);
+        Graph minSpanTree = Prim.getMinimalSpanningTree(graph, startVertex);
         long endTime = System.currentTimeMillis();
 
-        double cost = minSpanTree.stream().mapToDouble(Edge::getWeight).sum();
+        double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getWeight).sum();
         loggingService.log("Kosten des Minimal spannenden Baumes: " + cost);
 
         loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");

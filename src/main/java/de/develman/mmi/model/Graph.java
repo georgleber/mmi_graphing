@@ -66,6 +66,15 @@ public class Graph
     }
 
     /**
+     * @return Liefert den ersten Knoten in dem Graphen
+     */
+    public Vertex getFirstVertex()
+    {
+        List<Vertex> vertexList = new ArrayList<>(vertices.values());
+        return vertexList.get(0);
+    }
+
+    /**
      * Prüft ob der Knoten im Graph vorhanden ist
      *
      * @param vertex Knoten

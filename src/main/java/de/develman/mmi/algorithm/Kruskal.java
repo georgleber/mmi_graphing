@@ -19,14 +19,14 @@ public class Kruskal
      * @param graph Graph für den der Baum berechnet werden soll
      * @return Liste der Kanten des minimal spannenden Baums
      */
-    public static List<Edge> getMinimalSpanningTree(Graph graph)
+    public static Graph getMinimalSpanningTree(Graph graph)
     {
-        List<Edge> minSpanTree = new ArrayList<>();
+        Graph minSpanTree = new Graph(graph.isDirected());
 
         Iterator<Edge> edges = sortEdges(graph).iterator();
         Map<Vertex, Set<Vertex>> forest = createForest(graph.getVertices());
 
-        while (minSpanTree.size() < graph.getVertices().size() - 1)
+        while (minSpanTree.getEdges().size() < graph.getVertices().size() - 1)
         {
             Edge edge = edges.next();
 
@@ -38,7 +38,7 @@ public class Kruskal
                 continue;
             }
 
-            minSpanTree.add(edge);
+            addEdgeToTree(minSpanTree, edge);
 
             if (visitedSource.size() < visitedSink.size())
             {
@@ -73,5 +73,25 @@ public class Kruskal
     private static List<Edge> sortEdges(Graph graph)
     {
         return graph.getEdges().stream().sorted(Comparator.comparing(Edge::getWeight)).collect(Collectors.toList());
+    }
+
+    private static void addEdgeToTree(Graph minSpanTree, Edge edge)
+    {
+        Vertex source = minSpanTree.getVertex(edge.getSource().getKey());
+        if (source == null)
+        {
+            source = new Vertex(edge.getSource().getKey());
+            minSpanTree.addVertex(source);
+        }
+
+        Vertex sink = minSpanTree.getVertex(edge.getSink().getKey());
+        if (sink == null)
+        {
+            sink = new Vertex(edge.getSink().getKey());
+            minSpanTree.addVertex(sink);
+        }
+
+        Edge newEdge = new Edge(source, sink, edge.getWeight());
+        minSpanTree.addEdge(newEdge);
     }
 }
