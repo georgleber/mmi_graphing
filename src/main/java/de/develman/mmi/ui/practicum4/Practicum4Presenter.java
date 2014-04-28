@@ -1,7 +1,7 @@
-package de.develman.mmi.ui.practicum3;
+package de.develman.mmi.ui.practicum4;
 
-import de.develman.mmi.algorithm.DoubleTree;
-import de.develman.mmi.algorithm.NearestNeighbour;
+import de.develman.mmi.algorithm.BranchAndBound;
+import de.develman.mmi.algorithm.TryAllTours;
 import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
@@ -22,7 +22,7 @@ import javax.inject.Inject;
 /**
  * @author Georg Henkel <georg@develman.de>
  */
-public class Practicum3Presenter implements Initializable, GraphChangedListener
+public class Practicum4Presenter implements Initializable, GraphChangedListener
 {
     @FXML
     ComboBox<Integer> startVertexCBX;
@@ -30,9 +30,9 @@ public class Practicum3Presenter implements Initializable, GraphChangedListener
     @Inject
     LoggingService loggingService;
     @Inject
-    NearestNeighbour nearestNeighbour;
+    TryAllTours tryAllTour;
     @Inject
-    DoubleTree doubleTree;
+    BranchAndBound branchAndBound;
 
     private Graph graph;
     private ObservableList<Integer> vertexList;
@@ -54,17 +54,17 @@ public class Practicum3Presenter implements Initializable, GraphChangedListener
     }
 
     @FXML
-    public void nearestNeighbourAction(ActionEvent event)
+    public void tryAllToursAction(ActionEvent event)
     {
         graph.unvisitAllVertices();
 
         Vertex defaultVertex = graph.getFirstVertex();
         Vertex startVertex = UIHelper.loadVertex(graph, startVertexCBX, defaultVertex);
 
-        loggingService.log("Nearest-Neighbour mit Startknoten: " + startVertex);
+        loggingService.log("Alle Touren durchprobieren");
 
         long startTime = System.currentTimeMillis();
-        List<Edge> tour = nearestNeighbour.findTour(graph, startVertex);
+        List<Edge> tour = tryAllTour.findOptimalTour(graph, startVertex);
         long endTime = System.currentTimeMillis();
 
         double length = tour.stream().mapToDouble(Edge::getWeight).sum();
@@ -75,13 +75,17 @@ public class Practicum3Presenter implements Initializable, GraphChangedListener
     }
 
     @FXML
-    public void doubleTreeAction(ActionEvent event)
+    public void branchAndBoundAction(ActionEvent event)
     {
         graph.unvisitAllVertices();
-        loggingService.log("Doppelter Baum");
+
+        Vertex defaultVertex = graph.getFirstVertex();
+        Vertex startVertex = UIHelper.loadVertex(graph, startVertexCBX, defaultVertex);
+
+        loggingService.log("Branch-&-Bound mit Startknoten: " + startVertex);
 
         long startTime = System.currentTimeMillis();
-        List<Edge> tour = doubleTree.findTour(graph);
+        List<Edge> tour = branchAndBound.findOptimalTour(graph, startVertex);
         long endTime = System.currentTimeMillis();
 
         double length = tour.stream().mapToDouble(Edge::getWeight).sum();

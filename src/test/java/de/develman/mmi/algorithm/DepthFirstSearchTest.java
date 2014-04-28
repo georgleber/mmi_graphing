@@ -17,11 +17,13 @@ public class DepthFirstSearchTest
 {
     private List<Vertex> vertices;
     private List<Edge> edges;
+    private DepthFirstSearch depthFirstSearch;
 
     @Before
     public void setUp()
     {
         initModel();
+        depthFirstSearch = new DepthFirstSearch();
     }
 
     @Test
@@ -30,7 +32,7 @@ public class DepthFirstSearchTest
         Graph graph = initGraph(false);
         Vertex v1 = graph.getVertex(1);
 
-        List<Vertex> accessibleVertices = DepthFirstSearch.getAccessibleVertices(v1);
+        List<Vertex> accessibleVertices = depthFirstSearch.getAccessibleVertices(v1);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -51,7 +53,7 @@ public class DepthFirstSearchTest
         Graph graph = initGraph(true);
         Vertex v1 = graph.getVertex(1);
 
-        List<Vertex> accessibleVertices = DepthFirstSearch.getAccessibleVertices(v1);
+        List<Vertex> accessibleVertices = depthFirstSearch.getAccessibleVertices(v1);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -73,7 +75,7 @@ public class DepthFirstSearchTest
         Vertex v1 = graph.getVertex(1);
         Vertex v5 = graph.getVertex(5);
 
-        List<Vertex> accessibleVertices = DepthFirstSearch.getVerticesOnPath(v1, v5);
+        List<Vertex> accessibleVertices = depthFirstSearch.getVerticesOnPath(v1, v5);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -95,7 +97,7 @@ public class DepthFirstSearchTest
         Vertex v1 = graph.getVertex(1);
         Vertex v5 = graph.getVertex(5);
 
-        List<Vertex> accessibleVertices = DepthFirstSearch.getVerticesOnPath(v1, v5);
+        List<Vertex> accessibleVertices = depthFirstSearch.getVerticesOnPath(v1, v5);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -117,7 +119,7 @@ public class DepthFirstSearchTest
         Vertex v2 = graph.getVertex(2);
         Vertex v7 = graph.getVertex(7);
 
-        List<Vertex> accessibleVertices = DepthFirstSearch.getVerticesOnPath(v2, v7);
+        List<Vertex> accessibleVertices = depthFirstSearch.getVerticesOnPath(v2, v7);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -139,7 +141,7 @@ public class DepthFirstSearchTest
         Vertex v1 = graph.getVertex(1);
         Vertex v5 = graph.getVertex(5);
 
-        boolean hasPath = DepthFirstSearch.hasPath(v1, v5);
+        boolean hasPath = depthFirstSearch.hasPath(v1, v5);
         Assert.assertTrue(hasPath);
     }
 
@@ -150,7 +152,7 @@ public class DepthFirstSearchTest
         Vertex v1 = graph.getVertex(1);
         Vertex v5 = graph.getVertex(5);
 
-        boolean hasPath = DepthFirstSearch.hasPath(v1, v5);
+        boolean hasPath = depthFirstSearch.hasPath(v1, v5);
         Assert.assertTrue(hasPath);
     }
 
@@ -161,7 +163,7 @@ public class DepthFirstSearchTest
         Vertex v2 = graph.getVertex(2);
         Vertex v7 = graph.getVertex(7);
 
-        boolean hasPath = DepthFirstSearch.hasPath(v2, v7);
+        boolean hasPath = depthFirstSearch.hasPath(v2, v7);
         Assert.assertFalse(hasPath);
     }
 

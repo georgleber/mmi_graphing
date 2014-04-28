@@ -17,17 +17,19 @@ public class NearestNeighbourTest
     private Graph graph;
     private List<Vertex> vertices;
     private List<Edge> edges;
+    private NearestNeighbour nearestNeighbour;
 
     @Before
     public void setUp()
     {
         initModel();
+        nearestNeighbour = new NearestNeighbour();
     }
 
     @Test
     public void testNearestNeighbour()
     {
-        List<Edge> hamilton = NearestNeighbour.getHamilton(graph, graph.getVertex(1));
+        List<Edge> hamilton = nearestNeighbour.findTour(graph, graph.getVertex(1));
 
         double length = hamilton.stream().mapToDouble(Edge::getWeight).sum();
         Assert.assertTrue(length == 14.0);

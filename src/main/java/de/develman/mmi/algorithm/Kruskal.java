@@ -19,7 +19,7 @@ public class Kruskal
      * @param graph Graph für den der Baum berechnet werden soll
      * @return Liste der Kanten des minimal spannenden Baums
      */
-    public static Graph getMinimalSpanningTree(Graph graph)
+    public Graph getMinimalSpanningTree(Graph graph)
     {
         Graph minSpanTree = new Graph(graph.isDirected());
 
@@ -56,7 +56,7 @@ public class Kruskal
         return minSpanTree;
     }
 
-    private static Map<Vertex, Set<Vertex>> createForest(Collection<Vertex> vertices)
+    private Map<Vertex, Set<Vertex>> createForest(Collection<Vertex> vertices)
     {
         Map<Vertex, Set<Vertex>> forest = new HashMap<>();
         vertices.forEach((vertex) ->
@@ -70,12 +70,12 @@ public class Kruskal
         return forest;
     }
 
-    private static List<Edge> sortEdges(Graph graph)
+    private List<Edge> sortEdges(Graph graph)
     {
         return graph.getEdges().stream().sorted(Comparator.comparing(Edge::getWeight)).collect(Collectors.toList());
     }
 
-    private static void addEdgeToTree(Graph minSpanTree, Edge edge)
+    private void addEdgeToTree(Graph minSpanTree, Edge edge)
     {
         Vertex source = minSpanTree.getVertex(edge.getSource().getKey());
         if (source == null)

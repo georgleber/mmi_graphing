@@ -1,6 +1,6 @@
 package de.develman.mmi.service;
 
-import de.develman.mmi.service.model.LoggingBean;
+import de.develman.mmi.model.logging.LoggingBean;
 
 /**
  * @author Georg Henkel <georg@develman.de>

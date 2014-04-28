@@ -15,13 +15,15 @@ import org.junit.Test;
  */
 public class BreadthFirstSearchTest
 {
-    List<Vertex> vertices;
-    List<Edge> edges;
+    private List<Vertex> vertices;
+    private List<Edge> edges;
+    private BreadthFirstSearch breadthFirstSearch;
 
     @Before
     public void setUp()
     {
         initModel();
+        breadthFirstSearch = new BreadthFirstSearch();
     }
 
     @Test
@@ -30,7 +32,7 @@ public class BreadthFirstSearchTest
         Graph graph = initGraph(false);
         Vertex v1 = graph.getVertex(1);
 
-        List<Vertex> accessibleVertices = BreadthFirstSearch.getAccessibleVertices(v1);
+        List<Vertex> accessibleVertices = breadthFirstSearch.getAccessibleVertices(v1);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -51,7 +53,7 @@ public class BreadthFirstSearchTest
         Graph graph = initGraph(true);
         Vertex v1 = graph.getVertex(1);
 
-        List<Vertex> accessibleVertices = BreadthFirstSearch.getAccessibleVertices(v1);
+        List<Vertex> accessibleVertices = breadthFirstSearch.getAccessibleVertices(v1);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -73,7 +75,7 @@ public class BreadthFirstSearchTest
         Vertex v1 = graph.getVertex(1);
         Vertex v5 = graph.getVertex(5);
 
-        List<Vertex> accessibleVertices = BreadthFirstSearch.getVerticesOnPath(v1, v5);
+        List<Vertex> accessibleVertices = breadthFirstSearch.getVerticesOnPath(v1, v5);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -95,7 +97,7 @@ public class BreadthFirstSearchTest
         Vertex v1 = graph.getVertex(1);
         Vertex v5 = graph.getVertex(5);
 
-        List<Vertex> accessibleVertices = BreadthFirstSearch.getVerticesOnPath(v1, v5);
+        List<Vertex> accessibleVertices = breadthFirstSearch.getVerticesOnPath(v1, v5);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -117,7 +119,7 @@ public class BreadthFirstSearchTest
         Vertex v2 = graph.getVertex(2);
         Vertex v7 = graph.getVertex(7);
 
-        List<Vertex> accessibleVertices = BreadthFirstSearch.getVerticesOnPath(v2, v7);
+        List<Vertex> accessibleVertices = breadthFirstSearch.getVerticesOnPath(v2, v7);
         int[] keys = new int[accessibleVertices.size()];
         for (int i = 0; i < accessibleVertices.size(); i++)
         {
@@ -139,7 +141,7 @@ public class BreadthFirstSearchTest
         Vertex v1 = graph.getVertex(1);
         Vertex v5 = graph.getVertex(5);
 
-        boolean hasPath = BreadthFirstSearch.hasPath(v1, v5);
+        boolean hasPath = breadthFirstSearch.hasPath(v1, v5);
         Assert.assertTrue(hasPath);
     }
 
@@ -150,7 +152,7 @@ public class BreadthFirstSearchTest
         Vertex v1 = graph.getVertex(1);
         Vertex v5 = graph.getVertex(5);
 
-        boolean hasPath = BreadthFirstSearch.hasPath(v1, v5);
+        boolean hasPath = breadthFirstSearch.hasPath(v1, v5);
         Assert.assertTrue(hasPath);
     }
 
@@ -161,7 +163,7 @@ public class BreadthFirstSearchTest
         Vertex v2 = graph.getVertex(2);
         Vertex v7 = graph.getVertex(7);
 
-        boolean hasPath = BreadthFirstSearch.hasPath(v2, v7);
+        boolean hasPath = breadthFirstSearch.hasPath(v2, v7);
         Assert.assertFalse(hasPath);
     }
 

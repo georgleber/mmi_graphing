@@ -30,6 +30,10 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
 
     @Inject
     LoggingService loggingService;
+    @Inject
+    BreadthFirstSearch breadthSearch;
+    @Inject
+    DepthFirstSearch depthSearch;
 
     private Graph graph;
     private ObservableList<Integer> vertexList;
@@ -64,7 +68,7 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
         loggingService.log("BFS mit Startknoten " + startVertex + " und Endknoten " + endVertex);
 
         long startTime = System.currentTimeMillis();
-        List<Vertex> foundVertices = BreadthFirstSearch.getVerticesOnPath(startVertex, endVertex);
+        List<Vertex> foundVertices = breadthSearch.getVerticesOnPath(startVertex, endVertex);
         long endTime = System.currentTimeMillis();
 
         logFoundPath(foundVertices, startVertex, endVertex);
@@ -81,7 +85,7 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
         loggingService.log("BFS mit Startknoten " + startVertex);
 
         long startTime = System.currentTimeMillis();
-        int count = DepthFirstSearch.countComponents(graph, startVertex);
+        int count = depthSearch.countComponents(graph, startVertex);
         long endTime = System.currentTimeMillis();
 
         loggingService.log("Es wurden " + count + " Zusammenhangskomponenten gefunden.");
@@ -100,7 +104,7 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
         loggingService.log("DFS mit Startknoten " + startVertex + " und Endknoten " + endVertex);
 
         long startTime = System.currentTimeMillis();
-        List<Vertex> foundVertices = DepthFirstSearch.getVerticesOnPath(startVertex, endVertex);
+        List<Vertex> foundVertices = depthSearch.getVerticesOnPath(startVertex, endVertex);
         long endTime = System.currentTimeMillis();
 
         logFoundPath(foundVertices, startVertex, endVertex);
@@ -117,7 +121,7 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
         loggingService.log("DFS mit Startknoten " + startVertex);
 
         long startTime = System.currentTimeMillis();
-        int count = DepthFirstSearch.countComponents(graph, startVertex);
+        int count = depthSearch.countComponents(graph, startVertex);
         long endTime = System.currentTimeMillis();
 
         loggingService.log("Es wurden " + count + " Zusammenhangskomponenten gefunden.");

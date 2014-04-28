@@ -3,9 +3,9 @@ package de.develman.mmi.ui.graphing;
 import de.develman.mmi.App;
 import de.develman.mmi.export.GraphMLExporter;
 import de.develman.mmi.model.Graph;
+import de.develman.mmi.model.logging.LoggingBean;
 import de.develman.mmi.parser.FileParser;
 import de.develman.mmi.service.LoggingService;
-import de.develman.mmi.service.model.LoggingBean;
 import de.develman.mmi.ui.listener.GraphChangedListener;
 import de.develman.mmi.ui.practicum1.Practicum1Presenter;
 import de.develman.mmi.ui.practicum1.Practicum1View;
@@ -13,6 +13,8 @@ import de.develman.mmi.ui.practicum2.Practicum2Presenter;
 import de.develman.mmi.ui.practicum2.Practicum2View;
 import de.develman.mmi.ui.practicum3.Practicum3Presenter;
 import de.develman.mmi.ui.practicum3.Practicum3View;
+import de.develman.mmi.ui.practicum4.Practicum4Presenter;
+import de.develman.mmi.ui.practicum4.Practicum4View;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -47,6 +49,8 @@ public class GraphingPresenter implements Initializable
     @FXML
     AnchorPane practicum3Tab;
     @FXML
+    AnchorPane practicum4Tab;
+    @FXML
     CheckBox directedCbx;
 
     @Inject
@@ -71,6 +75,8 @@ public class GraphingPresenter implements Initializable
         practicum2Tab.getChildren().add(practicum2View.getView());
         Practicum3View practicum3View = new Practicum3View();
         practicum3Tab.getChildren().add(practicum3View.getView());
+        Practicum4View practicum4View = new Practicum4View();
+        practicum4Tab.getChildren().add(practicum4View.getView());
 
         Practicum1Presenter practicum1Presenter = (Practicum1Presenter) practicum1View.getPresenter();
         changeListener.add(practicum1Presenter);
@@ -78,6 +84,8 @@ public class GraphingPresenter implements Initializable
         changeListener.add(practicum2Presenter);
         Practicum3Presenter practicum3Presenter = (Practicum3Presenter) practicum3View.getPresenter();
         changeListener.add(practicum3Presenter);
+        Practicum4Presenter practicum4Presenter = (Practicum4Presenter) practicum4View.getPresenter();
+        changeListener.add(practicum4Presenter);
     }
 
     @FXML

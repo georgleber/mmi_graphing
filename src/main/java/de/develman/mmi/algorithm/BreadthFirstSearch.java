@@ -20,10 +20,9 @@ public class BreadthFirstSearch
      * @param startVertex Startknoten
      * @return Liste der Knoten, die von dem Startknoten erreicht werden
      */
-    public static List<Vertex> getAccessibleVertices(Vertex startVertex)
+    public List<Vertex> getAccessibleVertices(Vertex startVertex)
     {
-        List<Vertex> vertexList = getVerticesOnPath(startVertex, null);
-        return vertexList;
+        return getVerticesOnPath(startVertex, null);
     }
 
     /**
@@ -33,7 +32,7 @@ public class BreadthFirstSearch
      * @param endVertex Endknoten
      * @return {@code true}, wenn ein Weg gefunden wurde
      */
-    public static boolean hasPath(Vertex startVertex, Vertex endVertex)
+    public boolean hasPath(Vertex startVertex, Vertex endVertex)
     {
         boolean pathFound = false;
 
@@ -53,7 +52,7 @@ public class BreadthFirstSearch
      * @param endVertex Endknoten
      * @return Liste der besuchten Knoten, von Startknoten bis Endknoten
      */
-    public static List<Vertex> getVerticesOnPath(Vertex startVertex, Vertex endVertex)
+    public List<Vertex> getVerticesOnPath(Vertex startVertex, Vertex endVertex)
     {
         startVertex.setVisited(true);
         Queue<Vertex> queue = new LinkedList<>();

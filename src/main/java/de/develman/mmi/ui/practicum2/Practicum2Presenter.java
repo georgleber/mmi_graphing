@@ -28,6 +28,10 @@ public class Practicum2Presenter implements Initializable, GraphChangedListener
 
     @Inject
     LoggingService loggingService;
+    @Inject
+    Kruskal kruskal;
+    @Inject
+    Prim prim;
 
     private Graph graph;
     private ObservableList<Integer> vertexList;
@@ -55,7 +59,7 @@ public class Practicum2Presenter implements Initializable, GraphChangedListener
         loggingService.log("Kruskal");
 
         long startTime = System.currentTimeMillis();
-        Graph minSpanTree = Kruskal.getMinimalSpanningTree(graph);
+        Graph minSpanTree = kruskal.getMinimalSpanningTree(graph);
         long endTime = System.currentTimeMillis();
 
         double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getWeight).sum();
@@ -75,7 +79,7 @@ public class Practicum2Presenter implements Initializable, GraphChangedListener
         loggingService.log("Prim mit Startknoten: " + startVertex);
 
         long startTime = System.currentTimeMillis();
-        Graph minSpanTree = Prim.getMinimalSpanningTree(graph, startVertex);
+        Graph minSpanTree = prim.getMinimalSpanningTree(graph, startVertex);
         long endTime = System.currentTimeMillis();
 
         double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getWeight).sum();

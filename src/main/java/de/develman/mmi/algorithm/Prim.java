@@ -24,7 +24,7 @@ public class Prim
      * @param startVertex Startknoten
      * @return Liste der Kanten des minimal spannenden Baums
      */
-    public static Graph getMinimalSpanningTree(Graph graph, Vertex startVertex)
+    public Graph getMinimalSpanningTree(Graph graph, Vertex startVertex)
     {
         Vertex vertex = startVertex;
 
@@ -43,7 +43,7 @@ public class Prim
         return minSpanTree;
     }
 
-    private static void updateAvailableEdgeList(Vertex vertex)
+    private void updateAvailableEdgeList(Vertex vertex)
     {
         vertex.getOutgoingEdges().stream().filter(e -> !e.getSink().isVisited()).forEach(e ->
         {
@@ -54,7 +54,7 @@ public class Prim
                 Edge::getWeight)).collect(Collectors.toList());
     }
 
-    private static void addEdgeToTree(Graph minSpanTree, Edge edge)
+    private void addEdgeToTree(Graph minSpanTree, Edge edge)
     {
         Vertex source = minSpanTree.getVertex(edge.getSource().getKey());
         if (source == null)

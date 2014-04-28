@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class DepthFirstSearch
 {
-    private static boolean vertexFound = false;
+    private boolean vertexFound = false;
 
     /**
      * Tiefensuche vom Startknoten, die alle besuchten Knoten liefert
@@ -20,7 +20,7 @@ public class DepthFirstSearch
      * @param startVertex Startknoten
      * @return Liste der Knoten, die vom Startknoten erreicht werden
      */
-    public static List<Vertex> getAccessibleVertices(Vertex startVertex)
+    public List<Vertex> getAccessibleVertices(Vertex startVertex)
     {
         vertexFound = false;
 
@@ -37,7 +37,7 @@ public class DepthFirstSearch
      * @param endVertex Endknoten
      * @return {@code true}, wenn ein Weg gefunden wurde
      */
-    public static boolean hasPath(Vertex startVertex, Vertex endVertex)
+    public boolean hasPath(Vertex startVertex, Vertex endVertex)
     {
         vertexFound = false;
         doSearchInternal(new ArrayList<>(), startVertex, endVertex);
@@ -52,7 +52,7 @@ public class DepthFirstSearch
      * @param endVertex Endknoten
      * @return Liste der besuchten Knoten, von Startknoten bis Endknoten
      */
-    public static List<Vertex> getVerticesOnPath(Vertex startVertex, Vertex endVertex)
+    public List<Vertex> getVerticesOnPath(Vertex startVertex, Vertex endVertex)
     {
         vertexFound = false;
         List<Vertex> visitList = new ArrayList<>();
@@ -68,7 +68,7 @@ public class DepthFirstSearch
      * @param startVertex Startknoten
      * @return Liste der Knoten, die vom Startknoten erreicht werden
      */
-    public static int countComponents(Graph graph, Vertex startVertex)
+    public int countComponents(Graph graph, Vertex startVertex)
     {
         int countComponents = 0;
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
@@ -89,7 +89,7 @@ public class DepthFirstSearch
         return countComponents;
     }
 
-    private static void doSearchInternal(List<Vertex> visitList, Vertex startVertex, Vertex endVertex)
+    private void doSearchInternal(List<Vertex> visitList, Vertex startVertex, Vertex endVertex)
     {
         if (vertexFound)
         {
@@ -108,7 +108,7 @@ public class DepthFirstSearch
                 vertex -> doSearchInternal(visitList, vertex, endVertex));
     }
 
-    private static Vertex findComponent(List<Vertex> vertices, Vertex startVertex)
+    private Vertex findComponent(List<Vertex> vertices, Vertex startVertex)
     {
         Vertex nextStartVertex = null;
 

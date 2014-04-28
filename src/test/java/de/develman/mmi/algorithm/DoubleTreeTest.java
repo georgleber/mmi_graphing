@@ -17,17 +17,19 @@ public class DoubleTreeTest
     private Graph graph;
     private List<Vertex> vertices;
     private List<Edge> edges;
+    private DoubleTree doubleTree;
 
     @Before
     public void setUp()
     {
         initModel();
+        doubleTree = new DoubleTree();
     }
 
     @Test
     public void testDoubleTree()
     {
-        List<Edge> hamilton = DoubleTree.getHamilton(graph);
+        List<Edge> hamilton = doubleTree.findTour(graph);
 
         double length = hamilton.stream().mapToDouble(Edge::getWeight).sum();
         Assert.assertTrue(length == 11.0);

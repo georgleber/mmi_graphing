@@ -9,23 +9,23 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Die Klasse NearestNeighbour implementiert den Nearest-Neighbour Algorithmus zur Berechnung der optimalen Tour in
- * einem vollständigen Graphen mit Kantengewichten (TSP)
+ * Die Klasse NearestNeighbour implementiert den Nearest-Neighbour Algorithmus zur Berechnung der TSP-Tour in einem
+ * vollständigen Graphen mit Kantengewichten
  *
  * @author Georg Henkel <georg@develman.de>
  */
 public class NearestNeighbour
 {
     /**
-     * Berechnung der optimalen Tour
+     * Berechnung einer TSP-Tour
      *
      * @param graph Vollständiger Graph mit Kantengewichten
      * @param startVertex Startknoten
-     * @return Liste der Kanten der optimalen Tour
+     * @return Liste der Kanten der TSP-Tour
      */
-    public static List<Edge> getHamilton(Graph graph, Vertex startVertex)
+    public List<Edge> findTour(Graph graph, Vertex startVertex)
     {
-        List<Edge> hamilton = new ArrayList<>();
+        List<Edge> tour = new ArrayList<>();
 
         Vertex vertex = startVertex;
         do
@@ -36,20 +36,20 @@ public class NearestNeighbour
             if (bestEdge == null)
             {
                 Edge edge = graph.getEdge(vertex, startVertex);
-                hamilton.add(edge);
+                tour.add(edge);
 
                 break;
             }
 
             vertex = bestEdge.getSink();
-            hamilton.add(bestEdge);
+            tour.add(bestEdge);
         }
         while (!allVerticesVisited(graph));
 
-        return hamilton;
+        return tour;
     }
 
-    private static boolean allVerticesVisited(Graph graph)
+    private boolean allVerticesVisited(Graph graph)
     {
         boolean allVisited = false;
 
@@ -62,7 +62,7 @@ public class NearestNeighbour
         return allVisited;
     }
 
-    private static Edge getBestEdge(Vertex vertex)
+    private Edge getBestEdge(Vertex vertex)
     {
         Optional<Edge> foundEdge = vertex.getOutgoingEdges().stream().filter(e -> !e.getSink().isVisited()).sorted(
                 Comparator.comparing(Edge::getWeight)).findFirst();

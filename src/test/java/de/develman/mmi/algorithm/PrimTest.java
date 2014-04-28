@@ -17,17 +17,19 @@ public class PrimTest
     private Graph graph;
     private List<Vertex> vertices;
     private List<Edge> edges;
+    private Prim prim;
 
     @Before
     public void setUp()
     {
         initModel();
+        prim = new Prim();
     }
 
     @Test
     public void testPrim()
     {
-        Graph minSpanTree = Prim.getMinimalSpanningTree(graph, graph.getVertex(1));
+        Graph minSpanTree = prim.getMinimalSpanningTree(graph, graph.getVertex(1));
 
         double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getWeight).sum();
         Assert.assertEquals(15.0, cost);

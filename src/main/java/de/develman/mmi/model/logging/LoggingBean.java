@@ -1,4 +1,4 @@
-package de.develman.mmi.service.model;
+package de.develman.mmi.model.logging;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
