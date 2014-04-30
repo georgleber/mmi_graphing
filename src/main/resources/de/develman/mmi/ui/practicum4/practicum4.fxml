@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.collections.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="484.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.develman.mmi.ui.practicum4.Practicum4Presenter">
+<AnchorPane id="AnchorPane" prefHeight="484.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.develman.mmi.ui.practicum4.Practicum4Presenter">
   <children>
-    <HBox layoutX="14.0" alignment="CENTER" layoutY="14.0" spacing="10.0">
+    <HBox alignment="CENTER" layoutX="14.0" layoutY="14.0" spacing="10.0">
       <children>
         <Button mnemonicParsing="false" onAction="#tryAllToursAction" text="%tryall.btn" />
+         <ComboBox fx:id="startVertex1CBX" prefWidth="150.0" promptText="%startknoten" />
       </children>
     </HBox>
     <HBox id="HBox" layoutX="14.0" layoutY="57.0" spacing="10.0">
       <children>
-        <Button mnemonicParsing="false" onAction="#branchAndBoundAction" text="%branchBound.btn" />
-         <ComboBox fx:id="startVertexCBX" prefWidth="150.0" promptText="%startknoten" />
+        <Button mnemonicParsing="false" onAction="#branchAndBoundAction" text="%branchBound.btn" /><ComboBox fx:id="startVertex2CBX" prefWidth="150.0" promptText="%startknoten" />
       </children>
     </HBox>
   </children>

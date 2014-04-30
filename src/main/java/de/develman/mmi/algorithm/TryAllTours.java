@@ -14,11 +14,12 @@ import java.util.List;
  */
 public class TryAllTours
 {
-    private Graph graph;
+    private int vertexCount;
     private Vertex startVertex;
 
+    protected double tourCost;
     protected Double tspCost;
-    private final List<Edge> tspTour = new ArrayList<>();
+    private List<Edge> tspTour;
 
     /**
      * Berechnung der optimalen TSP-Tour
@@ -29,7 +30,7 @@ public class TryAllTours
      */
     public List<Edge> findOptimalTour(Graph graph, Vertex startVertex)
     {
-        this.graph = graph;
+        this.vertexCount = graph.countVertices();
         this.startVertex = startVertex;
         this.tspCost = Double.POSITIVE_INFINITY;
 
@@ -44,41 +45,42 @@ public class TryAllTours
 
     private void findOptimalTour(Vertex vertex, List<Edge> currentEdges)
     {
-        boolean allEdgesFound = currentEdges.size() == graph.getVertices().size();
-        if (vertex == startVertex && allEdgesFound)
-        {
-            checkIfRouteIsBetter(currentEdges);
-        }
-
-        if (nodeVisited(vertex, currentEdges))
-        {
-            currentEdges.remove(currentEdges.size() - 1);
-            return;
-        }
-
         vertex.setVisited(true);
         vertex.getOutgoingEdges().forEach(e ->
         {
+            Vertex sink = e.getSink();
+
             currentEdges.add(e);
-            findOptimalTour(e.getSink(), currentEdges);
+            tourCost += e.getWeight();
+
+            if (sink == startVertex && currentEdges.size() == vertexCount)
+            {
+                checkIfRouteIsBetter(currentEdges);
+            }
+
+            if (!nodeVisited(sink, currentEdges))
+            {
+                findOptimalTour(sink, currentEdges);
+            }
+
+            removeLastEdge(currentEdges);
         });
 
         vertex.setVisited(false);
-        if (currentEdges.size() > 0)
-        {
-            currentEdges.remove(currentEdges.size() - 1);
-        }
+    }
+
+    private void removeLastEdge(List<Edge> edges)
+    {
+        Edge lastEdge = edges.remove(edges.size() - 1);
+        tourCost -= lastEdge.getWeight();
     }
 
     private void checkIfRouteIsBetter(List<Edge> edges)
     {
-        double cost = edges.stream().mapToDouble(Edge::getWeight).sum();
-        if (cost < tspCost)
+        if (tourCost < tspCost)
         {
-            tspCost = cost;
-
-            tspTour.clear();
-            tspTour.addAll(edges);
+            tspCost = tourCost;
+            tspTour = new ArrayList<>(edges);
         }
     }
 }

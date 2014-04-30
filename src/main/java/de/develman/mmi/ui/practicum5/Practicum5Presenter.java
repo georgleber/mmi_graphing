@@ -1,7 +1,7 @@
-package de.develman.mmi.ui.practicum4;
+package de.develman.mmi.ui.practicum5;
 
-import de.develman.mmi.algorithm.BranchAndBound;
-import de.develman.mmi.algorithm.TryAllTours;
+import de.develman.mmi.algorithm.Dijkstra;
+import de.develman.mmi.algorithm.MooreBellmanFord;
 import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
@@ -22,19 +22,21 @@ import javax.inject.Inject;
 /**
  * @author Georg Henkel <georg@develman.de>
  */
-public class Practicum4Presenter implements Initializable, GraphChangedListener
+public class Practicum5Presenter implements Initializable, GraphChangedListener
 {
     @FXML
     ComboBox<Integer> startVertex1CBX;
+    @FXML
+    ComboBox<Integer> endVertex1CBX;
     @FXML
     ComboBox<Integer> startVertex2CBX;
 
     @Inject
     LoggingService loggingService;
     @Inject
-    TryAllTours tryAllTour;
+    Dijkstra dijkstra;
     @Inject
-    BranchAndBound branchAndBound;
+    MooreBellmanFord mooreBellmanFord;
 
     private Graph graph;
     private ObservableList<Integer> vertexList;
@@ -44,6 +46,7 @@ public class Practicum4Presenter implements Initializable, GraphChangedListener
     {
         vertexList = FXCollections.observableArrayList();
         startVertex1CBX.setItems(vertexList);
+        endVertex1CBX.setItems(vertexList);
         startVertex2CBX.setItems(vertexList);
     }
 
@@ -57,38 +60,37 @@ public class Practicum4Presenter implements Initializable, GraphChangedListener
     }
 
     @FXML
-    public void tryAllToursAction(ActionEvent event)
+    public void dijkstraAction(ActionEvent event)
     {
         graph.unvisitAllVertices();
 
         Vertex defaultVertex = graph.getFirstVertex();
         Vertex startVertex = UIHelper.loadVertex(graph, startVertex1CBX, defaultVertex);
+        Vertex endVertex = UIHelper.loadVertex(graph, endVertex1CBX, null);
 
-        loggingService.log("Alle Touren durchprobieren");
+        loggingService.log("Dijkstra Algorithmus mit Startknoten: " + startVertex + " und Zielknoten: " + endVertex);
 
         long startTime = System.currentTimeMillis();
-        List<Edge> tour = tryAllTour.findOptimalTour(graph, startVertex);
+        double length = dijkstra.getLengthOfShortestPath(graph, startVertex, endVertex);
         long endTime = System.currentTimeMillis();
 
-        double length = tour.stream().mapToDouble(Edge::getWeight).sum();
         loggingService.log("Länge der Tour: " + length);
-        loggingService.log("Tour: " + tour);
 
         loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
     }
 
     @FXML
-    public void branchAndBoundAction(ActionEvent event)
+    public void mooreBellmanFordAction(ActionEvent event)
     {
         graph.unvisitAllVertices();
 
         Vertex defaultVertex = graph.getFirstVertex();
         Vertex startVertex = UIHelper.loadVertex(graph, startVertex2CBX, defaultVertex);
 
-        loggingService.log("Branch-&-Bound mit Startknoten: " + startVertex);
+        loggingService.log("Moore-Bellman-Ford Algorithmus mit Startknoten: " + startVertex);
 
         long startTime = System.currentTimeMillis();
-        List<Edge> tour = branchAndBound.findOptimalTour(graph, startVertex);
+        List<Edge> tour = mooreBellmanFord.findTour(graph, startVertex);
         long endTime = System.currentTimeMillis();
 
         double length = tour.stream().mapToDouble(Edge::getWeight).sum();

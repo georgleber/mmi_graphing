@@ -35,9 +35,7 @@ public class NearestNeighbour
             Edge bestEdge = getBestEdge(vertex);
             if (bestEdge == null)
             {
-                Edge edge = graph.getEdge(vertex, startVertex);
-                tour.add(edge);
-
+                tour.add(vertex.getEdgeTo(startVertex.getKey()));
                 break;
             }
 
@@ -51,15 +49,7 @@ public class NearestNeighbour
 
     private boolean allVerticesVisited(Graph graph)
     {
-        boolean allVisited = false;
-
-        long unvisitedVertices = graph.getVertices().stream().filter(v -> !v.isVisited()).count();
-        if (unvisitedVertices == 0)
-        {
-            allVisited = true;
-        }
-
-        return allVisited;
+        return graph.getVertices().stream().filter(v -> !v.isVisited()).count() == 0;
     }
 
     private Edge getBestEdge(Vertex vertex)

@@ -15,7 +15,6 @@ public class BranchAndBound extends TryAllTours
     @Override
     protected boolean nodeVisited(Vertex vertex, List<Edge> currentEdges)
     {
-        double cost = currentEdges.stream().mapToDouble(Edge::getWeight).sum();
-        return vertex.isVisited() || cost > tspCost;
+        return tourCost > tspCost || vertex.isVisited();
     }
 }

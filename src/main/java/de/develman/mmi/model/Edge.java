@@ -76,17 +76,15 @@ public class Edge
         StringBuilder builder = new StringBuilder();
 
         builder.append(source);
-        builder.append(" -");
+        builder.append("->");
+        builder.append(sink);
 
         if (!weight.isNaN())
         {
-            builder.append("[");
+            builder.append(" (");
             builder.append(weight);
-            builder.append("]");
+            builder.append(")");
         }
-
-        builder.append("-> ");
-        builder.append(sink);
 
         return builder.toString();
     }

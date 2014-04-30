@@ -31,28 +31,27 @@ public class DoubleTree
         Graph minSpanTree = kruskal.getMinimalSpanningTree(graph);
 
         Vertex startVertex = minSpanTree.getFirstVertex();
-        List<Vertex> orderVertices = depthSearch.getAccessibleVertices(startVertex);
+        List<Vertex> orderedVertices = depthSearch.getAccessibleVertices(startVertex);
 
-        Vertex lastVertex = null;
         List<Edge> tour = new ArrayList<>();
-        for (int i = 0; i < orderVertices.size() - 1; i++)
+        for (int i = 0; i < orderedVertices.size() - 1; i++)
         {
-            int sourceKey = orderVertices.get(i).getKey();
-            int sinkKey = orderVertices.get(i + 1).getKey();
+            int sourceKey = orderedVertices.get(i).getKey();
+            int sinkKey = orderedVertices.get(i + 1).getKey();
 
-            Vertex firstVertex = graph.getVertex(sourceKey);
-            Edge edge = firstVertex.getEdgeTo(sinkKey);
-            tour.add(edge);
-
-            lastVertex = edge.getSink();
+            Vertex sourceVertex = graph.getVertex(sourceKey);
+            addEdgeToTour(tour, sourceVertex, sinkKey);
         }
 
-        if (lastVertex != null)
-        {
-            Edge edge = lastVertex.getEdgeTo(startVertex.getKey());
-            tour.add(edge);
-        }
+        Vertex lastVertex = orderedVertices.get(orderedVertices.size() - 1);
+        addEdgeToTour(tour, lastVertex, startVertex.getKey());
 
         return tour;
+    }
+
+    private void addEdgeToTour(List<Edge> tour, Vertex sourceVertex, int sinkKey)
+    {
+        Edge edge = sourceVertex.getEdgeTo(sinkKey);
+        tour.add(edge);
     }
 }

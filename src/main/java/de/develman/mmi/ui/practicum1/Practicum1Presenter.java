@@ -52,7 +52,10 @@ public class Practicum1Presenter implements Initializable, GraphChangedListener
         vertexList.clear();
 
         this.graph = graph;
-        this.graph.getVertices().forEach(vertex -> vertexList.add(vertex.getKey()));
+        if (graph != null)
+        {
+            this.graph.getVertices().forEach(vertex -> vertexList.add(vertex.getKey()));
+        }
 
     }
 

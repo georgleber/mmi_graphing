@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="484.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.develman.mmi.ui.practicum5.Practicum5Presenter">
+  <children>
+    <HBox alignment="CENTER" layoutX="14.0" layoutY="14.0" spacing="10.0">
+      <children>
+        <Button mnemonicParsing="false" onAction="#dijkstraAction" text="%dijkstra.btn" />
+        <ComboBox fx:id="startVertex1CBX" prefWidth="150.0" promptText="%startknoten" />
+        <ComboBox fx:id="endVertex1CBX" prefWidth="150.0" promptText="%endknoten" />
+      </children>
+    </HBox>
+    <HBox id="HBox" layoutX="14.0" layoutY="57.0" spacing="10.0">
+      <children>
+        <Button mnemonicParsing="false" onAction="#mooreBellmanFordAction" text="%mooreBellmanFord.btn" />
+         <ComboBox fx:id="startVertex2CBX" prefWidth="150.0" promptText="%startknoten" />
+      </children>
+    </HBox>
+  </children>
+</AnchorPane>
