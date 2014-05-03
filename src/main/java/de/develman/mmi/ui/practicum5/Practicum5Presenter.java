@@ -5,6 +5,7 @@ import de.develman.mmi.algorithm.MooreBellmanFord;
 import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
+import de.develman.mmi.model.algorithm.ShortestPath;
 import de.develman.mmi.service.LoggingService;
 import de.develman.mmi.ui.listener.GraphChangedListener;
 import de.develman.mmi.ui.util.UIHelper;
@@ -71,16 +72,25 @@ public class Practicum5Presenter implements Initializable, GraphChangedListener
         loggingService.log("Dijkstra Algorithmus mit Startknoten: " + startVertex + " und Zielknoten: " + endVertex);
 
         long startTime = System.currentTimeMillis();
-        double length = dijkstra.getLengthOfShortestPath(graph, startVertex, endVertex);
+        ShortestPath path = dijkstra.findShortestPath(graph, startVertex, endVertex);
         long endTime = System.currentTimeMillis();
 
-        loggingService.log("Länge der Tour: " + length);
+        if (path == null)
+        {
+            loggingService.log("Es gibt kein kürzester Weg.");
+        }
+        else
+        {
+            loggingService.log("Weg: " + path.getVertices());
+            loggingService.log("Länge des Wegs: " + path.getLength());
+        }
 
         loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
     }
 
     @FXML
-    public void mooreBellmanFordAction(ActionEvent event)
+    public void mooreBellmanFordAction(ActionEvent event
+    )
     {
         graph.unvisitAllVertices();
 

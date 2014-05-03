@@ -24,6 +24,8 @@ public class DoubleTreeTest
     {
         initModel();
         doubleTree = new DoubleTree();
+        doubleTree.kruskal = new Kruskal();
+        doubleTree.depthSearch = new DepthFirstSearch();
     }
 
     @Test

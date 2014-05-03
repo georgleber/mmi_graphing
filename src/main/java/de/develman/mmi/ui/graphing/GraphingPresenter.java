@@ -1,7 +1,7 @@
 package de.develman.mmi.ui.graphing;
 
 import de.develman.mmi.App;
-import de.develman.mmi.export.GraphMLExporter;
+import de.develman.mmi.export.GraphExporter;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.logging.LoggingBean;
 import de.develman.mmi.parser.FileParser;
@@ -122,13 +122,13 @@ public class GraphingPresenter implements Initializable
     @FXML
     public void exportGraphAction(ActionEvent event)
     {
-        GraphMLExporter exporter = new GraphMLExporter(graph);
-        String xml = exporter.toGraphML();
+        GraphExporter exporter = new GraphExporter(graph);
+        String json = exporter.export();
 
         try
         {
-            File file = new File("data/graph_out.graphml");
-            Files.write(Paths.get(file.toURI()), xml.getBytes("utf-8"), StandardOpenOption.CREATE,
+            File file = new File("data/graph.json");
+            Files.write(Paths.get(file.toURI()), json.getBytes("utf-8"), StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING);
         }
         catch (IOException ex)

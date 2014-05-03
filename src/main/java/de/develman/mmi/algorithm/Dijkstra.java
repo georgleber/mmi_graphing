@@ -1,7 +1,9 @@
 package de.develman.mmi.algorithm;
 
+import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
+import de.develman.mmi.model.algorithm.ShortestPath;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -24,7 +26,7 @@ public class Dijkstra
      * @param endVertex Zielknoten
      * @return Liste der Kanten des Kürzester-Wege-Baum
      */
-    public double getLengthOfShortestPath(Graph graph, Vertex startVertex, Vertex endVertex)
+    public ShortestPath findShortestPath(Graph graph, Vertex startVertex, Vertex endVertex)
     {
         initDistances(graph, startVertex);
         initPredecessors(graph.countVertices(), startVertex);
@@ -32,7 +34,7 @@ public class Dijkstra
         Vertex currentVertex = startVertex;
         do
         {
-            currentVertex.getOutgoingEdges().forEach(e ->
+            currentVertex.getOutgoingEdges().stream().filter(unscannedSink()).forEach(e ->
             {
                 Vertex source = e.getSource();
                 Vertex sink = e.getSink();
@@ -54,12 +56,12 @@ public class Dijkstra
         }
         while (true);
 
-        return distance.get(endVertex);
+        return loadShortestPath(startVertex, endVertex);
     }
 
     private Vertex getNextVertex()
     {
-        Optional<Map.Entry<Vertex, Double>> unscannedEntry = distance.entrySet().stream().filter(isUnscanned()).sorted(
+        Optional<Map.Entry<Vertex, Double>> unscannedEntry = distance.entrySet().stream().filter(unscannedVertex()).sorted(
                 compareWeight()).findFirst();
 
         Vertex nextVertex = null;
@@ -85,14 +87,45 @@ public class Dijkstra
 
     }
 
-    private Predicate<Map.Entry<Vertex, Double>> isUnscanned()
+    private Predicate<Map.Entry<Vertex, Double>> unscannedVertex()
     {
-        return entry -> entry.getKey().isVisited();
+        return entry -> !entry.getKey().isVisited();
+    }
 
+    private Predicate<Edge> unscannedSink()
+    {
+        return e -> !e.getSink().isVisited();
     }
 
     private Comparator<Map.Entry<Vertex, Double>> compareWeight()
     {
         return Comparator.comparing(entry -> entry.getValue());
     }
+
+    private ShortestPath loadShortestPath(Vertex startVertex, Vertex endVertex)
+    {
+        ShortestPath path = null;
+
+        double length = distance.get(endVertex);
+        if (!Double.isInfinite(length))
+        {
+            List<Vertex> vertices = new ArrayList<>();
+            vertices.add(endVertex);
+
+            Vertex pred = endVertex;
+            while (pred != startVertex)
+            {
+                pred = predecessor[pred.getKey()];
+                vertices.add(pred);
+            }
+            Collections.reverse(vertices);
+
+            path = new ShortestPath();
+            path.setLength(length);
+            path.setVertices(vertices);
+        }
+
+        return path;
+    }
+
 }
