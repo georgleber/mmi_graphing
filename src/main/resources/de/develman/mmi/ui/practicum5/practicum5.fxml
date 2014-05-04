@@ -16,7 +16,7 @@
     <HBox id="HBox" layoutX="14.0" layoutY="57.0" spacing="10.0">
       <children>
         <Button mnemonicParsing="false" onAction="#mooreBellmanFordAction" text="%mooreBellmanFord.btn" />
-         <ComboBox fx:id="startVertex2CBX" prefWidth="150.0" promptText="%startknoten" />
+         <ComboBox fx:id="startVertex2CBX" prefWidth="150.0" promptText="%startknoten" /><ComboBox fx:id="endVertex2CBX" prefWidth="150.0" promptText="%endknoten" />
       </children>
     </HBox>
   </children>

@@ -2,7 +2,7 @@ package de.develman.mmi.ui.practicum5;
 
 import de.develman.mmi.algorithm.Dijkstra;
 import de.develman.mmi.algorithm.MooreBellmanFord;
-import de.develman.mmi.model.Edge;
+import de.develman.mmi.exception.NegativeCycleException;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import de.develman.mmi.model.algorithm.ShortestPath;
@@ -10,7 +10,6 @@ import de.develman.mmi.service.LoggingService;
 import de.develman.mmi.ui.listener.GraphChangedListener;
 import de.develman.mmi.ui.util.UIHelper;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +30,8 @@ public class Practicum5Presenter implements Initializable, GraphChangedListener
     ComboBox<Integer> endVertex1CBX;
     @FXML
     ComboBox<Integer> startVertex2CBX;
+    @FXML
+    ComboBox<Integer> endVertex2CBX;
 
     @Inject
     LoggingService loggingService;
@@ -49,6 +50,7 @@ public class Practicum5Presenter implements Initializable, GraphChangedListener
         startVertex1CBX.setItems(vertexList);
         endVertex1CBX.setItems(vertexList);
         startVertex2CBX.setItems(vertexList);
+        endVertex2CBX.setItems(vertexList);
     }
 
     @Override
@@ -74,16 +76,7 @@ public class Practicum5Presenter implements Initializable, GraphChangedListener
         long startTime = System.currentTimeMillis();
         ShortestPath path = dijkstra.findShortestPath(graph, startVertex, endVertex);
         long endTime = System.currentTimeMillis();
-
-        if (path == null)
-        {
-            loggingService.log("Es gibt kein kürzester Weg.");
-        }
-        else
-        {
-            loggingService.log("Weg: " + path.getVertices());
-            loggingService.log("Länge des Wegs: " + path.getLength());
-        }
+        logPath(path, startVertex, endVertex);
 
         loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
     }
@@ -96,17 +89,37 @@ public class Practicum5Presenter implements Initializable, GraphChangedListener
 
         Vertex defaultVertex = graph.getFirstVertex();
         Vertex startVertex = UIHelper.loadVertex(graph, startVertex2CBX, defaultVertex);
+        Vertex endVertex = UIHelper.loadVertex(graph, endVertex2CBX, null);
 
-        loggingService.log("Moore-Bellman-Ford Algorithmus mit Startknoten: " + startVertex);
+        loggingService.log(
+                "Moore-Bellman-Ford Algorithmus mit Startknoten: " + startVertex + " und Zielknoten: " + endVertex);
 
         long startTime = System.currentTimeMillis();
-        List<Edge> tour = mooreBellmanFord.findTour(graph, startVertex);
+        ShortestPath path = null;
+        try
+        {
+            path = mooreBellmanFord.findShortestPath(graph, startVertex, endVertex);
+        }
+        catch (NegativeCycleException ex)
+        {
+            loggingService.log("Es wurde ein negativer Zykel gefunden.");
+        }
         long endTime = System.currentTimeMillis();
-
-        double length = tour.stream().mapToDouble(Edge::getWeight).sum();
-        loggingService.log("Länge der Tour: " + length);
-        loggingService.log("Tour: " + tour);
+        logPath(path, startVertex, endVertex);
 
         loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
+    }
+
+    private void logPath(ShortestPath path, Vertex startVertex, Vertex endVertex)
+    {
+        if (path == null)
+        {
+            loggingService.log("Es gibt kein Weg zwischen " + startVertex + " und " + endVertex);
+        }
+        else
+        {
+            loggingService.log("Weg zwischen " + startVertex + " und " + endVertex + ": " + path.getVertices());
+            loggingService.log("Länge des Wegs: " + path.getLength());
+        }
     }
 }

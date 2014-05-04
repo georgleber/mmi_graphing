@@ -13,7 +13,7 @@ public class Graph
 {
     private final boolean directed;
     private final Map<Integer, Vertex> vertices = new HashMap<>();
-    private final Set<Edge> edges = new HashSet<>();
+    private final List<Edge> edges = new ArrayList<>();
 
     /**
      * Erstellt ein neues Graph-Objekt
@@ -142,11 +142,11 @@ public class Graph
     }
 
     /**
-     * @return Liefert eine unmodifizierbare Collection der Kanten
+     * @return Liefert eine unmodifizierbare Liste der Kanten
      */
-    public Collection<Edge> getEdges()
+    public List<Edge> getEdges()
     {
-        return Collections.unmodifiableCollection(edges);
+        return Collections.unmodifiableList(edges);
     }
 
     /**
