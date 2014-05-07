@@ -5,7 +5,7 @@ import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import java.util.ArrayList;
 import java.util.List;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +32,7 @@ public class KruskalTest
         Graph minSpanTree = kruskal.getMinimalSpanningTree(graph);
 
         double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getWeight).sum();
-        Assert.assertEquals(9.0, cost);
+        Assert.assertEquals(9.0, cost, 0.0);
     }
 
     private void initModel()

@@ -11,14 +11,13 @@ import java.util.*;
  */
 public abstract class AbstractShortestPath
 {
-    protected Graph graph;
     protected Map<Vertex, Double> distance;
-    protected Vertex[] predecessor;
+    protected Map<Vertex, Vertex> predecessor;
 
     protected void init(Graph graph, Vertex startVertex)
     {
         initDistances(graph, startVertex);
-        initPredecessors(graph.countVertices(), startVertex);
+        initPredecessors(startVertex);
     }
 
     protected void updateWeigth(Edge e)
@@ -29,7 +28,7 @@ public abstract class AbstractShortestPath
         if (newDistance < distance.get(sink))
         {
             distance.put(sink, newDistance);
-            predecessor[sink.getKey()] = source;
+            predecessor.put(sink, source);
         }
     }
 
@@ -46,7 +45,7 @@ public abstract class AbstractShortestPath
             Vertex pred = endVertex;
             while (pred != startVertex)
             {
-                pred = predecessor[pred.getKey()];
+                pred = predecessor.get(pred);
                 vertices.add(pred);
             }
             Collections.reverse(vertices);
@@ -66,9 +65,9 @@ public abstract class AbstractShortestPath
         distance.put(startVertex, 0.0);
     }
 
-    private void initPredecessors(int countVertices, Vertex startVertex)
+    private void initPredecessors(Vertex startVertex)
     {
-        predecessor = new Vertex[countVertices];
-        predecessor[startVertex.getKey()] = startVertex;
+        predecessor = new HashMap<>();
+        predecessor.put(startVertex, startVertex);
     }
 }
