@@ -1,6 +1,6 @@
 package de.develman.mmi.ui.practicum6;
 
-import de.develman.mmi.algorithm.FordFulkerson;
+import de.develman.mmi.algorithm.EdmondsKarp;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import de.develman.mmi.service.LoggingService;
@@ -29,7 +29,7 @@ public class Practicum6Presenter implements Initializable, GraphChangedListener
     @Inject
     LoggingService loggingService;
     @Inject
-    FordFulkerson fordFulkerson;
+    EdmondsKarp edmondsKarp;
 
     private Graph graph;
     private ObservableList<Integer> vertexList;
@@ -67,7 +67,7 @@ public class Practicum6Presenter implements Initializable, GraphChangedListener
                 "Ford-Fulkerson Algorithmus mit Startknoten: " + startVertex + " und Zielknoten: " + endVertex);
 
         long startTime = System.currentTimeMillis();
-        double maxFlow = fordFulkerson.findMaxFlow(graph, startVertex, endVertex);
+        double maxFlow = edmondsKarp.findMaxFlow(graph, startVertex, endVertex);
         long endTime = System.currentTimeMillis();
         loggingService.log("Maximaler Fluss: " + maxFlow);
 

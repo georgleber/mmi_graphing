@@ -7,13 +7,23 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
+ * Die Klasse
+ *
  * @author Georg Henkel <georg@develman.de>
  */
-public class FordFulkerson
+public class EdmondsKarp
 {
     @Inject
     BreadthFirstSearch breadthSearch;
 
+    /**
+     * Berechnung des maximalen Flusses
+     *
+     * @param graph Gerichteter Graph
+     * @param startVertex Startknoten
+     * @param endVertex Endknoten
+     * @return Liefert den maximalen Fluss im Graphen
+     */
     public double findMaxFlow(Graph graph, Vertex startVertex, Vertex endVertex)
     {
         double maxFlow = 0.0;
@@ -22,7 +32,7 @@ public class FordFulkerson
             return maxFlow;
         }
 
-        Graph residualGraph = initResidualGraph(graph);
+        Graph residualGraph = graph.copy();
         Vertex start = residualGraph.getVertex(startVertex.getKey());
         Vertex end = residualGraph.getVertex(endVertex.getKey());
 
@@ -36,22 +46,6 @@ public class FordFulkerson
         }
 
         return maxFlow;
-    }
-
-    private Graph initResidualGraph(Graph graph)
-    {
-        Graph residualGraph = new Graph(graph.isDirected());
-        graph.getVertices().forEach(v -> residualGraph.addVertex(new Vertex(v.getKey())));
-        graph.getEdges().forEach(e ->
-        {
-            Vertex source = residualGraph.getVertex(e.getSource().getKey());
-            Vertex sink = residualGraph.getVertex(e.getSink().getKey());
-
-            Edge residualEdge = new Edge(source, sink, e.getWeight());
-            residualGraph.addEdge(residualEdge);
-        });
-
-        return residualGraph;
     }
 
     private List<Edge> findPath(Graph graph, Vertex start, Vertex end)

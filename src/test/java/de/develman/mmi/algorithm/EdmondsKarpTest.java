@@ -12,20 +12,20 @@ import org.junit.Test;
 /**
  * @author Georg Henkel <georg@develman.de>
  */
-public class FordFulkersonTest
+public class EdmondsKarpTest
 {
     private Graph graph;
     private List<Vertex> vertices;
     private List<Edge> edges;
-    private FordFulkerson fordFulkerson;
+    private EdmondsKarp edmondsKarp;
 
     @Before
     public void setUp()
     {
         initModel();
         BreadthFirstSearch breadthSearch = new BreadthFirstSearch();
-        fordFulkerson = new FordFulkerson();
-        fordFulkerson.breadthSearch = breadthSearch;
+        edmondsKarp = new EdmondsKarp();
+        edmondsKarp.breadthSearch = breadthSearch;
     }
 
     @Test
@@ -33,7 +33,7 @@ public class FordFulkersonTest
     {
         Vertex v1 = graph.getVertex(1);
         Vertex v4 = graph.getVertex(6);
-        double maxFlow = fordFulkerson.findMaxFlow(graph, v1, v4);
+        double maxFlow = edmondsKarp.findMaxFlow(graph, v1, v4);
 
         Assert.assertTrue(maxFlow == 23.0);
     }

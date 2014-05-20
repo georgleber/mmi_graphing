@@ -208,10 +208,23 @@ public class Graph
         edges.remove(edge);
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException
+    /**
+     * @return Liefert eine Kopie von diesem Graphen
+     */
+    public Graph copy()
     {
+        Graph clonedGraph = new Graph(directed);
 
-        return super.clone(); //To change body of generated methods, choose Tools | Templates.
+        getVertices().forEach(v -> clonedGraph.addVertex(new Vertex(v.getKey())));
+        getEdges().forEach(e ->
+        {
+            Vertex source = clonedGraph.getVertex(e.getSource().getKey());
+            Vertex sink = clonedGraph.getVertex(e.getSink().getKey());
+
+            Edge residualEdge = new Edge(source, sink, e.getWeight());
+            clonedGraph.addEdge(residualEdge);
+        });
+
+        return clonedGraph;
     }
 }
