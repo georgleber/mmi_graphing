@@ -7,7 +7,7 @@ package de.develman.mmi.model;
  */
 public class Edge
 {
-    private final Double weight;
+    private Double weight;
     private final Vertex source;
     private final Vertex sink;
 
@@ -60,6 +60,16 @@ public class Edge
     public double getWeight()
     {
         return weight;
+    }
+
+    /**
+     * Setzt ein neues Kantengewicht
+     *
+     * @param weight Das neue Gewicht der Kante
+     */
+    public void setWeight(Double weight)
+    {
+        this.weight = weight;
     }
 
     /**

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="484.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.develman.mmi.ui.practicum6.Practicum6Presenter">
+  <children>
+    <HBox alignment="CENTER" layoutX="14.0" layoutY="14.0" spacing="10.0">
+      <children>
+        <Button mnemonicParsing="false" onAction="#fordFulkersonAction" text="%fordFulkerson.btn" />
+        <ComboBox fx:id="startVertexCBX" prefWidth="150.0" promptText="%startknoten" />
+        <ComboBox fx:id="endVertexCBX" prefWidth="150.0" promptText="%endknoten" />
+      </children>
+    </HBox>
+  </children>
+</AnchorPane>

@@ -30,7 +30,7 @@ public abstract class AbstractLoader implements GraphLoader
         Graph graph = new Graph(directed);
         try (BufferedReader lineReader = new BufferedReader(new FileReader(file)))
         {
-            String firstLine = lineReader.readLine();
+            String firstLine = lineReader.readLine().trim();
             int countVertices = Integer.parseInt(firstLine);
             addVertices(graph, countVertices);
 

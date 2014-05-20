@@ -1,8 +1,6 @@
-package de.develman.mmi.ui.practicum2;
+package de.develman.mmi.ui.practicum6;
 
-import de.develman.mmi.algorithm.Kruskal;
-import de.develman.mmi.algorithm.Prim;
-import de.develman.mmi.model.Edge;
+import de.develman.mmi.algorithm.FordFulkerson;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import de.develman.mmi.service.LoggingService;
@@ -21,17 +19,17 @@ import javax.inject.Inject;
 /**
  * @author Georg Henkel <georg@develman.de>
  */
-public class Practicum2Presenter implements Initializable, GraphChangedListener
+public class Practicum6Presenter implements Initializable, GraphChangedListener
 {
     @FXML
     ComboBox<Integer> startVertexCBX;
+    @FXML
+    ComboBox<Integer> endVertexCBX;
 
     @Inject
     LoggingService loggingService;
     @Inject
-    Kruskal kruskal;
-    @Inject
-    Prim prim;
+    FordFulkerson fordFulkerson;
 
     private Graph graph;
     private ObservableList<Integer> vertexList;
@@ -41,6 +39,7 @@ public class Practicum2Presenter implements Initializable, GraphChangedListener
     {
         vertexList = FXCollections.observableArrayList();
         startVertexCBX.setItems(vertexList);
+        endVertexCBX.setItems(vertexList);
     }
 
     @Override
@@ -56,37 +55,21 @@ public class Practicum2Presenter implements Initializable, GraphChangedListener
     }
 
     @FXML
-    public void kruskalAction(ActionEvent event)
-    {
-        graph.unvisitAllVertices();
-        loggingService.log("Kruskal");
-
-        long startTime = System.currentTimeMillis();
-        Graph minSpanTree = kruskal.getMinimalSpanningTree(graph);
-        long endTime = System.currentTimeMillis();
-
-        double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getWeight).sum();
-        loggingService.log("Kosten des Minimal spannenden Baumes: " + cost);
-
-        loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
-    }
-
-    @FXML
-    public void primAction(ActionEvent event)
+    public void fordFulkersonAction(ActionEvent event)
     {
         graph.unvisitAllVertices();
 
         Vertex defaultVertex = graph.getFirstVertex();
         Vertex startVertex = UIHelper.loadVertex(graph, startVertexCBX, defaultVertex);
+        Vertex endVertex = UIHelper.loadVertex(graph, endVertexCBX, null);
 
-        loggingService.log("Prim mit Startknoten: " + startVertex);
+        loggingService.log(
+                "Ford-Fulkerson Algorithmus mit Startknoten: " + startVertex + " und Zielknoten: " + endVertex);
 
         long startTime = System.currentTimeMillis();
-        Graph minSpanTree = prim.getMinimalSpanningTree(graph, startVertex);
+        double maxFlow = fordFulkerson.findMaxFlow(graph, startVertex, endVertex);
         long endTime = System.currentTimeMillis();
-
-        double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getWeight).sum();
-        loggingService.log("Kosten des Minimal spannenden Baumes: " + cost);
+        loggingService.log("Maximaler Fluss: " + maxFlow);
 
         loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
     }

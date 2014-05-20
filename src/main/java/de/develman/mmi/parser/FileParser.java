@@ -47,7 +47,7 @@ public class FileParser
         boolean adjacent = false;
         try (BufferedReader lineReader = new BufferedReader(new FileReader(file)))
         {
-            String firstLine = lineReader.readLine();
+            String firstLine = lineReader.readLine().trim();
             int countVertices = Integer.parseInt(firstLine);
 
             LOG.debug("Count of vertices is: " + countVertices);
