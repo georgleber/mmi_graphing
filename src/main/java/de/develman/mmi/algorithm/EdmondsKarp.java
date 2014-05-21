@@ -7,7 +7,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * Die Klasse
+ * Die Klasse EdmondsKarp implementiert den Edmonds-Karp Algorithmus zur Berechnung des maximalen Flusses in einem
+ * gerichteten Graphen
  *
  * @author Georg Henkel <georg@develman.de>
  */
