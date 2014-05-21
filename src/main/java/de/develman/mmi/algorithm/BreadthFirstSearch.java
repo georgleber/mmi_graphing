@@ -4,8 +4,6 @@ import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import java.util.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Die Klasse BreadthFirstSearch implementiert die Breitensuche in einem Graphen
@@ -14,8 +12,6 @@ import org.slf4j.LoggerFactory;
  */
 public class BreadthFirstSearch
 {
-    private static final Logger LOG = LoggerFactory.getLogger(BreadthFirstSearch.class);
-
     private Map<Vertex, Vertex> parentVertexMap;
 
     /**
@@ -94,7 +90,6 @@ public class BreadthFirstSearch
 
             if (nextVertex.equals(endVertex))
             {
-                LOG.info("end vertex found: " + nextVertex);
                 break;
             }
 

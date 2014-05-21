@@ -64,7 +64,7 @@ public class Practicum6Presenter implements Initializable, GraphChangedListener
         Vertex endVertex = UIHelper.loadVertex(graph, endVertexCBX, null);
 
         loggingService.log(
-                "Ford-Fulkerson Algorithmus mit Startknoten: " + startVertex + " und Zielknoten: " + endVertex);
+                "Edmonds-Karp Algorithmus mit Startknoten: " + startVertex + " und Zielknoten: " + endVertex);
 
         long startTime = System.currentTimeMillis();
         double maxFlow = edmondsKarp.findMaxFlow(graph, startVertex, endVertex);
