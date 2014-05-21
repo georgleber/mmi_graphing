@@ -49,10 +49,16 @@ public class BreadthFirstSearch
         return pathFound;
     }
 
+    /**
+     * Liefert den Pfad in dem Graphen, sofern er existiert
+     *
+     * @param graph Graph
+     * @param startVertex Startknoten
+     * @param endVertex Endknoten
+     * @return Liste der Kanten zwischen Start- und Endknoten
+     */
     public List<Edge> getPath(Graph graph, Vertex startVertex, Vertex endVertex)
     {
-        parentVertexMap = new HashMap<>();
-
         List<Edge> path = null;
         List<Vertex> foundVertices = getVerticesOnPath(startVertex, endVertex);
         if (foundVertices.contains(startVertex) && foundVertices.contains(endVertex))
@@ -72,6 +78,8 @@ public class BreadthFirstSearch
      */
     public List<Vertex> getVerticesOnPath(Vertex startVertex, Vertex endVertex)
     {
+        parentVertexMap = new HashMap<>();
+
         startVertex.setVisited(true);
         parentVertexMap.put(startVertex, null);
 
