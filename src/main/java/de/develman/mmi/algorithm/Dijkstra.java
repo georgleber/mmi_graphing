@@ -29,7 +29,7 @@ public class Dijkstra extends AbstractShortestPath
         Vertex currentVertex = startVertex;
         do
         {
-            currentVertex.getOutgoingEdges().stream().filter(e -> !e.getSink().isVisited()).forEach(e -> updateWeigth(e));
+            currentVertex.getOutgoingEdges().stream().filter(e -> !e.getSink().isVisited()).forEach(e -> updateCost(e));
             currentVertex.setVisited(true);
 
             currentVertex = getNextVertex();

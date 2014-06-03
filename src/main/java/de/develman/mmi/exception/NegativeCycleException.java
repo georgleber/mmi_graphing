@@ -5,5 +5,4 @@ package de.develman.mmi.exception;
  */
 public class NegativeCycleException extends Exception
 {
-
 }

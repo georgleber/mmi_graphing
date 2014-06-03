@@ -72,7 +72,7 @@ public class Kruskal
 
     private List<Edge> sortEdges(Graph graph)
     {
-        return graph.getEdges().stream().sorted(Comparator.comparing(Edge::getWeight)).collect(Collectors.toList());
+        return graph.getEdges().stream().sorted(Comparator.comparing(Edge::getCapacity)).collect(Collectors.toList());
     }
 
     private void addEdgeToTree(Graph minSpanTree, Edge edge)
@@ -91,7 +91,7 @@ public class Kruskal
             minSpanTree.addVertex(sink);
         }
 
-        Edge newEdge = new Edge(source, sink, edge.getWeight());
+        Edge newEdge = new Edge(source, sink, edge.getCapacity());
         minSpanTree.addEdge(newEdge);
     }
 }

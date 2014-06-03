@@ -30,10 +30,7 @@ public abstract class AbstractLoader implements GraphLoader
         Graph graph = new Graph(directed);
         try (BufferedReader lineReader = new BufferedReader(new FileReader(file)))
         {
-            String firstLine = lineReader.readLine().trim();
-            int countVertices = Integer.parseInt(firstLine);
-            addVertices(graph, countVertices);
-
+            addVertices(graph, lineReader);
             loadEdges(graph, lineReader);
         }
         catch (IOException ex)
@@ -45,17 +42,37 @@ public abstract class AbstractLoader implements GraphLoader
         return graph;
     }
 
-    protected void addVertices(Graph graph, int countVertices)
+    protected void addVertices(Graph graph, BufferedReader lineReader) throws IOException
     {
+        String firstLine = lineReader.readLine().trim();
+        int countVertices = Integer.parseInt(firstLine);
+
+        boolean balanced = checkBalance(lineReader);
         for (int i = 0; i < countVertices; i++)
         {
+            Double balance = Double.NaN;
+            if (balanced)
+            {
+                String line = lineReader.readLine().trim();
+                balance = Double.parseDouble(line);
+            }
+
             Vertex vertex = graph.getVertex(i);
             if (vertex == null)
             {
-                vertex = new Vertex(i);
+                vertex = new Vertex(i, balance);
                 graph.addVertex(vertex);
             }
         }
+    }
+
+    boolean checkBalance(BufferedReader lineReader) throws IOException
+    {
+        lineReader.mark(10000);
+        String strLine = lineReader.readLine().trim();
+        lineReader.reset();
+
+        return strLine.split("\\s+").length == 1;
     }
 
     protected abstract void loadEdges(Graph graph, BufferedReader lineReader) throws IOException;

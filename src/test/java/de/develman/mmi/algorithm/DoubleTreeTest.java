@@ -33,7 +33,7 @@ public class DoubleTreeTest
     {
         List<Edge> hamilton = doubleTree.findTour(graph);
 
-        double length = hamilton.stream().mapToDouble(Edge::getWeight).sum();
+        double length = hamilton.stream().mapToDouble(Edge::getCapacity).sum();
         Assert.assertTrue(length == 11.0);
     }
 

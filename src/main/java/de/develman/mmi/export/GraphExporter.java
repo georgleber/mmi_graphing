@@ -25,6 +25,12 @@ public class GraphExporter
             builder.append(v);
             builder.append("\",\"label\":\"");
             builder.append(v);
+            if (!v.getBalance().isNaN())
+            {
+                builder.append(",(");
+                builder.append(v.getBalance());
+                builder.append(")");
+            }
             builder.append("\"},");
         });
         builder.deleteCharAt(builder.length() - 1);
@@ -37,10 +43,21 @@ public class GraphExporter
             builder.append("\",\"to\":\"");
             builder.append(e.getSink());
 
-            if (!Double.isNaN(e.getWeight()))
+            if (!Double.isNaN(e.getCapacity()))
             {
-                builder.append("\",\"label\":\"");
-                builder.append(e.getWeight());
+                if (!Double.isNaN(e.getCost()))
+                {
+                    builder.append("\",\"label\":\"");
+                    builder.append("(");
+                    builder.append(e.getCapacity());
+                    builder.append("),");
+                    builder.append(e.getCost());
+                }
+                else
+                {
+                    builder.append("\",\"label\":\"");
+                    builder.append(e.getCapacity());
+                }
             }
 
             if (graph.isDirected())

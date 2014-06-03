@@ -73,7 +73,7 @@ public class Practicum4Presenter implements Initializable, GraphChangedListener
         List<Edge> tour = tryAllTour.findOptimalTour(graph, startVertex);
         long endTime = System.currentTimeMillis();
 
-        double length = tour.stream().mapToDouble(Edge::getWeight).sum();
+        double length = tour.stream().mapToDouble(Edge::getCapacity).sum();
         loggingService.log("Länge der Tour: " + length);
         loggingService.log("Tour: " + tour);
 
@@ -94,7 +94,7 @@ public class Practicum4Presenter implements Initializable, GraphChangedListener
         List<Edge> tour = branchAndBound.findOptimalTour(graph, startVertex);
         long endTime = System.currentTimeMillis();
 
-        double length = tour.stream().mapToDouble(Edge::getWeight).sum();
+        double length = tour.stream().mapToDouble(Edge::getCapacity).sum();
         loggingService.log("Länge der Tour: " + length);
         loggingService.log("Tour: " + tour);
 

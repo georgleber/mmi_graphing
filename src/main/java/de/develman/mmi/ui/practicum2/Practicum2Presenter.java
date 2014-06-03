@@ -65,7 +65,7 @@ public class Practicum2Presenter implements Initializable, GraphChangedListener
         Graph minSpanTree = kruskal.getMinimalSpanningTree(graph);
         long endTime = System.currentTimeMillis();
 
-        double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getWeight).sum();
+        double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getCapacity).sum();
         loggingService.log("Kosten des Minimal spannenden Baumes: " + cost);
 
         loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
@@ -85,7 +85,7 @@ public class Practicum2Presenter implements Initializable, GraphChangedListener
         Graph minSpanTree = prim.getMinimalSpanningTree(graph, startVertex);
         long endTime = System.currentTimeMillis();
 
-        double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getWeight).sum();
+        double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getCapacity).sum();
         loggingService.log("Kosten des Minimal spannenden Baumes: " + cost);
 
         loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");

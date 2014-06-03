@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="484.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.develman.mmi.ui.graphing.GraphingPresenter">
+<AnchorPane id="AnchorPane" prefHeight="484.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.develman.mmi.ui.graphing.GraphingPresenter">
   <children>
     <HBox alignment="CENTER" layoutX="15.0" layoutY="14.0" spacing="10.0">
       <children>
@@ -13,7 +13,7 @@
         <CheckBox fx:id="directedCbx" alignment="CENTER" mnemonicParsing="false" text="%graph.directed" />
       </children>
     </HBox>
-    <TabPane layoutX="14.0" layoutY="74.0" prefHeight="187.0" prefWidth="572.0" styleClass="borderedPane" tabClosingPolicy="UNAVAILABLE">
+    <TabPane layoutX="14.0" layoutY="74.0" prefHeight="187.0" prefWidth="772.0" styleClass="borderedPane" tabClosingPolicy="UNAVAILABLE">
       <stylesheets>
         <URL value="@graphing.css" />
       </stylesheets>
@@ -47,12 +47,17 @@
           <content>
              <AnchorPane fx:id="practicum6Tab" />
           </content>
+        </Tab> 
+        <Tab closable="false" text="%tab.practicum7">
+          <content>
+             <AnchorPane fx:id="practicum7Tab" />
+          </content>
         </Tab>
       </tabs>
     </TabPane>
     <Label layoutX="15.0" layoutY="281.0" text="%titel.ausgabe" />
     <Button layoutX="15.0" layoutY="46.0" mnemonicParsing="false" onAction="#exportGraphAction" text="%graph.export.btn" />
-    <ListView fx:id="loggingView" layoutX="14.0" layoutY="305.0" prefHeight="165.0" prefWidth="572.0" />
+    <ListView fx:id="loggingView" layoutX="14.0" layoutY="305.0" prefHeight="165.0" prefWidth="772.0" />
   </children>
   <stylesheets>
     <URL value="@graphing.css" />

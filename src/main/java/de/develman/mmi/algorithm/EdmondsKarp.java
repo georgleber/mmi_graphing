@@ -18,6 +18,19 @@ public class EdmondsKarp
     BreadthFirstSearch breadthSearch;
 
     /**
+     * Berechnung des maximalen Flusses im Residualgraphen
+     *
+     * @param residualGraph Residualgraph
+     * @param startVertex Startknoten
+     * @param endVertex Endknoten
+     * @return Liefert den maximalen Fluss im Graphen
+     */
+    public double calculateMaxFlowGraph(Graph residualGraph, Vertex startVertex, Vertex endVertex)
+    {
+        return calculateFlow(residualGraph, startVertex, endVertex);
+    }
+
+    /**
      * Berechnung des maximalen Flusses
      *
      * @param graph Gerichteter Graph
@@ -37,10 +50,17 @@ public class EdmondsKarp
         Vertex start = residualGraph.getVertex(startVertex.getKey());
         Vertex end = residualGraph.getVertex(endVertex.getKey());
 
+        return calculateFlow(residualGraph, start, end);
+    }
+
+    private double calculateFlow(Graph residualGraph, Vertex start, Vertex end)
+    {
+        double maxFlow = 0.0;
+
         List<Edge> path;
         while ((path = findPath(residualGraph, start, end)) != null)
         {
-            double minCapacity = path.stream().mapToDouble(Edge::getWeight).min().getAsDouble();
+            double minCapacity = path.stream().mapToDouble(Edge::getCapacity).min().getAsDouble();
             updateResidualGraph(residualGraph, path, minCapacity);
 
             maxFlow += minCapacity;
@@ -66,14 +86,14 @@ public class EdmondsKarp
 
     private void updateEdge(Graph residualGraph, Edge edge, double minCapacity)
     {
-        double newWeight = edge.getWeight() - minCapacity;
-        if (newWeight <= 0)
+        double newCapacity = edge.getCapacity() - minCapacity;
+        if (newCapacity <= 0)
         {
             residualGraph.removeEdge(edge);
         }
         else
         {
-            edge.setWeight(newWeight);
+            edge.setCapacity(newCapacity);
         }
     }
 
@@ -82,12 +102,13 @@ public class EdmondsKarp
         Edge reversiveEdge = residualGraph.getEdge(edge.getSink(), edge.getSource());
         if (reversiveEdge != null)
         {
-            double newWeight = reversiveEdge.getWeight() + minCapacity;
-            reversiveEdge.setWeight(newWeight);
+            double newCapacity = reversiveEdge.getCapacity() + minCapacity;
+            reversiveEdge.setCapacity(newCapacity);
         }
         else
         {
-            reversiveEdge = new Edge(edge.getSink(), edge.getSource(), minCapacity);
+            double cost = edge.getCost() != 0.0 ? edge.getCost() * - 1 : 0.0;
+            reversiveEdge = new Edge(edge.getSink(), edge.getSource(), minCapacity, cost);
             residualGraph.addEdge(reversiveEdge);
         }
     }

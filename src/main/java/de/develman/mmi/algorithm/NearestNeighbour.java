@@ -55,7 +55,7 @@ public class NearestNeighbour
     private Edge getBestEdge(Vertex vertex)
     {
         Optional<Edge> foundEdge = vertex.getOutgoingEdges().stream().filter(e -> !e.getSink().isVisited()).sorted(
-                Comparator.comparing(Edge::getWeight)).findFirst();
+                Comparator.comparing(Edge::getCapacity)).findFirst();
 
         Edge bestEdge = null;
         if (foundEdge.isPresent())

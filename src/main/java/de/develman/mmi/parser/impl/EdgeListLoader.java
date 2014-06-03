@@ -37,13 +37,23 @@ public class EdgeListLoader extends AbstractLoader
         int keySink = Integer.parseInt(vEntries[1]);
         Vertex sink = graph.getVertex(keySink);
 
-        double weight = 0.0;
-        if (vEntries.length == 3)
+        Double cost = Double.NaN;
+        if (vEntries.length > 2)
         {
-            weight = Double.parseDouble(vEntries[2]);
+            cost = Double.parseDouble(vEntries[2]);
         }
 
-        Edge edge = new Edge(source, sink, weight);
+        Double capacity;
+        if (vEntries.length > 3)
+        {
+            capacity = Double.parseDouble(vEntries[3]);
+        }
+        else
+        {
+            capacity = cost;
+        }
+
+        Edge edge = new Edge(source, sink, capacity, cost);
         graph.addEdge(edge);
     }
 }

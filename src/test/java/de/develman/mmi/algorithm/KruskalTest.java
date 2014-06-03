@@ -31,7 +31,7 @@ public class KruskalTest
     {
         Graph minSpanTree = kruskal.getMinimalSpanningTree(graph);
 
-        double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getWeight).sum();
+        double cost = minSpanTree.getEdges().stream().mapToDouble(Edge::getCapacity).sum();
         Assert.assertEquals(9.0, cost, 0.0);
     }
 

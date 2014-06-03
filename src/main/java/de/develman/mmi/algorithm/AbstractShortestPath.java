@@ -20,11 +20,11 @@ public abstract class AbstractShortestPath
         initPredecessors(startVertex);
     }
 
-    protected void updateWeigth(Edge e)
+    protected void updateCost(Edge e)
     {
         Vertex source = e.getSource();
         Vertex sink = e.getSink();
-        double newDistance = distance.get(source) + e.getWeight();
+        double newDistance = distance.get(source) + e.getCost();
         if (newDistance < distance.get(sink))
         {
             distance.put(sink, newDistance);

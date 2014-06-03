@@ -11,6 +11,7 @@ import java.util.List;
 public class Vertex
 {
     private final Integer key;
+    private Double balance;
     private final List<Edge> incomingEdges = new ArrayList<>();
     private final List<Edge> outgoingEdges = new ArrayList<>();
 
@@ -24,6 +25,19 @@ public class Vertex
     public Vertex(Integer key)
     {
         this.key = key;
+        this.balance = Double.NaN;
+    }
+
+    /**
+     * Erstellt einen neuen Knoten
+     *
+     * @param key Schlüssel des Knotens
+     * @param balance Balance des Knotens
+     */
+    public Vertex(Integer key, double balance)
+    {
+        this.key = key;
+        this.balance = balance;
     }
 
     /**
@@ -32,6 +46,24 @@ public class Vertex
     public Integer getKey()
     {
         return key;
+    }
+
+    /**
+     * @return Gibt die Balance des Knotens zurück
+     */
+    public Double getBalance()
+    {
+        return balance;
+    }
+
+    /**
+     * Setzt die Balance des Knotens
+     *
+     * @param balance Balance des Knoten
+     */
+    public void setBalance(Double balance)
+    {
+        this.balance = balance;
     }
 
     /**

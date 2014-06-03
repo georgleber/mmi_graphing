@@ -168,6 +168,17 @@ public class Graph
      */
     public void addEdge(Edge edge)
     {
+        addEdge(edge, -1);
+    }
+
+    /**
+     * Hinzufügen einer Kante zum Graphen an Position index
+     *
+     * @param edge Kante
+     * @param index Position
+     */
+    public void addEdge(Edge edge, int index)
+    {
         Vertex source = edge.getSource();
         if (!containsVertex(source.getKey()))
         {
@@ -182,7 +193,15 @@ public class Graph
 
         source.addOutgoingEdge(edge);
         sink.addIncomingEdge(edge);
-        edges.add(edge);
+
+        if (index != -1)
+        {
+            edges.add(index, edge);
+        }
+        else
+        {
+            edges.add(edge);
+        }
 
         if (!isDirected())
         {
@@ -215,13 +234,13 @@ public class Graph
     {
         Graph clonedGraph = new Graph(directed);
 
-        getVertices().forEach(v -> clonedGraph.addVertex(new Vertex(v.getKey())));
+        getVertices().forEach(v -> clonedGraph.addVertex(new Vertex(v.getKey(), v.getBalance())));
         getEdges().forEach(e ->
         {
             Vertex source = clonedGraph.getVertex(e.getSource().getKey());
             Vertex sink = clonedGraph.getVertex(e.getSink().getKey());
 
-            Edge residualEdge = new Edge(source, sink, e.getWeight());
+            Edge residualEdge = new Edge(source, sink, e.getCapacity(), e.getCost());
             clonedGraph.addEdge(residualEdge);
         });
 

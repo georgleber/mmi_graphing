@@ -32,7 +32,7 @@ public class TryAllToursTest
         Vertex v1 = graph.getVertex(1);
         List<Edge> tour = tryAllTours.findOptimalTour(graph, v1);
 
-        double cost = tour.stream().mapToDouble(Edge::getWeight).sum();
+        double cost = tour.stream().mapToDouble(Edge::getCapacity).sum();
         Assert.assertTrue(cost == 17.0);
     }
 

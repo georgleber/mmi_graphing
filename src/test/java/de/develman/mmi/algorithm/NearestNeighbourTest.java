@@ -31,7 +31,7 @@ public class NearestNeighbourTest
     {
         List<Edge> hamilton = nearestNeighbour.findTour(graph, graph.getVertex(1));
 
-        double length = hamilton.stream().mapToDouble(Edge::getWeight).sum();
+        double length = hamilton.stream().mapToDouble(Edge::getCapacity).sum();
         Assert.assertTrue(length == 14.0);
     }
 

@@ -51,7 +51,7 @@ public class TryAllTours
             Vertex sink = e.getSink();
 
             currentEdges.add(e);
-            tourCost += e.getWeight();
+            tourCost += e.getCapacity();
 
             if (sink == startVertex && currentEdges.size() == vertexCount)
             {
@@ -72,7 +72,7 @@ public class TryAllTours
     private void removeLastEdge(List<Edge> edges)
     {
         Edge lastEdge = edges.remove(edges.size() - 1);
-        tourCost -= lastEdge.getWeight();
+        tourCost -= lastEdge.getCapacity();
     }
 
     private void checkIfRouteIsBetter(List<Edge> edges)

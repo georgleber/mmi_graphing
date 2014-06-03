@@ -70,7 +70,7 @@ public class Practicum3Presenter implements Initializable, GraphChangedListener
         List<Edge> tour = nearestNeighbour.findTour(graph, startVertex);
         long endTime = System.currentTimeMillis();
 
-        double length = tour.stream().mapToDouble(Edge::getWeight).sum();
+        double length = tour.stream().mapToDouble(Edge::getCapacity).sum();
         loggingService.log("Länge der Tour: " + length);
         loggingService.log("Tour: " + tour);
 
@@ -87,7 +87,7 @@ public class Practicum3Presenter implements Initializable, GraphChangedListener
         List<Edge> tour = doubleTree.findTour(graph);
         long endTime = System.currentTimeMillis();
 
-        double length = tour.stream().mapToDouble(Edge::getWeight).sum();
+        double length = tour.stream().mapToDouble(Edge::getCapacity).sum();
         loggingService.log("Länge der Tour: " + length);
         loggingService.log("Tour: " + tour);
 

@@ -7,7 +7,8 @@ package de.develman.mmi.model;
  */
 public class Edge
 {
-    private Double weight;
+    private Double capacity;
+    private Double cost;
     private final Vertex source;
     private final Vertex sink;
 
@@ -21,21 +22,39 @@ public class Edge
     {
         this.source = source;
         this.sink = sink;
-        this.weight = Double.NaN;
+        this.capacity = Double.NaN;
+        this.cost = Double.NaN;
     }
 
     /**
-     * Erstellt eine neue Kante mit Start-, Endknoten und Gewicht
+     * Erstellt eine neue Kante mit Start-, Endknoten und Kapazität
      *
      * @param source Startknoten
      * @param sink Endknoten
-     * @param weight Gewicht
+     * @param capacity Kapazität
      */
-    public Edge(Vertex source, Vertex sink, Double weight)
+    public Edge(Vertex source, Vertex sink, Double capacity)
     {
         this.source = source;
         this.sink = sink;
-        this.weight = weight;
+        this.capacity = capacity;
+        this.cost = capacity;
+    }
+
+    /**
+     * Erstellt eine neue Kante mit Start-, Endknoten, Kapazität und Kosten
+     *
+     * @param source Startknoten
+     * @param sink Endknoten
+     * @param capacity Kapazität
+     * @param cost Kosten
+     */
+    public Edge(Vertex source, Vertex sink, Double capacity, Double cost)
+    {
+        this.source = source;
+        this.sink = sink;
+        this.capacity = capacity;
+        this.cost = cost;
     }
 
     /**
@@ -55,21 +74,39 @@ public class Edge
     }
 
     /**
-     * @return Gewicht der Kante
+     * @return Kapazität der Kante
      */
-    public double getWeight()
+    public double getCapacity()
     {
-        return weight;
+        return capacity;
     }
 
     /**
-     * Setzt ein neues Kantengewicht
+     * Setzt eine neue Kantenkapazitöt
      *
-     * @param weight Das neue Gewicht der Kante
+     * @param capacity Die neue Kapazität der Kante
      */
-    public void setWeight(Double weight)
+    public void setCapacity(Double capacity)
     {
-        this.weight = weight;
+        this.capacity = capacity;
+    }
+
+    /**
+     * @return Kosten der Kante
+     */
+    public double getCost()
+    {
+        return cost;
+    }
+
+    /**
+     * Setzt neue Kantenkosten
+     *
+     * @param cost Die neuen Kosten der Kante
+     */
+    public void setCost(Double cost)
+    {
+        this.cost = cost;
     }
 
     /**
@@ -77,7 +114,7 @@ public class Edge
      */
     public Edge revert()
     {
-        return new Edge(sink, source, weight);
+        return new Edge(sink, source, capacity, cost);
     }
 
     @Override
@@ -89,11 +126,21 @@ public class Edge
         builder.append("->");
         builder.append(sink);
 
-        if (!weight.isNaN())
+        if (!capacity.isNaN())
         {
-            builder.append(" (");
-            builder.append(weight);
-            builder.append(")");
+            if (!cost.isNaN())
+            {
+                builder.append(" (");
+                builder.append(capacity);
+                builder.append("),");
+                builder.append(cost);
+            }
+            else
+            {
+                builder.append(" (");
+                builder.append(capacity);
+                builder.append("),");
+            }
         }
 
         return builder.toString();

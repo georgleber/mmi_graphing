@@ -51,7 +51,7 @@ public class Prim
         });
 
         availableEdges = availableEdges.stream().filter(e -> !e.getSink().isVisited()).sorted(Comparator.comparing(
-                Edge::getWeight)).collect(Collectors.toList());
+                Edge::getCapacity)).collect(Collectors.toList());
     }
 
     private void addEdgeToTree(Graph minSpanTree, Edge edge)
@@ -70,7 +70,7 @@ public class Prim
             minSpanTree.addVertex(sink);
         }
 
-        Edge newEdge = new Edge(source, sink, edge.getWeight());
+        Edge newEdge = new Edge(source, sink, edge.getCapacity());
         minSpanTree.addEdge(newEdge);
     }
 }
