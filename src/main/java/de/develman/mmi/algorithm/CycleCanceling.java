@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Die Klasse CycleCanceling implementiert den Cycle-Cancelling Algorithmus zur Berechnung des kostenminimalen Flusses
@@ -18,6 +20,8 @@ import javax.inject.Inject;
  */
 public class CycleCanceling
 {
+    private static final Logger LOG = LoggerFactory.getLogger(CycleCanceling.class);
+
     @Inject
     EdmondsKarp edmondsKarp;
     @Inject
@@ -81,7 +85,10 @@ public class CycleCanceling
 
     private List<Edge> getNegativeCycle(Graph graph, Vertex vertex)
     {
-        return mooreBellmanFord.findNegativeCycle(graph, vertex);
+        List<Edge> cycle = mooreBellmanFord.findNegativeCycle(graph, vertex);
+        LOG.debug("Found cycle: " + cycle);
+
+        return cycle;
     }
 
     private boolean checkConvenientCapacity(Graph graph, Vertex superSource, Vertex superSink)
