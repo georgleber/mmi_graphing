@@ -1,6 +1,6 @@
 package de.develman.mmi.model.algorithm;
 
-import de.develman.mmi.model.Vertex;
+import de.develman.mmi.model.Edge;
 import java.util.List;
 
 /**
@@ -10,7 +10,7 @@ import java.util.List;
 public class ShortestPath
 {
     private double length;
-    private List<Vertex> vertices;
+    private List<Edge> edges;
 
     public double getLength()
     {
@@ -22,13 +22,13 @@ public class ShortestPath
         this.length = length;
     }
 
-    public List<Vertex> getVertices()
+    public List<Edge> getEdges()
     {
-        return vertices;
+        return edges;
     }
 
-    public void setVertices(List<Vertex> vertices)
+    public void setEdges(List<Edge> edges)
     {
-        this.vertices = vertices;
+        this.edges = edges;
     }
 }

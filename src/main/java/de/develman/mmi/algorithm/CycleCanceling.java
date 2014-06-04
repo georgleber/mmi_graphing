@@ -1,16 +1,9 @@
 package de.develman.mmi.algorithm;
 
 import de.develman.mmi.exception.MinimalCostFlowException;
-import de.develman.mmi.export.GraphExporter;
 import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -23,7 +16,7 @@ import javax.inject.Inject;
  *
  * @author Georg Henkel <georg@develman.de>
  */
-public class CycleCanceling
+public class CycleCanceling extends AbstractMinimumCostFlow
 {
     @Inject
     EdmondsKarp edmondsKarp;
@@ -60,35 +53,11 @@ public class CycleCanceling
 
             cycle.forEach(e ->
             {
-                updateEdge(residualGraph, e, gamma);
-                updateReversiveEdge(residualGraph, e, gamma);
+                updateResidualEdge(residualGraph, e, gamma);
             });
         }
 
         return calculateMinimalCostFlow(graph, residualGraph);
-    }
-
-    private double calculateMinimalCostFlow(Graph graph, Graph residualGraph)
-    {
-        double cost = 0.0;
-        for (Edge residualEdge : residualGraph.getEdges())
-        {
-            Vertex source = graph.getVertex(residualEdge.getSource().getKey());
-            Vertex sink = graph.getVertex(residualEdge.getSink().getKey());
-
-            if (source == null || sink == null)
-            {
-                continue;
-            }
-
-            Edge originalEdge = graph.getEdge(sink, source);
-            if (originalEdge != null)
-            {
-                cost += residualEdge.getCapacity() * originalEdge.getCost();
-            }
-        }
-
-        return cost;
     }
 
     private List<Edge> getNegativeCycle(Graph graph)
@@ -130,11 +99,6 @@ public class CycleCanceling
         double maxFlow = edmondsKarp.calculateMaxFlowGraph(graph, superSource, superSink);
 
         return maxFlow == totalCapacity;
-    }
-
-    private boolean checkVerticesBalanced(Collection<Vertex> vertices)
-    {
-        return vertices.stream().mapToDouble(Vertex::getBalance).sum() == 0;
     }
 
     private Vertex addSuperSource(Graph graph)
@@ -186,51 +150,5 @@ public class CycleCanceling
         }
 
         return pred;
-    }
-
-    private void updateEdge(Graph graph, Edge edge, double gamma)
-    {
-        double newCapacity = edge.getCapacity() - gamma;
-        if (newCapacity <= 0)
-        {
-            graph.removeEdge(edge);
-        }
-        else
-        {
-            edge.setCapacity(newCapacity);
-        }
-    }
-
-    private void updateReversiveEdge(Graph graph, Edge edge, double gamma)
-    {
-        Edge reversiveEdge = graph.getEdge(edge.getSink(), edge.getSource());
-        if (reversiveEdge != null)
-        {
-            double newCapacity = reversiveEdge.getCapacity() + gamma;
-            reversiveEdge.setCapacity(newCapacity);
-        }
-        else
-        {
-            double cost = edge.getCost() != 0.0 ? edge.getCost() * - 1 : 0.0;
-            reversiveEdge = new Edge(edge.getSink(), edge.getSource(), gamma, cost);
-            graph.addEdge(reversiveEdge);
-        }
-    }
-
-    public void exportGraph(Graph graph, String prefix)
-    {
-        GraphExporter exporter = new GraphExporter(graph);
-        String json = exporter.export();
-
-        try
-        {
-            File file = new File("data/graph" + prefix + ".json");
-            Files.write(Paths.get(file.toURI()), json.getBytes("utf-8"), StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING);
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-        }
     }
 }

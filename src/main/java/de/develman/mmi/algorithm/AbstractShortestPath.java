@@ -39,20 +39,27 @@ public abstract class AbstractShortestPath
         double length = distance.get(endVertex);
         if (!Double.isInfinite(length))
         {
-            List<Vertex> vertices = new ArrayList<>();
-            vertices.add(endVertex);
+            List<Edge> edges = new ArrayList<>();
 
-            Vertex pred = endVertex;
-            while (pred != startVertex)
+            Vertex pred;
+            Vertex current = endVertex;
+            do
             {
-                pred = predecessor.get(pred);
-                vertices.add(pred);
+                pred = predecessor.get(current);
+                edges.add(pred.getEdgeTo(current.getKey()));
+
+                if (pred == startVertex)
+                {
+                    break;
+                }
+
+                current = pred;
             }
-            Collections.reverse(vertices);
+            while (true);
 
             path = new ShortestPath();
             path.setLength(length);
-            path.setVertices(vertices);
+            path.setEdges(edges);
         }
 
         return path;

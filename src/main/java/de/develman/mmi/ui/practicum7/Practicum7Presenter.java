@@ -3,6 +3,7 @@ package de.develman.mmi.ui.practicum7;
 import de.develman.mmi.algorithm.CycleCanceling;
 import de.develman.mmi.algorithm.SuccessiveShortestPath;
 import de.develman.mmi.exception.MinimalCostFlowException;
+import de.develman.mmi.exception.NegativeCycleException;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.service.LoggingService;
 import de.develman.mmi.ui.listener.GraphChangedListener;
@@ -78,7 +79,7 @@ public class Practicum7Presenter implements Initializable, GraphChangedListener
             double minimalCostFlow = successiveShortestPath.findMinimumCostFlow(graph);
             loggingService.log("Gesamtkosten des kostenminimalen Flusses: " + minimalCostFlow);
         }
-        catch (MinimalCostFlowException ex)
+        catch (MinimalCostFlowException | NegativeCycleException ex)
         {
             loggingService.log("Kostenminimaler Fluss kann nicht ermittelt werden: " + ex.getMessage());
         }

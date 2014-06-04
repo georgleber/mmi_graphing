@@ -121,7 +121,7 @@ public class Practicum5Presenter implements Initializable, GraphChangedListener
         }
         else
         {
-            loggingService.log("Weg zwischen " + startVertex + " und " + endVertex + ": " + path.getVertices());
+            loggingService.log("Weg zwischen " + startVertex + " und " + endVertex + ": " + path.getEdges());
             loggingService.log("Länge des Wegs: " + path.getLength());
         }
     }

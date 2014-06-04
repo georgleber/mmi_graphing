@@ -1,47 +1,114 @@
 package de.develman.mmi.algorithm;
 
 import de.develman.mmi.exception.MinimalCostFlowException;
+import de.develman.mmi.exception.NegativeCycleException;
 import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import de.develman.mmi.model.algorithm.ShortestPath;
+import java.util.*;
+import javax.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
+ * Die Klasse SuccessiveShortestPath implementiert den Successive-Shortest-Path Algorithmus zur Berechnung des
+ * kostenminimalen Flusses in einem gerichteten Graphen mit Kapazitäten und Kosten
  *
  * @author Georg Henkel <georg@develman.de>
  */
-public class SuccessiveShortestPath
+public class SuccessiveShortestPath extends AbstractMinimumCostFlow
 {
+    private final static Logger LOG = LoggerFactory.getLogger(SuccessiveShortestPath.class);
+
+    @Inject
+    MooreBellmanFord mooreBellmanFord;
+    @Inject
+    BreadthFirstSearch breadthFirstSearch;
+
     private Map<Vertex, Double> relevantBalances;
 
-    public double findMinimumCostFlow(Graph graph) throws MinimalCostFlowException
+    /**
+     * Berechnung des kostenminimalen Flusses
+     *
+     * @param graph gerichteter Graph
+     * @return Kosten des kostenminimalen Flusses
+     * @throws MinimalCostFlowException
+     * @throws NegativeCycleException
+     */
+    public double findMinimumCostFlow(Graph graph) throws MinimalCostFlowException, NegativeCycleException
     {
-        Graph residualGraph = graph.copy();
-
-        updateCapacities(residualGraph);
-        calculateRelevantBalances(residualGraph);
-
-        if (relevantBalances.values().stream().mapToDouble(Double::doubleValue).sum() != 0)
+        if (!checkVerticesBalanced(graph.getVertices()))
         {
-
-            return calculateMinimumCostFlow(residualGraph);
+            throw new MinimalCostFlowException("Balancen sind nicht ausgeglichen");
         }
 
-        return 0.0;
+        Graph residualGraph = graph.copy();
+        initRelevantBalances(residualGraph);
+        updateCapacities(residualGraph);
+
+        while (true)
+        {
+            residualGraph.unvisitAllVertices();
+
+            Vertex source = findSource(residualGraph);
+            if (source == null)
+            {
+                break;
+            }
+
+            Vertex sink = findSink(source);
+            if (sink == null)
+            {
+                throw new MinimalCostFlowException("Kapazitäten sind nicht ausgeglichen");
+            }
+
+            ShortestPath path = mooreBellmanFord.findShortestPath(residualGraph, source, sink);
+            double minCapacity = path.getEdges().stream().mapToDouble(Edge::getCapacity).min().getAsDouble();
+            double minSourceBalance = source.getBalance() - relevantBalances.get(source);
+            double minSinkBalance = relevantBalances.get(sink) - sink.getBalance();
+
+            double gamma = calculateGamma(minCapacity, minSourceBalance, minSinkBalance);
+
+            addBalance(source, gamma);
+            addBalance(sink, gamma * -1);
+
+            path.getEdges().forEach(e -> updateResidualEdge(residualGraph, e, gamma));
+        }
+
+        return calculateMinimalCostFlow(graph, residualGraph);
     }
 
-    private double calculateMinimumCostFlow(Graph residualGraph)
+    private Vertex findSource(Graph graph)
     {
-        double cost = 0.0;
-        for (Edge edge : residualGraph.getEdges())
+        for (Vertex v : graph.getVertices())
         {
-            cost += edge.getCapacity() * edge.getCost();
+            if (v.getBalance() - relevantBalances.get(v) > 0.0)
+            {
+                return v;
+            }
         }
 
-        return cost;
+        return null;
+    }
+
+    private Vertex findSink(Vertex source)
+    {
+        List<Vertex> vertices = breadthFirstSearch.getAccessibleVertices(source);
+        for (Vertex v : vertices)
+        {
+            if (v == source)
+            {
+                continue;
+            }
+
+            if (v.getBalance() - relevantBalances.get(v) < 0.0)
+            {
+                return v;
+            }
+        }
+
+        return null;
     }
 
     private void updateCapacities(Graph graph)
@@ -49,22 +116,44 @@ public class SuccessiveShortestPath
         List<Edge> edges = new ArrayList<>(graph.getEdges());
         edges.forEach(e ->
         {
-            if (e.getCost() >= 0.0)
+            if (e.getCost() < 0.0)
             {
-                e.setCapacity(0.0);
+                updateResidualEdge(graph, e, e.getCapacity());
+                updateBalances(e, e.getCapacity());
             }
         });
     }
 
-    private void calculateRelevantBalances(Graph graph)
+    private void updateBalances(Edge edge, double capacity)
+    {
+        addBalance(edge.getSource(), capacity);
+        addBalance(edge.getSink(), capacity * -1);
+    }
+
+    private void addBalance(Vertex vertex, double balance)
+    {
+        double oldBalance = relevantBalances.get(vertex);
+        relevantBalances.put(vertex, oldBalance + balance);
+    }
+
+    private void initRelevantBalances(Graph graph)
     {
         relevantBalances = new HashMap<>();
-        graph.getVertices().forEach(v ->
-        {
-            double sumOut = v.getOutgoingEdges().stream().mapToDouble(Edge::getCapacity).sum();
-            double sumIn = v.getIncomingEdges().stream().mapToDouble(Edge::getCapacity).sum();
+        graph.getVertices().forEach(v -> relevantBalances.put(v, 0.0));
+    }
 
-            relevantBalances.put(v, sumOut - sumIn);
-        });
+    private double calculateGamma(double a, double b, double c)
+    {
+        double gamma = a;
+        if (gamma > b)
+        {
+            gamma = b;
+        }
+        if (gamma > c)
+        {
+            gamma = c;
+        }
+
+        return gamma;
     }
 }

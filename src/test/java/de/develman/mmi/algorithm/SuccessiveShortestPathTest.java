@@ -1,6 +1,7 @@
 package de.develman.mmi.algorithm;
 
 import de.develman.mmi.exception.MinimalCostFlowException;
+import de.develman.mmi.exception.NegativeCycleException;
 import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Georg Henkel <georg@develman.de>
@@ -24,9 +26,11 @@ public class SuccessiveShortestPathTest
     {
         initModel();
         successiveShortestPath = new SuccessiveShortestPath();
+        successiveShortestPath.breadthFirstSearch = new BreadthFirstSearch();
+        successiveShortestPath.mooreBellmanFord = new MooreBellmanFord();
     }
 
-    // @Test
+    @Test
     public void testFindMinimumCostFlow()
     {
         try
@@ -34,7 +38,7 @@ public class SuccessiveShortestPathTest
             double cost = successiveShortestPath.findMinimumCostFlow(graph);
             Assert.assertEquals(28.0, cost, 0.0);
         }
-        catch (MinimalCostFlowException ex)
+        catch (MinimalCostFlowException | NegativeCycleException ex)
         {
             Assert.fail(ex.getMessage());
         }
