@@ -8,8 +8,6 @@ import de.develman.mmi.model.Vertex;
 import de.develman.mmi.model.algorithm.ShortestPath;
 import java.util.*;
 import javax.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Die Klasse SuccessiveShortestPath implementiert den Successive-Shortest-Path Algorithmus zur Berechnung des
@@ -19,8 +17,6 @@ import org.slf4j.LoggerFactory;
  */
 public class SuccessiveShortestPath extends AbstractMinimumCostFlow
 {
-    private final static Logger LOG = LoggerFactory.getLogger(SuccessiveShortestPath.class);
-
     @Inject
     MooreBellmanFord mooreBellmanFord;
     @Inject
