@@ -1,14 +1,23 @@
 package de.develman.mmi.algorithm;
 
 import de.develman.mmi.exception.MinimalCostFlowException;
+import de.develman.mmi.export.GraphExporter;
 import de.develman.mmi.model.Edge;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Die Klasse CycleCanceling implementiert den Cycle-Cancelling Algorithmus zur Berechnung des kostenminimalen Flusses
@@ -18,6 +27,8 @@ import javax.inject.Inject;
  */
 public class CycleCanceling
 {
+    private static final Logger LOG = LoggerFactory.getLogger(CycleCanceling.class);
+
     @Inject
     EdmondsKarp edmondsKarp;
     @Inject
@@ -47,7 +58,7 @@ public class CycleCanceling
         }
 
         List<Edge> cycle;
-        while ((cycle = getNegativeCycle(residualGraph, superSink)) != null)
+        while ((cycle = getNegativeCycle(residualGraph)) != null)
         {
             double gamma = cycle.stream().mapToDouble(Edge::getCapacity).min().getAsDouble();
 
@@ -58,6 +69,11 @@ public class CycleCanceling
             });
         }
 
+        return calculateMinimalCostFlow(graph, residualGraph);
+    }
+
+    private double calculateMinimalCostFlow(Graph graph, Graph residualGraph)
+    {
         double cost = 0.0;
         for (Edge residualEdge : residualGraph.getEdges())
         {
@@ -79,9 +95,42 @@ public class CycleCanceling
         return cost;
     }
 
-    private List<Edge> getNegativeCycle(Graph graph, Vertex vertex)
+    private List<Edge> getNegativeCycle(Graph graph)
     {
-        return mooreBellmanFord.findNegativeCycle(graph, vertex);
+        List<Edge> cycle = null;
+
+        do
+        {
+            Vertex vertex = findUnvisitVertex(graph);
+            if (vertex == null)
+            {
+                break;
+            }
+
+            cycle = mooreBellmanFord.findNegativeCycle(graph, vertex);
+
+            if (cycle != null)
+            {
+                LOG.debug("Found cycle: " + cycle);
+            }
+        }
+        while (cycle == null);
+
+        return cycle;
+    }
+
+    private Vertex findUnvisitVertex(Graph graph)
+    {
+        Optional<Vertex> possibleVertex = graph.getVertices().stream().filter(v -> !v.isVisited()).findFirst();
+
+        Vertex unvisitVertex = null;
+        if (possibleVertex.isPresent())
+        {
+            unvisitVertex = possibleVertex.get();
+            LOG.debug("Using vertex: " + unvisitVertex);
+        }
+
+        return unvisitVertex;
     }
 
     private boolean checkConvenientCapacity(Graph graph, Vertex superSource, Vertex superSink)
@@ -174,6 +223,23 @@ public class CycleCanceling
             double cost = edge.getCost() != 0.0 ? edge.getCost() * - 1 : 0.0;
             reversiveEdge = new Edge(edge.getSink(), edge.getSource(), gamma, cost);
             graph.addEdge(reversiveEdge);
+        }
+    }
+
+    public void exportGraph(Graph graph, String prefix)
+    {
+        GraphExporter exporter = new GraphExporter(graph);
+        String json = exporter.export();
+
+        try
+        {
+            File file = new File("data/graph" + prefix + ".json");
+            Files.write(Paths.get(file.toURI()), json.getBytes("utf-8"), StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
         }
     }
 }

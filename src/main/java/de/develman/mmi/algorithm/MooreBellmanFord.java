@@ -7,6 +7,8 @@ import de.develman.mmi.model.Vertex;
 import de.develman.mmi.model.algorithm.ShortestPath;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Die Klasse MooreBellmanFord implementiert den Bellman–Ford–Moore-Algorithmus zur Berechnung des Kürzester-Wege-Baumes
@@ -16,6 +18,8 @@ import java.util.List;
  */
 public class MooreBellmanFord extends AbstractShortestPath
 {
+    private static final Logger LOG = LoggerFactory.getLogger(MooreBellmanFord.class);
+
     /**
      * Sucht nach einem negativen Zykel im Graphen
      *
@@ -27,6 +31,15 @@ public class MooreBellmanFord extends AbstractShortestPath
     {
         init(graph, startVertex);
         calculateDistances(graph);
+
+        distance.keySet().forEach(v ->
+        {
+            if (distance.get(v) < Double.POSITIVE_INFINITY)
+            {
+                LOG.debug("Updating vertex to visited: " + v);
+                v.setVisited(true);
+            }
+        });
 
         for (Edge e : graph.getEdges())
         {
