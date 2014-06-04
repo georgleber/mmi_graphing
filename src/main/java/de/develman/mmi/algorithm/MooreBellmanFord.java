@@ -28,6 +28,14 @@ public class MooreBellmanFord extends AbstractShortestPath
         init(graph, startVertex);
         calculateDistances(graph);
 
+        distance.keySet().forEach(v ->
+        {
+            if (distance.get(v) < Double.POSITIVE_INFINITY)
+            {
+                v.setVisited(true);
+            }
+        });
+
         for (Edge e : graph.getEdges())
         {
             if (checkForCycle(e))
