@@ -56,7 +56,7 @@ public class SuccessiveShortestPath extends AbstractMinimumCostFlow
             Vertex sink = findSink(source);
             if (sink == null)
             {
-                throw new MinimalCostFlowException("Kapazitäten sind nicht ausgeglichen");
+                throw new MinimalCostFlowException("Das Netzwerk ist zu klein");
             }
 
             ShortestPath path = mooreBellmanFord.findShortestPath(residualGraph, source, sink);
