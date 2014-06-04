@@ -8,35 +8,30 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author Georg Henkel <georg@develman.de>
  */
-public class CycleCancelingTest
+public class SuccessiveShortestPathTest
 {
     private Graph graph;
     private List<Vertex> vertices;
     private List<Edge> edges;
-    private CycleCanceling cycleCanceling;
-    private EdmondsKarp edmondsKarp;
+    private SuccessiveShortestPath successiveShortestPath;
 
     @Before
     public void setUp()
     {
         initModel();
-        cycleCanceling = new CycleCanceling();
-        cycleCanceling.edmondsKarp = new EdmondsKarp();
-        cycleCanceling.edmondsKarp.breadthSearch = new BreadthFirstSearch();
-        cycleCanceling.mooreBellmanFord = new MooreBellmanFord();
+        successiveShortestPath = new SuccessiveShortestPath();
     }
 
-    @Test
+    // @Test
     public void testFindMinimumCostFlow()
     {
         try
         {
-            double cost = cycleCanceling.findMinimumCostFlow(graph);
+            double cost = successiveShortestPath.findMinimumCostFlow(graph);
             Assert.assertEquals(28.0, cost, 0.0);
         }
         catch (MinimalCostFlowException ex)

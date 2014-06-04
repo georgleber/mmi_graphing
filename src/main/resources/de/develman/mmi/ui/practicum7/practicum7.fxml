@@ -5,11 +5,16 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="484.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.develman.mmi.ui.practicum7.Practicum7Presenter">
-  <children>
-    <HBox alignment="CENTER" layoutX="14.0" layoutY="14.0" spacing="10.0">
-      <children>
-        <Button mnemonicParsing="false" onAction="#cycleCancelingAction" text="%cycleCanceling.btn" />
-      </children>
-    </HBox>
-  </children>
+    <children>
+        <HBox alignment="CENTER" layoutX="14.0" layoutY="14.0" spacing="10.0">
+            <children>
+                <Button mnemonicParsing="false" onAction="#cycleCancelingAction" text="%cycleCanceling.btn" />
+            </children>
+        </HBox>
+        <HBox alignment="CENTER" layoutX="14.0" layoutY="57.0" spacing="10.0">
+            <children>
+                <Button mnemonicParsing="false" onAction="#successiveShortestPathAction" text="%successiveShortestPath.btn" />
+            </children>
+        </HBox>
+    </children>
 </AnchorPane>

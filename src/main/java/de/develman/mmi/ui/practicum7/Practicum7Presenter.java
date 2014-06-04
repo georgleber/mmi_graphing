@@ -1,6 +1,7 @@
 package de.develman.mmi.ui.practicum7;
 
 import de.develman.mmi.algorithm.CycleCanceling;
+import de.develman.mmi.algorithm.SuccessiveShortestPath;
 import de.develman.mmi.exception.MinimalCostFlowException;
 import de.develman.mmi.model.Graph;
 import de.develman.mmi.service.LoggingService;
@@ -21,6 +22,8 @@ public class Practicum7Presenter implements Initializable, GraphChangedListener
     LoggingService loggingService;
     @Inject
     CycleCanceling cycleCanceling;
+    @Inject
+    SuccessiveShortestPath successiveShortestPath;
 
     private Graph graph;
 
@@ -47,7 +50,33 @@ public class Practicum7Presenter implements Initializable, GraphChangedListener
         try
         {
             double minimalCostFlow = cycleCanceling.findMinimumCostFlow(graph);
-            loggingService.log("Gesamtkosten des Kostenminimalen Flusses: " + minimalCostFlow);
+            loggingService.log("Gesamtkosten des kostenminimalen Flusses: " + minimalCostFlow);
+        }
+        catch (MinimalCostFlowException ex)
+        {
+            loggingService.log("Kostenminimaler Fluss kann nicht ermittelt werden: " + ex.getMessage());
+        }
+        finally
+        {
+            endTime = System.currentTimeMillis();
+        }
+
+        loggingService.log("Laufzeit: " + (endTime - startTime) + "ms");
+    }
+
+    @FXML
+    public void successiveShortestPathAction(ActionEvent event)
+    {
+        graph.unvisitAllVertices();
+
+        loggingService.log("Successive-Shortes-Path Algorithmus");
+
+        long endTime;
+        long startTime = System.currentTimeMillis();
+        try
+        {
+            double minimalCostFlow = successiveShortestPath.findMinimumCostFlow(graph);
+            loggingService.log("Gesamtkosten des kostenminimalen Flusses: " + minimalCostFlow);
         }
         catch (MinimalCostFlowException ex)
         {
