@@ -25,7 +25,7 @@ public class FileParser
         this.file = file;
     }
 
-    public Graph loadGraph(boolean directed)
+    public Graph loadGraph(boolean directed, boolean balanced, boolean grouped)
     {
         GraphLoader loader;
         if (isAdjacent())
@@ -39,7 +39,7 @@ public class FileParser
             loader = new EdgeListLoader(file);
         }
 
-        return loader.loadGraph(directed);
+        return loader.loadGraph(directed, balanced, grouped);
     }
 
     private boolean isAdjacent()

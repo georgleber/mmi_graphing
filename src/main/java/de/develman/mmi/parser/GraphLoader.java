@@ -7,5 +7,5 @@ import de.develman.mmi.model.Graph;
  */
 public interface GraphLoader
 {
-    Graph loadGraph(boolean directed);
+    Graph loadGraph(boolean directed, boolean balanced, boolean grouped);
 }

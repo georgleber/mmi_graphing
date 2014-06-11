@@ -21,6 +21,8 @@ import de.develman.mmi.ui.practicum6.Practicum6Presenter;
 import de.develman.mmi.ui.practicum6.Practicum6View;
 import de.develman.mmi.ui.practicum7.Practicum7Presenter;
 import de.develman.mmi.ui.practicum7.Practicum7View;
+import de.develman.mmi.ui.practicum8.Practicum8Presenter;
+import de.develman.mmi.ui.practicum8.Practicum8View;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -63,13 +65,21 @@ public class GraphingPresenter implements Initializable
     @FXML
     AnchorPane practicum7Tab;
     @FXML
+    AnchorPane practicum8Tab;
+    @FXML
     CheckBox directedCbx;
+    @FXML
+    CheckBox balancedCbx;
+    @FXML
+    CheckBox groupedCbx;
 
     @Inject
     LoggingService loggingService;
 
     private Graph graph;
     private BooleanProperty directed;
+    private BooleanProperty balanced;
+    private BooleanProperty grouped;
     private final List<GraphChangedListener> changeListener = new ArrayList<>();
 
     @Override
@@ -80,6 +90,10 @@ public class GraphingPresenter implements Initializable
 
         directed = new SimpleBooleanProperty(false);
         directedCbx.selectedProperty().bindBidirectional(directed);
+        balanced = new SimpleBooleanProperty(false);
+        balancedCbx.selectedProperty().bindBidirectional(balanced);
+        grouped = new SimpleBooleanProperty(false);
+        groupedCbx.selectedProperty().bindBidirectional(grouped);
 
         Practicum1View practicum1View = new Practicum1View();
         practicum1Tab.getChildren().add(practicum1View.getView());
@@ -95,6 +109,8 @@ public class GraphingPresenter implements Initializable
         practicum6Tab.getChildren().add(practicum6View.getView());
         Practicum7View practicum7View = new Practicum7View();
         practicum7Tab.getChildren().add(practicum7View.getView());
+        Practicum8View practicum8View = new Practicum8View();
+        practicum8Tab.getChildren().add(practicum8View.getView());
 
         Practicum1Presenter practicum1Presenter = (Practicum1Presenter) practicum1View.getPresenter();
         changeListener.add(practicum1Presenter);
@@ -110,6 +126,8 @@ public class GraphingPresenter implements Initializable
         changeListener.add(practicum6Presenter);
         Practicum7Presenter practicum7Presenter = (Practicum7Presenter) practicum7View.getPresenter();
         changeListener.add(practicum7Presenter);
+        Practicum8Presenter practicum8Presenter = (Practicum8Presenter) practicum8View.getPresenter();
+        changeListener.add(practicum8Presenter);
     }
 
     @FXML
@@ -124,7 +142,7 @@ public class GraphingPresenter implements Initializable
         if (file != null)
         {
             FileParser parser = new FileParser(file);
-            graph = parser.loadGraph(directed.get());
+            graph = parser.loadGraph(directed.get(), balanced.get(), grouped.get());
 
             loggingService.clearLogging();
             loggingService.

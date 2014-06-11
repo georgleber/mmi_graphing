@@ -5,12 +5,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="484.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="de.develman.mmi.ui.graphing.GraphingPresenter">
+<AnchorPane id="AnchorPane" prefHeight="484.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.develman.mmi.ui.graphing.GraphingPresenter">
   <children>
     <HBox alignment="CENTER" layoutX="15.0" layoutY="14.0" spacing="10.0">
       <children>
         <Button mnemonicParsing="false" onAction="#loadGraphAction" text="%graph.laden.btn" />
         <CheckBox fx:id="directedCbx" alignment="CENTER" mnemonicParsing="false" text="%graph.directed" />
+        <CheckBox fx:id="balancedCbx" mnemonicParsing="false" text="%graph.balanced" />
+        <CheckBox fx:id="groupedCbx" mnemonicParsing="false" text="%graph.vertexgroup" />
       </children>
     </HBox>
     <TabPane layoutX="14.0" layoutY="74.0" prefHeight="187.0" prefWidth="772.0" styleClass="borderedPane" tabClosingPolicy="UNAVAILABLE">
@@ -51,6 +53,11 @@
         <Tab closable="false" text="%tab.practicum7">
           <content>
              <AnchorPane fx:id="practicum7Tab" />
+          </content>
+        </Tab>
+        <Tab closable="false" text="%tab.practicum8">
+          <content>
+             <AnchorPane fx:id="practicum8Tab" />
           </content>
         </Tab>
       </tabs>

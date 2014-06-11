@@ -6,7 +6,6 @@ import de.develman.mmi.model.Vertex;
 import java.util.Collection;
 
 /**
- *
  * @author Georg Henkel <georg@develman.de>
  */
 public abstract class AbstractMinimumCostFlow
