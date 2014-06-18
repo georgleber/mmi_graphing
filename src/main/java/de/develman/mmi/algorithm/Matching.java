@@ -6,6 +6,9 @@ import de.develman.mmi.model.Vertex;
 import javax.inject.Inject;
 
 /**
+ * Die Klasse Matching implementiert den Matching Algorithmus zur Berechnung Anzahl an "gematchten" Kanten in einem
+ * gerichteten bipartiten Graphen
+ *
  * @author Georg Henkel <georg@develman.de>
  */
 public class Matching
@@ -13,6 +16,12 @@ public class Matching
     @Inject
     EdmondsKarp edmondsKarp;
 
+    /**
+     * Berechnung der Anzahl an Matchings
+     *
+     * @param graph Graph
+     * @return Liefert die Anzahl der "gematchten" Kanten
+     */
     public int countMatching(Graph graph)
     {
         Graph residualGraph = graph.copy();
