@@ -28,26 +28,7 @@ public class Matching
         Vertex superSource = addSuperSource(residualGraph);
         Vertex superSink = addSuperSink(residualGraph);
 
-        edmondsKarp.calculateMaxFlowGraph(residualGraph, superSource, superSink);
-        return extractEdgesWithFlow(graph, residualGraph);
-    }
-
-    private int extractEdgesWithFlow(Graph graph, Graph residualGraph)
-    {
-        int countEdgesWithFlow = 0;
-        for (Edge edge : graph.getEdges())
-        {
-            Vertex source = residualGraph.getVertex(edge.getSource().getKey());
-            Vertex sink = residualGraph.getVertex(edge.getSink().getKey());
-
-            Edge residualEdge = residualGraph.getEdge(sink, source);
-            if (residualEdge != null)
-            {
-                countEdgesWithFlow++;
-            }
-        }
-
-        return countEdgesWithFlow;
+        return (int) edmondsKarp.calculateMaxFlowGraph(residualGraph, superSource, superSink);
     }
 
     private Vertex addSuperSource(Graph graph)
