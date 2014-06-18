@@ -5,6 +5,7 @@ import de.develman.mmi.model.Graph;
 import de.develman.mmi.model.Vertex;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class MatchingTest
     public void testFindMaxFlow()
     {
         int matchings = matching.countMatching(graph);
-        // Assert.assertTrue(matchings == 1.0);
+        Assert.assertTrue(matchings == 3.0);
     }
 
     private void initModel()
@@ -40,6 +41,7 @@ public class MatchingTest
         initData();
 
         graph = new Graph(true);
+        graph.setGroupedVerticeCount(3);
         vertices.forEach(v -> graph.addVertex(v));
         edges.forEach(e -> graph.addEdge(e));
     }
@@ -52,25 +54,21 @@ public class MatchingTest
         vertices.add(v0);
         Vertex v1 = new Vertex(1, 1.0);
         vertices.add(v1);
-        Vertex v2 = new Vertex(2, -1.0);
+        Vertex v2 = new Vertex(2, 1.0);
         vertices.add(v2);
-        Vertex v3 = new Vertex(3, 1.0);
+        Vertex v3 = new Vertex(3, -1.0);
         vertices.add(v3);
         Vertex v4 = new Vertex(4, -1.0);
         vertices.add(v4);
         Vertex v5 = new Vertex(5, -1.0);
         vertices.add(v5);
-        Vertex v6 = new Vertex(6, 1.0);
-        vertices.add(v6);
 
         edges = new ArrayList<>();
-        Edge e1 = new Edge(v0, v2, 4.0);
+        Edge e1 = new Edge(v0, v3, 1.0);
         edges.add(e1);
-        Edge e2 = new Edge(v1, v2, 3.0);
+        Edge e2 = new Edge(v1, v5, 1.0);
         edges.add(e2);
-        Edge e3 = new Edge(v3, v5, 10.0);
+        Edge e3 = new Edge(v2, v4, 10.0);
         edges.add(e3);
-        Edge e4 = new Edge(v6, v4, 12.0);
-        edges.add(e4);
     }
 }

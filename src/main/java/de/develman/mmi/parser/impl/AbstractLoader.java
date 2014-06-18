@@ -31,7 +31,7 @@ public abstract class AbstractLoader implements GraphLoader
         try (BufferedReader lineReader = new BufferedReader(new FileReader(file)))
         {
             addVertices(graph, lineReader, balanced, grouped);
-            loadEdges(graph, lineReader);
+            loadEdges(graph, lineReader, grouped);
         }
         catch (IOException ex)
         {
@@ -47,17 +47,21 @@ public abstract class AbstractLoader implements GraphLoader
         String firstLine = lineReader.readLine().trim();
         int countVertices = Integer.parseInt(firstLine);
 
+        if (grouped)
+        {
+            String line = lineReader.readLine().trim();
+            int groupedVerticeCount = Integer.parseInt(line);
+            graph.setGroupedVerticeCount(groupedVerticeCount);
+        }
+
         for (int i = 0; i < countVertices; i++)
         {
+
             Double balance = Double.NaN;
             if (balanced)
             {
                 String line = lineReader.readLine().trim();
                 balance = Double.parseDouble(line);
-            }
-            else if (grouped)
-            {
-                lineReader.readLine();
             }
 
             Vertex vertex = graph.getVertex(i);
@@ -69,5 +73,5 @@ public abstract class AbstractLoader implements GraphLoader
         }
     }
 
-    protected abstract void loadEdges(Graph graph, BufferedReader lineReader) throws IOException;
+    protected abstract void loadEdges(Graph graph, BufferedReader lineReader, boolean grouped) throws IOException;
 }

@@ -18,7 +18,7 @@ public class AdjacentMatrixLoader extends AbstractLoader
     }
 
     @Override
-    protected void loadEdges(Graph graph, BufferedReader lineReader) throws IOException
+    protected void loadEdges(Graph graph, BufferedReader lineReader, boolean grouped) throws IOException
     {
         int cnt = 0;
         String strLine;

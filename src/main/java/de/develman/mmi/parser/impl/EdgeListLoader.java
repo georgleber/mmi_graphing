@@ -18,16 +18,16 @@ public class EdgeListLoader extends AbstractLoader
     }
 
     @Override
-    protected void loadEdges(Graph graph, BufferedReader lineReader) throws IOException
+    protected void loadEdges(Graph graph, BufferedReader lineReader, boolean grouped) throws IOException
     {
         String strLine;
         while ((strLine = lineReader.readLine()) != null)
         {
-            loadEdges(graph, strLine);
+            loadEdges(graph, strLine, grouped);
         }
     }
 
-    private void loadEdges(Graph graph, String strLine)
+    private void loadEdges(Graph graph, String strLine, boolean grouped)
     {
         String[] vEntries = strLine.split("\\s+");
 
@@ -51,6 +51,11 @@ public class EdgeListLoader extends AbstractLoader
         else
         {
             capacity = cost;
+        }
+
+        if (grouped)
+        {
+            capacity = 1.0;
         }
 
         Edge edge = new Edge(source, sink, capacity, cost);

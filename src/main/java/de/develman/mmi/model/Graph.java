@@ -12,6 +12,7 @@ import java.util.*;
 public class Graph
 {
     private final boolean directed;
+    private int groupedVerticeCount;
     private final Map<Integer, Vertex> vertices = new HashMap<>();
     private final List<Edge> edges = new ArrayList<>();
 
@@ -31,6 +32,24 @@ public class Graph
     public boolean isDirected()
     {
         return directed;
+    }
+
+    /**
+     * Setzt die Anzahl Knoten einer Gruppe
+     *
+     * @param groupedVerticeCount Anzahl Knoten in einer Gruppe
+     */
+    public void setGroupedVerticeCount(int groupedVerticeCount)
+    {
+        this.groupedVerticeCount = groupedVerticeCount;
+    }
+
+    /**
+     * @return Anzahl der Knoten in einer Gruppe
+     */
+    public int getGroupedVerticeCount()
+    {
+        return groupedVerticeCount;
     }
 
     /**
@@ -233,6 +252,7 @@ public class Graph
     public Graph copy()
     {
         Graph clonedGraph = new Graph(directed);
+        clonedGraph.setGroupedVerticeCount(groupedVerticeCount);
 
         getVertices().forEach(v -> clonedGraph.addVertex(new Vertex(v.getKey(), v.getBalance())));
         getEdges().forEach(e ->
