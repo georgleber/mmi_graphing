@@ -34,45 +34,59 @@ public class SuccessiveShortestPath extends AbstractMinimumCostFlow
      */
     public double findMinimumCostFlow(Graph graph) throws MinimalCostFlowException, NegativeCycleException
     {
-        if (!checkVerticesBalanced(graph.getVertices()))
-        {
-            throw new MinimalCostFlowException("Balancen sind nicht ausgeglichen");
-        }
-
-        Graph residualGraph = graph.copy();
-        initRelevantBalances(residualGraph);
-        updateCapacities(residualGraph);
-
-        while (true)
-        {
-            residualGraph.unvisitAllVertices();
-
-            Vertex source = findSource(residualGraph);
-            if (source == null)
-            {
-                break;
-            }
-
-            Vertex sink = findSink(source);
-            if (sink == null)
-            {
-                throw new MinimalCostFlowException("Das Netzwerk ist zu klein");
-            }
-
-            ShortestPath path = mooreBellmanFord.findShortestPath(residualGraph, source, sink);
-            double minCapacity = path.getEdges().stream().mapToDouble(Edge::getCapacity).min().getAsDouble();
-            double minSourceBalance = source.getBalance() - relevantBalances.get(source);
-            double minSinkBalance = relevantBalances.get(sink) - sink.getBalance();
-
-            double gamma = calculateGamma(minCapacity, minSourceBalance, minSinkBalance);
-
-            addBalance(source, gamma);
-            addBalance(sink, gamma * -1);
-
-            path.getEdges().forEach(e -> updateResidualEdge(residualGraph, e, gamma));
-        }
-
+    	Graph residualGraph = calculateResidualGraph(graph);
         return calculateMinimalCostFlow(graph, residualGraph);
+    }
+    
+    /**
+     * Berechnung den Residualgraphen zu einem gegebenen Graphen
+     *  
+     * @param graph gerichteter Graph
+     * @return Residualgraph mit den minimalen Kosten
+     * @throws MinimalCostFlowException
+     * @throws NegativeCycleException
+     */
+    public Graph calculateResidualGraph(Graph graph) throws MinimalCostFlowException, NegativeCycleException
+    {
+    	 if (!checkVerticesBalanced(graph.getVertices()))
+         {
+             throw new MinimalCostFlowException("Balancen sind nicht ausgeglichen");
+         }
+
+         Graph residualGraph = graph.copy();
+         initRelevantBalances(residualGraph);
+         updateCapacities(residualGraph);
+
+         while (true)
+         {
+             residualGraph.unvisitAllVertices();
+
+             Vertex source = findSource(residualGraph);
+             if (source == null)
+             {
+                 break;
+             }
+
+             Vertex sink = findSink(source);
+             if (sink == null)
+             {
+                 throw new MinimalCostFlowException("Das Netzwerk ist zu klein (Keine Senke für Quelle [" + source + "] gefunden.");
+             }
+
+             ShortestPath path = mooreBellmanFord.findShortestPath(residualGraph, source, sink);
+             double minCapacity = path.getEdges().stream().mapToDouble(Edge::getCapacity).min().getAsDouble();
+             double minSourceBalance = source.getBalance() - relevantBalances.get(source);
+             double minSinkBalance = relevantBalances.get(sink) - sink.getBalance();
+
+             double gamma = calculateGamma(minCapacity, minSourceBalance, minSinkBalance);
+
+             addBalance(source, gamma);
+             addBalance(sink, gamma * -1);
+
+             path.getEdges().forEach(e -> updateResidualEdge(residualGraph, e, gamma));
+         }
+         
+         return residualGraph;
     }
 
     private Vertex findSource(Graph graph)

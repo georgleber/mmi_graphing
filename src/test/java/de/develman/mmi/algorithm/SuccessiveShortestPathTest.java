@@ -43,7 +43,23 @@ public class SuccessiveShortestPathTest
             Assert.fail(ex.getMessage());
         }
     }
-
+    
+    @Test
+    public void testCalculateResidualGraph()
+    {
+    	try
+        {
+            Graph residualGraph = successiveShortestPath.calculateResidualGraph(graph);
+            residualGraph.getEdges().forEach(System.out::println);
+            
+            // FIXME: Prüfungen für die Richtigkeit des Residualgraphen erstellen
+        }
+        catch (MinimalCostFlowException | NegativeCycleException ex)
+        {
+            Assert.fail(ex.getMessage());
+        }	
+    }
+    
     private void initModel()
     {
         initData();
@@ -52,7 +68,7 @@ public class SuccessiveShortestPathTest
         vertices.forEach(v -> graph.addVertex(v));
         edges.forEach(e -> graph.addEdge(e));
     }
-
+    
     private void initData()
     {
         vertices = new ArrayList<>();
